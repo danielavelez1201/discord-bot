@@ -29,7 +29,6 @@ def messagesFormatted():
             WHERE id = {author_id}"""
         cursor.execute(author_sql)
         author_name = cursor.fetchall()[0][0]
-        print(author_name)
         if author_name != BOT_NAME:
             result += author_name + ": "
             result += text + "\n"
