@@ -1,8 +1,9 @@
 import mysql.connector
 import discord 
 from discord.ext import commands
-import db_functions
+import db_fetch
 import helpers
+import db_update
 
 intents = discord.Intents.default()
 intents.members = True
@@ -15,9 +16,15 @@ cnx = mysql.connector.connect(host="localhost",
     database="athena")
 cursor = cnx.cursor()
 
+async def handleQuestion(msg):
+    message = "You might want to check these out: \n"
+    db_result = db_fetch.messagesFormatted()
+    response = message + db_result
+    await msg.channel.send(response)
+
 @bot.command()
 async def summary(ctx):
-    result = db_functions.fetchMessagesFormatted()
+    result = db_fetch.messagesFormatted()
     await ctx.send(result)
 
 @bot.listen()
@@ -30,37 +37,11 @@ async def on_message(msg):
     text = msg.content
 
     if "#q" in text:
-        message = "You might want to check these out: \n"
-        db_result = db_functions.fetchMessagesFormatted()
-        response = message + db_result
-        await msg.channel.send(response)
+        handleQuestion(msg)
 
-    server_sql = "INSERT IGNORE INTO servers (id, name, member_count) VALUES (%s, %s, %s)"
-    server_vals = [server.id, server.name, server.member_count]
-    try:
-        cursor.execute(server_sql, server_vals)
-        cnx.commit()
-        print(cursor.rowcount, "record inserted into servers.")
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
-    
-    user_sql = "INSERT IGNORE INTO users (id, name, nick, server_id) VALUES (%s, %s, %s, %s)"
-    user_vals = [author.id, author.name, author.nick, server.id]
-    try:
-        cursor.execute(user_sql, user_vals)
-        cnx.commit()
-        print(cursor.rowcount, "record inserted into users.")
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
-
-    message_sql = "INSERT INTO messages (id, author_id, server_id, text) VALUES (%s, %s, %s, %s)"
-    message_vals = [id, author.id, server.id, text]
-    try:
-        cursor.execute(message_sql, message_vals)
-        cnx.commit()
-        print(cursor.rowcount, "record inserted into messages.")
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
+    db_update.addServerToDB(server.id, server.name, server.member_count)
+    db_update.addAuthorToDB(author.id, author.name, author.nick, server.id)
+    db_update.addMessageToDB(id, author.id, server.id, text)
     
     bot.process_commands(msg)
        

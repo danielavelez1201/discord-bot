@@ -8,13 +8,13 @@ cnx = mysql.connector.connect(host="localhost",
     database="athena")
 cursor = cnx.cursor()
 
-def fetchAllMessages():
+def allMessages():
     request_sql = "SELECT * FROM messages"
     cursor.execute(request_sql)
     result = cursor.fetchall()
     return result
 
-def fetchMessagesFormatted():
+def messagesFormatted():
     request_sql = """
         SELECT * FROM messages 
         ORDER BY created_at
@@ -34,3 +34,5 @@ def fetchMessagesFormatted():
             result += author_name + ": "
             result += text + "\n"
     return result
+
+
