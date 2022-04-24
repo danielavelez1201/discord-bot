@@ -1,10 +1,8 @@
 import mysql.connector
 import discord 
 from discord.ext import commands
-
-
-
-print(discord.__version__)
+import db_functions
+import helpers
 
 intents = discord.Intents.default()
 intents.members = True
@@ -22,51 +20,12 @@ async def Hi(ctx):
  await ctx.send("Hi, welcome to our server")
 
 
-"""
-<Message id=967098726432800798 
-channel=<TextChannel 
-id=966704306822742029 
-name='general' 
-position=0 
-nsfw=False 
-news=False 
-category_id=966704306822742027> 
-type=<MessageType.default: 0> 
-author=<Member id=909705923038154763 
-name='Daniela Velez' 
-discriminator='9977' 
-bot=False nick=None 
-guild=<Guild id=966704306235519118 
-name='trial server' 
-shard_id=None 
-chunked=False 
-member_count=2>> 
-flags=<MessageFlags value=0>>
-
-<Message id=967104511925715025 
-channel=<Thread id=967098726432800798 
-name='trial' parent=general 
-owner_id=909705923038154763 
-locked=False archived=False> 
-type=<MessageType.default: 0> 
-author=<Member id=909705923038154763 
-name='Daniela Velez' 
-discriminator='9977' 
-bot=False nick=None 
-guild=<Guild id=966704306235519118 
-name='trial server' 
-shard_id=0 chunked=True member_count=2>> 
-flags=<MessageFlags value=0>>
-"""
-
 @bot.command()
 async def summary(ctx):
-    request_sql = "SELECT * FROM messages"
-    cursor.execute(request_sql)
-    result = cursor.fetchall()
+    result = db_functions.fetchAllMessages()
     await ctx.send(result)
 
-@bot.event
+@bot.listen()
 async def on_message(msg):
     id = msg.id
     author = msg.author
@@ -75,6 +34,14 @@ async def on_message(msg):
     print(f"{server.id}, {server.name}, {server.member_count}")
     print(f"{author.id}, {author.name}, {author.nick}, {server.id}")
     print(f"{id}, {author.id}, {server.id}, {text}")
+
+    if "#q" in text:
+        print("question asked!")
+        message = "You might want to check these out: \n"
+        db_result = db_functions.fetchMostRecentMessages()
+        response = message + helpers.db_result_to_string(db_result)
+        print(response)
+        await msg.channel.send(response)
 
     server_sql = "INSERT IGNORE INTO servers (id, name, member_count) VALUES (%s, %s, %s)"
     server_vals = [server.id, server.name, server.member_count]
@@ -105,6 +72,8 @@ async def on_message(msg):
     
     if 'word' in msg.content:
         print('hi')
+    
+    bot.process_commands(msg)
        
 
 Secret = open("secret.txt", 'r')
