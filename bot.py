@@ -16,31 +16,23 @@ cnx = mysql.connector.connect(host="localhost",
 cursor = cnx.cursor()
 
 @bot.command()
-async def Hi(ctx):
- await ctx.send("Hi, welcome to our server")
-
-
-@bot.command()
 async def summary(ctx):
-    result = db_functions.fetchAllMessages()
+    result = db_functions.fetchMessagesFormatted()
     await ctx.send(result)
 
 @bot.listen()
 async def on_message(msg):
+    if msg.author.bot:
+        return
     id = msg.id
     author = msg.author
     server = msg.author.guild
     text = msg.content
-    print(f"{server.id}, {server.name}, {server.member_count}")
-    print(f"{author.id}, {author.name}, {author.nick}, {server.id}")
-    print(f"{id}, {author.id}, {server.id}, {text}")
 
     if "#q" in text:
-        print("question asked!")
         message = "You might want to check these out: \n"
-        db_result = db_functions.fetchMostRecentMessages()
-        response = message + helpers.db_result_to_string(db_result)
-        print(response)
+        db_result = db_functions.fetchMessagesFormatted()
+        response = message + db_result
         await msg.channel.send(response)
 
     server_sql = "INSERT IGNORE INTO servers (id, name, member_count) VALUES (%s, %s, %s)"
@@ -69,9 +61,6 @@ async def on_message(msg):
         print(cursor.rowcount, "record inserted into messages.")
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
-    
-    if 'word' in msg.content:
-        print('hi')
     
     bot.process_commands(msg)
        
