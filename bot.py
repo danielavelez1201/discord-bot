@@ -17,9 +17,11 @@ cnx = mysql.connector.connect(host="localhost",
 cursor = cnx.cursor()
 
 async def handleQuestion(msg):
-    message = "You might want to check these out: \n"
+    message_intro = "You might want to check these out: \n"
     db_result = db_fetch.messagesFormatted()
-    response = message + db_result
+    message_tag = str(msg.id)[-4:]
+    message_end = f"\n To respond to this question, add #{message_tag}"
+    response = message_intro + db_result + message_end
     await msg.channel.send(response)
 
 @bot.command()
@@ -37,13 +39,13 @@ async def on_message(msg):
     text = msg.content
 
     if "#q" in text:
-        handleQuestion(msg)
+        await handleQuestion(msg)
 
     db_update.addServerToDB(server.id, server.name, server.member_count)
     db_update.addAuthorToDB(author.id, author.name, author.nick, server.id)
     db_update.addMessageToDB(id, author.id, server.id, text)
     
-    bot.process_commands(msg)
+    await bot.process_commands(msg)
        
 
 Secret = open("secret.txt", 'r')
