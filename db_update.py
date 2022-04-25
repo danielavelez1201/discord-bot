@@ -1,3 +1,4 @@
+from wsgiref.util import request_uri
 import mysql.connector
 
 cnx = mysql.connector.connect(host="localhost",
@@ -44,6 +45,29 @@ def addMessageToDB(id, author_id, server_id, text):
         cursor.execute(message_sql, message_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into messages.")
+    except mysql.connector.Error as err:
+        print("Something went wrong: {}".format(err))
+
+def addKeywordToDB(word):
+    keyword_sql = "INSERT INTO keywords (word, question_ids) VALUES (%s, %s)"
+    keyword_vals = [word, []]
+    try:
+        cursor.execute(keyword_sql, keyword_vals)
+        cnx.commit()
+        print(cursor.rowcount, "record inserted into keywords.")
+    except mysql.connector.Error as err:
+        print("Something went wrong: {}".format(err))
+
+
+def addQuestionIDtoKeywords(question_id, keywords):
+    try:
+        for word in keywords:
+            request_sql = f"SELECT question_ids FROM keywords WHERE word == {word}"
+            cursor.execute(request_sql)
+            result = cursor.fetchall()
+            updated_question_array = result.append(question_id)
+            sql = f"UPDATE keywords SET question_ids = {updated_question_array}"
+            cursor.execute(sql)
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
     
