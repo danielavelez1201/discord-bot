@@ -24,6 +24,7 @@ async def handleQuestion(msg):
     keywords = gpt3.extract_keywords(msg)
     db_update.addKeywordsToDB(keywords)
     db_update.addQuestionIDtoKeywords(msg.id)
+    similar_question_ids = db_fetch.get_similar_question_ids(keywords)
 
     message_intro = "You might want to check these out: \n"
     db_result = db_fetch.messagesFormatted()
