@@ -11,12 +11,13 @@ intents.members = True
 bot = commands.Bot(command_prefix='', intents=intents)
 
 cnx = mysql.connector.connect(host="localhost",
-    user="danielavelez1201@gmail.com",
-    password="Lailabeth2000*", port="3306", 
+    user="root",
+    password="abc123", port="3306", 
     database="athena")
 cursor = cnx.cursor()
 
 async def handleQuestion(msg):
+    print("PRINTING HANDLE QUESTION NOW")
     message_intro = "You might want to check these out: \n"
     db_result = db_fetch.messagesFormatted()
     message_tag = str(msg.id)[-4:]
@@ -26,11 +27,25 @@ async def handleQuestion(msg):
 
 @bot.command()
 async def summary(ctx):
+    print("printing summary now")
     result = db_fetch.messagesFormatted()
     await ctx.send(result)
 
 @bot.listen()
+async def on_reaction_add(reaction, user):
+    print(reaction.message.id)
+    user_id = db_fetch.get_author_from_message(reaction.message.id)[0][0]
+    current_contribution_score = db_fetch.get_score_from_author(user_id)[0][0]
+    #Need to check if this is a real answer 
+    db_update.addContributionToDB(current_contribution_score + 1, user_id)
+    
+
+#Store reacts of answers
+#To calculate contributor ranking -> look at reacts people with the most answers and positive reacts 
+@bot.listen()
 async def on_message(msg):
+    print("PRINTING ON MESSAGE NOW")
+    print(msg.id)
     if msg.author.bot:
         return
     id = msg.id

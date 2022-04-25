@@ -3,9 +3,9 @@ from socket import create_server
 import mysql.connector
 
 cnx = mysql.connector.connect(host="localhost",
-        user="danielavelez1201@gmail.com",
-        password="Lailabeth2000*", port="3306", 
-        database="athena")
+    user="root",
+    password="abc123", port="3306", 
+    database="athena")
 
 create_server_table = """
     CREATE TABLE IF NOT EXISTS servers (
@@ -21,6 +21,7 @@ create_user_table = """
         id BIGINT NOT NULL,
         name VARCHAR(100),
         nick VARCHAR(100),
+        contribution_score BIGINT,
         server_id BIGINT,
         PRIMARY KEY (id),
         FOREIGN KEY (server_id) REFERENCES servers(id)

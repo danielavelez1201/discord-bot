@@ -1,8 +1,8 @@
 import mysql.connector
 
 cnx = mysql.connector.connect(host="localhost",
-    user="danielavelez1201@gmail.com",
-    password="Lailabeth2000*", port="3306", 
+    user="root",
+    password="abc123", port="3306", 
     database="athena")
 cursor = cnx.cursor()
 
@@ -13,6 +13,16 @@ def addServerToDB(server_id, server_name, server_member_count):
         cursor.execute(server_sql, server_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into servers.")
+    except mysql.connector.Error as err:
+        print("Something went wrong: {}".format(err))
+
+
+def addContributionToDB(new_contribution_score, user_id):
+    contribution_sql = "UPDATE users SET contribution_score = " + str(new_contribution_score) + " WHERE id = " + str(user_id)
+    try:
+        cursor.execute(contribution_sql)
+        cnx.commit()
+        print(cursor.rowcount, "record inserted into users.")
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
 
