@@ -3,13 +3,25 @@ import mysql.connector
 BOT_NAME = 'athena'
 
 cnx = mysql.connector.connect(host="localhost",
-    user="danielavelez1201@gmail.com",
-    password="Lailabeth2000*", port="3306", 
+    user="root",
+    password="abc123", port="3306", 
     database="athena")
 cursor = cnx.cursor()
 
 def allMessages():
     request_sql = "SELECT * FROM messages"
+    cursor.execute(request_sql)
+    result = cursor.fetchall()
+    return result
+
+def get_author_from_message(message_id):
+    request_sql = "SELECT author_id FROM messages WHERE id = " + str(message_id)
+    cursor.execute(request_sql)
+    result = cursor.fetchall()
+    return result
+
+def get_score_from_author(user_id):
+    request_sql = "SELECT contribution_score FROM users WHERE id = " + str(user_id)
     cursor.execute(request_sql)
     result = cursor.fetchall()
     return result
