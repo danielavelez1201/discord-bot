@@ -5,6 +5,7 @@ import db_fetch
 import helpers
 import db_update
 import os
+import gpt3
 
 intents = discord.Intents.default()
 intents.members = True
