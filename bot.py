@@ -20,6 +20,11 @@ cursor = cnx.cursor()
 
 async def handleQuestion(msg):
     print("PRINTING HANDLE QUESTION NOW")
+
+    keywords = gpt3.extract_keywords(msg)
+    db_update.addKeywordsToDB(keywords)
+    db_update.addQuestionIDtoKeywords(msg.id)
+
     message_intro = "You might want to check these out: \n"
     db_result = db_fetch.messagesFormatted()
     message_tag = str(msg.id)[-4:]

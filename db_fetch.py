@@ -26,6 +26,15 @@ def get_score_from_author(user_id):
     result = cursor.fetchall()
     return result
 
+def get_similar_question_ids(keywords):
+    all_question_ids = set()
+    for word in keywords:
+        request_sql = f"SELECT question_ids FROM keywords WHERE word = {word}"
+        cursor.execute(request_sql)
+        result = cursor.fetchall()
+        all_question_ids = all_question_ids.union(result[0])
+    return list(all_question_ids)
+
 def messagesFormatted():
     request_sql = """
         SELECT * FROM messages 

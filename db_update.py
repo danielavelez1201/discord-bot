@@ -48,21 +48,22 @@ def addMessageToDB(id, author_id, server_id, text):
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
 
-def addKeywordToDB(word):
-    keyword_sql = "INSERT INTO keywords (word, question_ids) VALUES (%s, %s)"
-    keyword_vals = [word, []]
-    try:
-        cursor.execute(keyword_sql, keyword_vals)
-        cnx.commit()
-        print(cursor.rowcount, "record inserted into keywords.")
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
+def addKeywordsToDB(words):
+    for word in words:
+        keyword_sql = "INSERT INTO keywords (word, question_ids) VALUES (%s, %s)"
+        keyword_vals = [word, []]
+        try:
+            cursor.execute(keyword_sql, keyword_vals)
+            cnx.commit()
+            print(cursor.rowcount, "record inserted into keywords.")
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
 
 
 def addQuestionIDtoKeywords(question_id, keywords):
     try:
         for word in keywords:
-            request_sql = f"SELECT question_ids FROM keywords WHERE word == {word}"
+            request_sql = f"SELECT question_ids FROM keywords WHERE word = {word}"
             cursor.execute(request_sql)
             result = cursor.fetchall()
             updated_question_array = result.append(question_id)
