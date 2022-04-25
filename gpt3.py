@@ -15,9 +15,13 @@ def query_gpt3(prompt):
     return gpt_response["choices"][0]["text"]
 
 def extract_keywords(question):
+    """
+    Returns list of 10 keywords of the question.
+    E.g. ['deploy', 'contract', 'problem', 'create', 'hardhat', 'command', 'mumbai', 'scripts']
+    """
     query = f"""
         Question asked: {question} \n
-        10 keywords in this question: \n
+        11 keywords in this question: \n
         web3
     """
     gpt3_response = query_gpt3(query)
