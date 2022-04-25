@@ -4,6 +4,7 @@ from discord.ext import commands
 import db_fetch
 import helpers
 import db_update
+import os
 
 intents = discord.Intents.default()
 intents.members = True
@@ -11,8 +12,8 @@ intents.members = True
 bot = commands.Bot(command_prefix='', intents=intents)
 
 cnx = mysql.connector.connect(host="localhost",
-    user="root",
-    password="abc123", port="3306", 
+    user="danielavelez1201@gmail.com",
+    password="Lailabeth2000*", port="3306", 
     database="athena")
 cursor = cnx.cursor()
 
