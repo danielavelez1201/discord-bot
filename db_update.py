@@ -161,3 +161,16 @@ def addQuestionIDtoKeywords(question_id, keywords):
             print(cursor.rowcount, "record inserted for keyword and question.")
     except Error as err:
         print("Tried adding question to keywords_questions: {}".format(err))
+
+
+def addMessageIDToKeywords(message_id, keywords):
+    try:
+        for word in keywords:
+            addKeyword(word)
+            question_keyword_junction_sql = "INSERT IGNORE INTO keywords_messages (message_id, word) VALUES (%s, %s)"
+            cursor.execute(question_keyword_junction_sql, [message_id, word])
+            cnx.commit()
+            print(cursor.rowcount, "record inserted for keyword and message.")
+    except Error as err:
+        print("Tried adding question to keywords_messages: {}".format(err))
+

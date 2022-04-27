@@ -1,5 +1,5 @@
 from gpt3 import extract_keywords
-from db_update import addKeywordsToDB, addMessage, addQuestionIDtoKeywords, addUser, addServer
+from db_update import addKeywordsToDB, addMessage, addMessageIDToKeywords, addUser, addServer
 
 f = open("near-messages.txt", "r")
 
@@ -28,7 +28,7 @@ def parse_and_get_keywords():
         addUser(int(userId), "", "", 490367152054992913)
         addKeywordsToDB(keywords)
         addMessage(int(messageId), int(userId), 490367152054992913, content, 0)
-        addQuestionIDtoKeywords(int(messageId), keywords)
+        addMessageIDToKeywords(int(messageId), keywords)
         counter += 1
 
 parse_and_get_keywords()
