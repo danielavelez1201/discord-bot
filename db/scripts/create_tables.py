@@ -31,7 +31,12 @@ create_user_server_table = """
     );
 """
 
-
+create_keyword_table = """
+    CREATE TABLE IF NOT EXISTS keywords (
+        word VARCHAR(255) NOT NULL,
+        PRIMARY KEY (word)
+    );
+"""
 create_message_table = """
     CREATE TABLE IF NOT EXISTS messages (
         id BIGINT NOT NULL,
@@ -47,10 +52,13 @@ create_message_table = """
     );
 """
 
-create_keyword_table = """
-    CREATE TABLE IF NOT EXISTS keywords (
+create_keyword_message_table = """
+    CREATE TABLE IF NOT EXISTS keywords_messages (
+        message_id BIGINT NOT NULL,
         word VARCHAR(255) NOT NULL,
-        PRIMARY KEY (word)
+        FOREIGN KEY (message_id) REFERENCES messages(id), 
+        FOREIGN KEY (word) REFERENCES keywords(word),
+        UNIQUE (message_id, word)
     );
 """
 
@@ -126,6 +134,7 @@ try:
     print("created keyword-question table")
     cursor.execute(create_keyword_answer_table)
     print("created keyword-answer table")
-    
+    cursor.execute(create_keyword_message_table)
+    print("created keyword-message table")
 except Error as err:
     print("Something went wrong: {}".format(err))

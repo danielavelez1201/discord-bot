@@ -46,7 +46,7 @@ def addKeyword(word):
 
 
 def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, keyword):
-    question_sql = "INSERT INTO questions (author_id, server_id, title, body, bounty, upvotes, answered) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    question_sql = "INSERT IGNORE INTO questions (author_id, server_id, title, body, bounty, upvotes, answered) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     question_vals = [
         author_id,
         server_id,
@@ -62,7 +62,7 @@ def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, ke
         print(cursor.rowcount, "record inserted into questions.")
         question_id = cursor.lastrowid
         question_junction_sql = (
-            "INSERT INTO keywords_questions (question_id, word) VALUES (%s, %s)"
+            "INSERT IGNORE INTO keywords_questions (question_id, word) VALUES (%s, %s)"
         )
         question_junction_vals = [question_id, keyword]
         cursor.execute(question_junction_sql, question_junction_vals)
@@ -88,20 +88,26 @@ def addContribution(new_contribution_score, user_id):
         print("Tried adding contribution: {}".format(err))
 
 
-def addMessage(id, author_id, server_id, text, upvotes):
-    message_sql = "INSERT INTO messages (id, author_id, server_id, text, upvotes) VALUES (%s, %s, %s, %s, %s)"
+def addMessage(id, author_id, server_id, text, upvotes, keyword=None):
+    message_sql = "INSERT IGNORE INTO messages (id, author_id, server_id, text, upvotes) VALUES (%s, %s, %s, %s, %s)"
     message_vals = [id, author_id, server_id, text, upvotes]
+    if keyword:
+        message_junction_sql = (
+            "INSERT IGNORE INTO keywords_messages (message_id, word) VALUES (%s, %s)"
+        )
+        message_junction_vals = [id, keyword]
     try:
         cursor.execute(message_sql, message_vals)
+        if keyword:
+            cursor.execute(message_junction_sql, message_junction_vals)
         cnx.commit()
-        print(cursor.rowcount, "record inserted into messages.")
+        print(cursor.rowcount, "record inserted into messages and messages junction.")
     except Error as err:
         print("Tried adding message: {}".format(err))
 
 
 def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, keyword):
-    # TODO TO ADD TO keyword answers
-    answer_sql = "INSERT INTO answers (id, author_id, question_id, server_id, body, upvotes, accepted) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+    answer_sql = "INSERT IGNORE INTO answers (id, author_id, question_id, server_id, body, upvotes, accepted) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     answer_vals = [
         id,
         author_id,
@@ -111,10 +117,18 @@ def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, ke
         upvotes,
         accepted,
     ]
+    answer_junction_sql = (
+        "INSERT IGNORE INTO keywords_answers (answer_id, word) VALUES (%s, %s)"
+    )
+    answer_junction_vals = [id, keyword]
     try:
         cursor.execute(answer_sql, answer_vals)
+        cursor.execute(answer_junction_sql, answer_junction_vals)
         cnx.commit()
-        print(cursor.rowcount, "record inserted into answers.")
+        print(
+            cursor.rowcount,
+            "record inserted into answers and answer keywords junction.",
+        )
     except Error as err:
         print("Tried adding answer: {}".format(err))
 
@@ -141,9 +155,7 @@ def addQuestionIDtoKeywords(question_id, keywords):
     try:
         for word in keywords:
             addKeyword(word)
-            question_keyword_junction_sql = (
-                "INSERT INTO keywords_questions (question_id, word) VALUES (%s, %s)"
-            )
+            question_keyword_junction_sql = "INSERT IGNORE INTO keywords_questions (question_id, word) VALUES (%s, %s)"
             cursor.execute(question_keyword_junction_sql, [question_id, word])
             cnx.commit()
             print(cursor.rowcount, "record inserted for keyword and question.")
