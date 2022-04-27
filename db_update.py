@@ -88,13 +88,20 @@ def addContribution(new_contribution_score, user_id):
         print("Something went wrong: {}".format(err))
 
 
-def addMessage(id, author_id, server_id, text, upvotes):
+def addMessage(id, author_id, server_id, text, upvotes, keyword=None):
     message_sql = "INSERT IGNORE INTO messages (id, author_id, server_id, text, upvotes) VALUES (%s, %s, %s, %s, %s)"
     message_vals = [id, author_id, server_id, text, upvotes]
+    if keyword:
+        message_junction_sql = (
+            "INSERT IGNORE INTO keywords_messages (message_id, word) VALUES (%s, %s)"
+        )
+        message_junction_vals = [id, keyword]
     try:
         cursor.execute(message_sql, message_vals)
+        if keyword:
+            cursor.execute(message_junction_sql, message_junction_vals)
         cnx.commit()
-        print(cursor.rowcount, "record inserted into messages.")
+        print(cursor.rowcount, "record inserted into messages and messages junction.")
     except Error as err:
         print("Something went wrong: {}".format(err))
 
