@@ -4,7 +4,6 @@ import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option
-import asyncio
 
 with open("answers.txt", "r") as secrets_file:
     secret = secrets_file.read()
@@ -17,8 +16,8 @@ bot = commands.Bot(command_prefix="$", intents=intents)
 slash = SlashCommand(bot, sync_commands=True)
 # cnx = mysql.connector.connect(
 #     host="localhost",
-#     user="danielavelez1201@gmail.com",
-#     password="Lailabeth2000*",
+#     user="athena-admin",
+#     password="abc123",
 #     port="3306",
 #     database="athena",
 # )
