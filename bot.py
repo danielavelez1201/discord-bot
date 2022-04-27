@@ -39,6 +39,29 @@ async def summary(ctx):
     await ctx.send(result)
 
 
+@slash.slash(
+    name="rankings",
+    description="See Contributor Rankings!",
+    guild_ids=[967824448365412462],
+    options=[
+        create_option(
+            name="count",
+            description="Count",
+            option_type=4,
+            required=True,
+        ),
+    ],
+)
+async def rankings(ctx, count):
+    contributors = db_fetch.get_top_contributors(count)
+    count = 0
+    result = "Rankings:\n"
+    for (id, name, nick, contribution_score) in contributors:
+        nick = "(" + nick + ")" if nick != None else ""
+        result += f"{count}) {name}{nick}: {str(contribution_score)}\n"
+    await ctx.send(result)
+
+
 @bot.event
 async def on_raw_reaction_add(payload):
     db_update.addServer(
