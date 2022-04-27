@@ -111,6 +111,26 @@ def similar_questions_formatted(question_ids):
         result_dicts.append(question_format)
     return result_dicts       
 
+def get_answer_question_from_answer_id(answer_id):
+    request_sql = "SELECT author_id, question_id FROM answers WHERE id = " + str(
+        answer_id
+    )
+    cursor.execute(request_sql)
+    result = cursor.fetchone()
+    if result:
+        (answer_author_id, question_id) = result
+        request_sql = "SELECT author_id FROM questions WHERE id = " + str(question_id)
+        cursor.execute(request_sql)
+        result = cursor.fetchone()
+        if result:
+            (question_author_id,) = result
+            return (
+                {"id": answer_id, "author_id": answer_author_id},
+                {"id": question_id, "author_id": question_author_id},
+            )
+    return (None, None)
+
+
 def messagesFormatted():
     request_sql = """
         SELECT * FROM messages 
