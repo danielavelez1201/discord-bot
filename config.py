@@ -9,3 +9,5 @@ cnx = connect(
 )
 
 cursor = cnx.cursor()
+
+BOT_NAME = "athena"

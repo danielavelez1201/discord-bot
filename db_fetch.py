@@ -1,15 +1,4 @@
-import mysql.connector
-
-BOT_NAME = "athena"
-
-cnx = mysql.connector.connect(
-    host="localhost",
-    user="athena-admin",
-    password="abc123",
-    port="3306",
-    database="athena",
-)
-cursor = cnx.cursor()
+from config import cursor, BOT_NAME
 
 
 def allMessages():
@@ -56,6 +45,16 @@ def get_score_from_author(user_id):
     cursor.execute(request_sql)
     result = cursor.fetchall()
     return result
+
+
+def get_similar_question_ids(keywords):
+    all_question_ids = set()
+    for word in keywords:
+        request_sql = f"SELECT question_ids FROM keywords WHERE word = {word}"
+        cursor.execute(request_sql)
+        result = cursor.fetchall()
+        all_question_ids = all_question_ids.union(result[0])
+    return list(all_question_ids)
 
 
 def messagesFormatted():

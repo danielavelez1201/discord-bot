@@ -1,13 +1,5 @@
-import mysql.connector
-
-cnx = mysql.connector.connect(
-    host="localhost",
-    user="athena-admin",
-    password="abc123",
-    port="3306",
-    database="athena",
-)
-cursor = cnx.cursor()
+from mysql.connector import Error
+from config import cursor, cnx
 
 
 def addServer(server_id, name, member_count):
@@ -19,7 +11,7 @@ def addServer(server_id, name, member_count):
         cursor.execute(server_sql, server_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into servers.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -32,7 +24,7 @@ def addUser(author_id, author_name, author_nick, server_id):
         cursor.execute(user_sql, user_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into users.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -43,7 +35,7 @@ def addKeyword(word, server_id):
         cursor.execute(keyword_sql, keyword_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into keywords.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -64,7 +56,7 @@ def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, ke
         cnx.commit()
         print(cursor.rowcount, "record inserted into questions.")
         return cursor.lastrowid
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -79,7 +71,7 @@ def addContribution(new_contribution_score, user_id):
         cursor.execute(contribution_sql)
         cnx.commit()
         print(cursor.rowcount, "record inserted into users.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -90,7 +82,7 @@ def addMessage(id, author_id, server_id, text, upvotes):
         cursor.execute(message_sql, message_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into messages.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -110,7 +102,7 @@ def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, ke
         cursor.execute(answer_sql, answer_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into answers.")
-    except mysql.connector.Error as err:
+    except Error as err:
         print("Something went wrong: {}".format(err))
 
 
@@ -123,5 +115,30 @@ def acceptAnswer(questionId, answerId):
         cursor.execute(accept_a_sql)
         cnx.commit()
         print(cursor.rowcount, "record updated for accepted answer and question.")
-    except mysql.connector.Error as err:
+    except Error as err:
+        print("Something went wrong: {}".format(err))
+
+
+def addKeywordsToDB(words):
+    for word in words:
+        keyword_sql = "INSERT INTO keywords (word, question_ids) VALUES (%s, %s)"
+        keyword_vals = [word, []]
+        try:
+            cursor.execute(keyword_sql, keyword_vals)
+            cnx.commit()
+            print(cursor.rowcount, "record inserted into keywords.")
+        except Error as err:
+            print("Something went wrong: {}".format(err))
+
+
+def addQuestionIDtoKeywords(question_id, keywords):
+    try:
+        for word in keywords:
+            request_sql = f"SELECT question_ids FROM keywords WHERE word = {word}"
+            cursor.execute(request_sql)
+            result = cursor.fetchall()
+            updated_question_array = result.append(question_id)
+            sql = f"UPDATE keywords SET question_ids = {updated_question_array}"
+            cursor.execute(sql)
+    except Error as err:
         print("Something went wrong: {}".format(err))

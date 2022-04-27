@@ -6,19 +6,13 @@ from discord_slash.utils.manage_commands import create_option
 import db_fetch
 import db_update
 
+# import gpt3
+
 with open("answers.txt", "r") as secrets_file:
     secret = secrets_file.read()
 
 intents = discord.Intents.default()
 intents.members = True
-cnx = mysql.connector.connect(
-    host="localhost",
-    user="athena-admin",
-    password="abc123",
-    port="3306",
-    database="athena",
-)
-cursor = cnx.cursor()
 
 bot = commands.Bot(command_prefix="", intents=intents)
 slash = SlashCommand(bot, sync_commands=True)
@@ -87,6 +81,14 @@ async def on_raw_reaction_add(payload):
         )
 
 
+# def similarQuestions(question_body, question_id):
+#     keywords = gpt3.extract_keywords(question_body)
+#     db_update.addKeywordsToDB(keywords)
+#     db_update.addQuestionIDtoKeywords(question_id)
+#     similar_question_ids = db_fetch.get_similar_question_ids(keywords)
+#     return similar_question_ids
+
+
 def askQuestionSuggestions(questionId):
     message_intro = "You might want to check these out:"
     db_result = db_fetch.messagesFormatted()
@@ -129,6 +131,7 @@ async def ask_question(ctx, title, question_body, bounty=0):
     questionId = db_update.addQuestion(
         ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keyword
     )
+    # print(similarQuestions(question_body, questionId))
     await ctx.send(
         "\n{}\n{}\nBounty of {}\n{}".format(
             title, question_body, bounty, askQuestionSuggestions(questionId)
