@@ -2,10 +2,10 @@ import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option
+from gpt3 import *
 import db_fetch
 import db_update
-
-# import gpt3
+from helpers import *
 
 with open("answers.txt", "r") as secrets_file:
     secret = secrets_file.read()
@@ -81,18 +81,17 @@ async def on_raw_reaction_add(payload):
 
 
 # def similarQuestions(question_body, question_id):
-#     keywords = gpt3.extract_keywords(question_body)
+#    
 #     db_update.addKeywordsToDB(keywords)
 #     db_update.addQuestionIDtoKeywords(question_id)
 #     similar_question_ids = db_fetch.get_similar_question_ids(keywords)
 #     return similar_question_ids
 
 
-def askQuestionSuggestions(questionId):
+def askQuestionSuggestions(keywords):
     message_intro = "You might want to check these out:"
-    db_result = db_fetch.messagesFormatted()
-    message_end = f"\nTo respond to this question, add #{questionId}"
-    return message_intro + db_result + message_end
+    question_ids = db_fetch.get_similar_question_ids(keywords)
+    return message_intro + format_question_string(question_ids)
 
 
 @slash.slash(
@@ -125,23 +124,23 @@ async def ask_question(ctx, title, question_body, bounty=0):
         ctx.guild_id, ctx.author.guild.name, ctx.author.guild.member_count
     )
     db_update.addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
-    keyword = "apple"
-    db_update.addKeyword(keyword)
-    questionId = db_update.addQuestion(
-        ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keyword
+
+    keywords = extract_keywords(question_body)
+   
+    questionId = db_update.addQuestionAndKeywords(
+        ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keywords
     )
     # print(similarQuestions(question_body, questionId))
     await ctx.send(
-        "\n{}\n{}\nBounty of {}\n{}".format(
-            title, question_body, bounty, askQuestionSuggestions(questionId)
+        "\n{}\n{}\nBounty of {}\n{} \nTo respond to this question, add #{}}".format(
+            title, question_body, bounty, askQuestionSuggestions(keywords), questionId
         )
     )
-
 
 @slash.slash(
     name="answer",
     description="Answer a Question!",
-    guild_ids=[967824448365412462],
+    guild_ids=[966704306235519118],
     options=[
         create_option(
             name="question_id",
