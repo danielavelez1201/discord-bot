@@ -34,31 +34,29 @@ def format_question_string(question):
     """
     return result
 
-def similar_questions_formatted(question_ids):
+def similar_questions_formatted(questions):
     result_strings = []
-    for question_id in question_ids:
-        question = get_question_with_id(question_id)
+    for  id, author_id, title, body, upvotes, answered in questions:
         server_id = 490367152054992913
         question_dict = {}
-        for id, author_id, title, body, upvotes, answered in question:
-            question_dict['link'] = create_link(server_id, author_id, id)
+        question_dict['link'] = create_link(server_id, author_id, id)
 
-            name, nick = get_author_with_id(author_id)
-            question_dict['author_name'] = format_author_name(name, nick)
-            question_dict['title'] = title
-            question_dict['body'] = body
-            question_dict['upvotes'] = upvotes
+        name, nick = get_author_with_id(author_id)
+        question_dict['author_name'] = format_author_name(name, nick)
+        question_dict['title'] = title
+        question_dict['body'] = body
+        question_dict['upvotes'] = upvotes
 
-            if answered:
-                answer_id, answer_author_id, answer_body, answer_upvotes, answer_accepted = get_answer_with_question_id(id)
-                answer_author_name, answer_author_nick = get_author_with_id(answer_author_id)
-                answer_link = create_link(server_id, answer_author_id, answer_id)
-                question_dict['answer'] = {
-                    'link': answer_link,
-                    'author': format_author_name(answer_author_name, answer_author_nick),
-                    'body': answer_body,
-                    'upvotes': answer_upvotes,
-                    'accepted': answer_accepted,
-                 }
+        if answered:
+            answer_id, answer_author_id, answer_body, answer_upvotes, answer_accepted = get_answer_with_question_id(id)
+            answer_author_name, answer_author_nick = get_author_with_id(answer_author_id)
+            answer_link = create_link(server_id, answer_author_id, answer_id)
+            question_dict['answer'] = {
+                'link': answer_link,
+                'author': format_author_name(answer_author_name, answer_author_nick),
+                'body': answer_body,
+                'upvotes': answer_upvotes,
+                'accepted': answer_accepted,
+                }
         result_strings.append(format_question_string(question_dict))
     return result_strings   

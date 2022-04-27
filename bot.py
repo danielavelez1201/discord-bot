@@ -9,6 +9,7 @@ from helpers import *
 
 with open("answers.txt", "r") as secrets_file:
     secret = secrets_file.read()
+    print(secret)
 
 intents = discord.Intents.default()
 intents.members = True
@@ -32,7 +33,7 @@ async def on_message(msg):
 
 
 @slash.slash(
-    name="summary", description="Ask a Question!", guild_ids=[967824448365412462]
+    name="summary", description="Ask a Question!", guild_ids=[966704306235519118]
 )
 async def summary(ctx):
     result = db_fetch.messagesFormatted()
@@ -42,7 +43,7 @@ async def summary(ctx):
 @slash.slash(
     name="rankings",
     description="See Contributor Rankings!",
-    guild_ids=[967824448365412462],
+    guild_ids=[966704306235519118],
     options=[
         create_option(
             name="count",
@@ -106,14 +107,15 @@ async def on_raw_reaction_add(payload):
 
 def askQuestionSuggestions(keywords):
     message_intro = "You might want to check these out:"
-    question_ids = db_fetch.get_similar_question_ids(keywords)
-    return message_intro + format_question_string(question_ids)
+    questions = db_fetch.get_similar_questions(keywords)
+    print(questions)
+    return message_intro + format_question_string(questions)
 
 
 @slash.slash(
     name="ask_question",
     description="Ask a Question!",
-    guild_ids=[967824448365412462],
+    guild_ids=[966704306235519118],
     options=[
         create_option(
             name="title",

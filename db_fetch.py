@@ -27,7 +27,7 @@ def get_question_from_answer_id(answer_id):
 
 
 def get_question_id_from_answer_id(answer_id):
-    request_sql = "SELECT question_id FROM answers WHERE id = " + str(answer_id)
+    request_sql = f"SELECT question_id FROM answers WHERE id = '{str(answer_id)}'"
     cursor.execute(request_sql)
     result = cursor.fetchall()
     return result
@@ -56,21 +56,20 @@ def get_top_contributors(count):
     return result
 
 
-def get_similar_question_ids(keywords):
-    all_question_ids = set()
+def get_similar_questions(keywords):
+    all_questions = set()
     for word in keywords:
-
         question_sql = f"SELECT question_id FROM keywords_questions WHERE word = '{word}'"
         cursor.execute(question_sql)
         question_result = cursor.fetchall()
         if len(question_result) > 0:
-            all_question_ids = all_question_ids.union(question_result[0])
+            all_questions.add(get_question_from_answer_id(question_result[0]))
 
         message_sql = f"SELECT message_id FROM keywords_messages WHERE word = '{word}'"
         cursor.execute(message_sql)
         message_result = cursor.fetchall()
         if len(message_result) > 0:
-            all_question_ids = all_question_ids.union(message_result[0])
+            all_questions.add(get_message_with_id_with_question_format(message_result[0]))
 
         answer_sql = f"SELECT answer_id FROM keywords_answers WHERE word = '{word}'"
         cursor.execute(answer_sql)
@@ -79,9 +78,9 @@ def get_similar_question_ids(keywords):
             answer_sql = f"SELECT question_id FROM answers WHERE id ='{possible_answer_ids[0]}'"
             cursor.execute(answer_sql)
             question_from_answer_result = cursor.fetchall()
-            all_question_ids = all_question_ids.union(question_from_answer_result[0])
-        
-    return list(all_question_ids)
+            all_questions.add(get_question_from_answer_id(question_from_answer_result[0]))
+            
+    return list(all_questions)
 
 
 def create_link(server_id, author_id, message_id):
@@ -99,6 +98,12 @@ def get_question_with_id(id):
     question_sql = f"SELECT id, author_id, title, body, upvotes, answered FROM questions WHERE id = {id}"
     cursor.execute(question_sql)
     return cursor.fetchall()[0]
+
+def get_message_with_id_with_question_format(id):
+    message_sql = f"SELECT id, author_id, text, upvotes FROM messages WHERE id = {id}"
+    cursor.execute(message_sql)
+    id, author_id, text, upvotes = cursor.fetchall()[0]
+    return (id, author_id, "", text, upvotes, False)
 
 
 def get_answer_with_question_id(id):
