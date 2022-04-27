@@ -50,7 +50,7 @@ create_message_table = """
 create_keyword_table = """
     CREATE TABLE IF NOT EXISTS keywords (
         word VARCHAR(255) NOT NULL,
-        PRIMARY KEY (word),
+        PRIMARY KEY (word)
     );
 """
 

@@ -127,7 +127,7 @@ async def ask_question(ctx, title, question_body, bounty=0):
     )
     db_update.addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
     keyword = "apple"
-    db_update.addKeyword(keyword, ctx.guild_id)
+    db_update.addKeyword(keyword)
     questionId = db_update.addQuestion(
         ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keyword
     )
@@ -164,7 +164,7 @@ async def answer(ctx, question_id, answer_body):
     )
     db_update.addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
     keyword = "apple"
-    db_update.addKeyword(keyword, ctx.guild_id)
+    db_update.addKeyword(keyword)
     sent_message = await ctx.send(
         "Answering Question with Id{}\n{}".format(question_id, answer_body)
     )
