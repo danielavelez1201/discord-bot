@@ -109,13 +109,22 @@ create_keyword_answer_table = """
 
 try:
     cursor.execute(create_server_table)
+    print("created server table")
     cursor.execute(create_user_table)
+    print("created user table")
     cursor.execute(create_message_table)
+    print("created message table")
     cursor.execute(create_keyword_table)
+    print("created keyword table")
     cursor.execute(create_question_table)
+    print("created question table")
     cursor.execute(create_answer_table)
+    print("created answer table")
     cursor.execute(create_user_server_table)
+    print("created user-server table")
     cursor.execute(create_keyword_question_table)
+    print("created keyword-question table")
     cursor.execute(create_keyword_answer_table)
+    print("created keyword-answer table")
 except Error as err:
     print("Something went wrong: {}".format(err))
