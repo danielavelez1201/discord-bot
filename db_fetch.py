@@ -47,6 +47,13 @@ def get_score_from_author(user_id):
     return result
 
 
+def get_top_contributors(count):
+    request_sql = "SELECT * FROM users ORDER BY contribution_score ASC LIMIT " + str(count)
+    cursor.execute(request_sql)
+    result = cursor.fetchall()
+    return result
+
+
 def get_similar_question_ids(keywords):
     all_question_ids = set()
     for word in keywords:
