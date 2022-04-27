@@ -42,7 +42,7 @@ def addKeyword(word):
         cnx.commit()
         print(cursor.rowcount, "record inserted into keywords.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding keyword: {}".format(word, err))
 
 
 def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, keyword):
@@ -70,7 +70,7 @@ def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, ke
         print(cursor.rowcount, "record inserted into question keyword junction table.")
         return question_id
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding question: {}".format(err))
 
 
 def addContribution(new_contribution_score, user_id):
@@ -85,7 +85,7 @@ def addContribution(new_contribution_score, user_id):
         cnx.commit()
         print(cursor.rowcount, "record inserted into users.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding contribution: {}".format(err))
 
 
 def addMessage(id, author_id, server_id, text, upvotes):
@@ -96,7 +96,7 @@ def addMessage(id, author_id, server_id, text, upvotes):
         cnx.commit()
         print(cursor.rowcount, "record inserted into messages.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding message: {}".format(err))
 
 
 def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, keyword):
@@ -116,7 +116,7 @@ def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, ke
         cnx.commit()
         print(cursor.rowcount, "record inserted into answers.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding answer: {}".format(err))
 
 
 def acceptAnswer(questionId, answerId):
@@ -129,7 +129,7 @@ def acceptAnswer(questionId, answerId):
         cnx.commit()
         print(cursor.rowcount, "record updated for accepted answer and question.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried accepting answer: {}".format(err))
 
 
 def addKeywordsToDB(words):
@@ -148,4 +148,4 @@ def addQuestionIDtoKeywords(question_id, keywords):
             cnx.commit()
             print(cursor.rowcount, "record inserted for keyword and question.")
     except Error as err:
-        print("Something went wrong: {}".format(err))
+        print("Tried adding question to keywords_questions: {}".format(err))
