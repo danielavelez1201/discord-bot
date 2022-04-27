@@ -39,6 +39,29 @@ async def summary(ctx):
     await ctx.send(result)
 
 
+@slash.slash(
+    name="rankings",
+    description="See Contributor Rankings!",
+    guild_ids=[967824448365412462],
+    options=[
+        create_option(
+            name="count",
+            description="Count",
+            option_type=4,
+            required=True,
+        ),
+    ],
+)
+async def rankings(ctx, count):
+    contributors = db_fetch.get_top_contributors(count)
+    count = 0
+    result = "Rankings:\n"
+    for (id, name, nick, contribution_score) in contributors:
+        nick = "(" + nick + ")" if nick != None else ""
+        result += f"{count}) {name}{nick}: {str(contribution_score)}\n"
+    await ctx.send(result)
+
+
 @bot.event
 async def on_raw_reaction_add(payload):
     db_update.addServer(
@@ -48,27 +71,20 @@ async def on_raw_reaction_add(payload):
         payload.user_id, payload.member.name, payload.member.nick, payload.guild_id
     )
     # Toggle accepted and answered if reacted to answer
-    answer_user_id = db_fetch.get_user_id_from_answer_id(payload.message_id)
-    if len(answer_user_id) > 0:
-        answer_user_id = answer_user_id[0][0]
-        question_user_id = db_fetch.get_question_from_answer_id(payload.message_id)
-        if len(question_user_id) > 0:
-            question_user_id = question_user_id[0][0]
-            if (
-                question_user_id
-                == payload.user_id
-                # and question_user_id != answer_user_id
-            ):
-                question_id = db_fetch.get_question_id_from_answer_id(
-                    payload.message_id
-                )
-                if len(question_id) > 0:
-                    question_id = question_id[0][0]
-                    db_update.acceptAnswer(question_id, payload.message_id)
+    if payload.emoji.name == "✅":
+        (answer, question) = db_fetch.get_answer_question_from_answer_id(
+            payload.message_id
+        )
+        current_user = payload.user_id
+        if (
+            answer
+            and question
+            and current_user == question["author_id"]
+            and current_user != answer["author_id"]
+        ):
+            db_update.acceptAnswer(question["id"], answer["id"])
 
     # Increment contributor score
-    # TODO
-    # Account for when user removes a emote/uses a different one to message
     msg_user_id = db_fetch.get_author_from_message(payload.message_id)
     if len(msg_user_id) > 0:
         msg_user_id = msg_user_id[0][0]

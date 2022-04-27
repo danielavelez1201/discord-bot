@@ -46,6 +46,16 @@ def get_score_from_author(user_id):
     result = cursor.fetchall()
     return result
 
+
+def get_top_contributors(count):
+    request_sql = "SELECT * FROM users ORDER BY contribution_score ASC LIMIT " + str(
+        count
+    )
+    cursor.execute(request_sql)
+    result = cursor.fetchall()
+    return result
+
+
 def get_similar_question_ids(keywords):
     all_question_ids = set()
     for word in keywords:
@@ -73,19 +83,30 @@ def get_similar_question_ids(keywords):
         
     return list(all_question_ids)
 
+
 def create_link(server_id, author_id, message_id):
-    return "https://discord.com/channels/" + str(server_id) + '/' + str(author_id) + '/' + str(message_id)
+    return (
+        "https://discord.com/channels/"
+        + str(server_id)
+        + "/"
+        + str(author_id)
+        + "/"
+        + str(message_id)
+    )
+
 
 def get_question_with_id(id):
     question_sql = f"SELECT id, author_id, title, body, upvotes, answered FROM questions WHERE id = {id}"
     cursor.execute(question_sql)
     return cursor.fetchall()[0]
 
+
 def get_answer_with_question_id(id):
     answer_sql = f"SELECT id, author_id, body, upvotes, accepted FROM answers WHERE question_id = {id}"
     cursor.execute(answer_sql)
     return cursor.fetchall()[0]
-    
+
+
 def get_author_with_id(id):
     author_sql = f"SELECT name, nick FROM users WHERE id = {id}"
     cursor.execute(author_sql)
