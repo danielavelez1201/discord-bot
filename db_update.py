@@ -16,21 +16,27 @@ def addServer(server_id, name, member_count):
 
 
 def addUser(author_id, author_name, author_nick, server_id):
-    user_sql = (
-        "INSERT IGNORE INTO users (id, name, nick, server_id) VALUES (%s, %s, %s, %s)"
+    user_sql = "INSERT IGNORE INTO users (id, name, nick) VALUES (%s, %s, %s)"
+    user_vals = [author_id, author_name, author_nick]
+    user_server_junction_sql = (
+        "INSERT IGNORE INTO users_servers (user_id, server_id) VALUES (%s, %s)"
     )
-    user_vals = [author_id, author_name, author_nick, server_id]
+    junction_vals = [author_id, server_id]
     try:
         cursor.execute(user_sql, user_vals)
+        cursor.execute(user_server_junction_sql, junction_vals)
         cnx.commit()
-        print(cursor.rowcount, "record inserted into users.")
+        print(
+            cursor.rowcount,
+            "record inserted into users and user server junction table.",
+        )
     except Error as err:
         print("Something went wrong: {}".format(err))
 
 
-def addKeyword(word, server_id):
-    keyword_sql = "INSERT IGNORE INTO keywords (word, server_id) VALUES (%s, %s)"
-    keyword_vals = [word, server_id]
+def addKeyword(word):
+    keyword_sql = "INSERT IGNORE INTO keywords (word) VALUES (%s)"
+    keyword_vals = [word]
     try:
         cursor.execute(keyword_sql, keyword_vals)
         cnx.commit()
@@ -40,7 +46,7 @@ def addKeyword(word, server_id):
 
 
 def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, keyword):
-    question_sql = "INSERT INTO questions (author_id, server_id, title, body, bounty, upvotes, answered, keyword) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    question_sql = "INSERT INTO questions (author_id, server_id, title, body, bounty, upvotes, answered) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     question_vals = [
         author_id,
         server_id,
@@ -49,13 +55,20 @@ def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, ke
         bounty,
         upvotes,
         answered,
-        keyword,
     ]
     try:
         cursor.execute(question_sql, question_vals)
         cnx.commit()
         print(cursor.rowcount, "record inserted into questions.")
-        return cursor.lastrowid
+        question_id = cursor.lastrowid
+        question_junction_sql = (
+            "INSERT INTO keywords_questions (question_id, word) VALUES (%s, %s)"
+        )
+        question_junction_vals = [question_id, keyword]
+        cursor.execute(question_junction_sql, question_junction_vals)
+        cnx.commit()
+        print(cursor.rowcount, "record inserted into question keyword junction table.")
+        return question_id
     except Error as err:
         print("Something went wrong: {}".format(err))
 
@@ -87,7 +100,8 @@ def addMessage(id, author_id, server_id, text, upvotes):
 
 
 def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, keyword):
-    answer_sql = "INSERT INTO answers (id, author_id, question_id, server_id, body, upvotes, accepted, keyword) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+    # TODO TO ADD TO keyword answers
+    answer_sql = "INSERT INTO answers (id, author_id, question_id, server_id, body, upvotes, accepted) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     answer_vals = [
         id,
         author_id,
@@ -96,7 +110,6 @@ def addAnswer(id, author_id, question_id, server_id, body, upvotes, accepted, ke
         body,
         upvotes,
         accepted,
-        keyword,
     ]
     try:
         cursor.execute(answer_sql, answer_vals)
@@ -121,24 +134,18 @@ def acceptAnswer(questionId, answerId):
 
 def addKeywordsToDB(words):
     for word in words:
-        keyword_sql = "INSERT INTO keywords (word, question_ids) VALUES (%s, %s)"
-        keyword_vals = [word, []]
-        try:
-            cursor.execute(keyword_sql, keyword_vals)
-            cnx.commit()
-            print(cursor.rowcount, "record inserted into keywords.")
-        except Error as err:
-            print("Something went wrong: {}".format(err))
+        addKeyword(word)
 
 
 def addQuestionIDtoKeywords(question_id, keywords):
     try:
         for word in keywords:
-            request_sql = f"SELECT question_ids FROM keywords WHERE word = {word}"
-            cursor.execute(request_sql)
-            result = cursor.fetchall()
-            updated_question_array = result.append(question_id)
-            sql = f"UPDATE keywords SET question_ids = {updated_question_array}"
-            cursor.execute(sql)
+            addKeyword(word)
+            question_keyword_junction_sql = (
+                "INSERT INTO keywords_questions (question_id, word) VALUES (%s, %s)"
+            )
+            cursor.execute(question_keyword_junction_sql, [question_id, word])
+            cnx.commit()
+            print(cursor.rowcount, "record inserted for keyword and question.")
     except Error as err:
         print("Something went wrong: {}".format(err))

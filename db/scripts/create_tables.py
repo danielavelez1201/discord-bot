@@ -17,11 +17,20 @@ create_user_table = """
         name VARCHAR(100),
         nick VARCHAR(100),
         contribution_score BIGINT,
-        server_id BIGINT,
-        PRIMARY KEY (id),
-        FOREIGN KEY (server_id) REFERENCES servers(id)
+        PRIMARY KEY (id)
     );
 """
+
+create_user_server_table = """
+    CREATE TABLE IF NOT EXISTS users_servers (
+        user_id BIGINT NOT NULL,
+        server_id BIGINT NOT NULL,
+        FOREIGN KEY (user_id) REFERENCES users(id), 
+        FOREIGN KEY (server_id) REFERENCES servers(id),
+        UNIQUE (user_id, server_id)
+    );
+"""
+
 
 create_message_table = """
     CREATE TABLE IF NOT EXISTS messages (
@@ -41,9 +50,7 @@ create_message_table = """
 create_keyword_table = """
     CREATE TABLE IF NOT EXISTS keywords (
         word VARCHAR(255) NOT NULL,
-        server_id BIGINT,
         PRIMARY KEY (word),
-        FOREIGN KEY (server_id) REFERENCES servers(id)
     );
 """
 
@@ -57,13 +64,22 @@ create_question_table = """
         bounty BIGINT,
         upvotes BIGINT,
         answered BIT,
-        keyword VARCHAR(255),
         PRIMARY KEY (id),
         FOREIGN KEY (author_id) REFERENCES users(id),
-        FOREIGN KEY (server_id) REFERENCES servers(id),
-        FOREIGN KEY (keyword) REFERENCES keywords(word)
+        FOREIGN KEY (server_id) REFERENCES servers(id)
     );
 """
+
+create_keyword_question_table = """
+    CREATE TABLE IF NOT EXISTS keywords_questions (
+        question_id BIGINT NOT NULL,
+        word VARCHAR(255) NOT NULL,
+        FOREIGN KEY (question_id) REFERENCES questions(id), 
+        FOREIGN KEY (word) REFERENCES keywords(word),
+        UNIQUE (question_id, word)
+    );
+"""
+
 
 create_answer_table = """
     CREATE TABLE IF NOT EXISTS answers (
@@ -74,12 +90,20 @@ create_answer_table = """
         body VARCHAR(2000),
         upvotes BIGINT,
         accepted BIT,
-        keyword VARCHAR(255),
         PRIMARY KEY (id),
         FOREIGN KEY (author_id) REFERENCES users(id),
         FOREIGN KEY (question_id) REFERENCES questions(id),
-        FOREIGN KEY (server_id) REFERENCES servers(id),
-        FOREIGN KEY (keyword) REFERENCES keywords(word)
+        FOREIGN KEY (server_id) REFERENCES servers(id)
+    );
+"""
+
+create_keyword_answer_table = """
+    CREATE TABLE IF NOT EXISTS keywords_answers (
+        answer_id BIGINT NOT NULL,
+        word VARCHAR(255) NOT NULL,
+        FOREIGN KEY (answer_id) REFERENCES answers(id), 
+        FOREIGN KEY (word) REFERENCES keywords(word),
+        UNIQUE (answer_id, word)
     );
 """
 
@@ -90,5 +114,8 @@ try:
     cursor.execute(create_keyword_table)
     cursor.execute(create_question_table)
     cursor.execute(create_answer_table)
+    cursor.execute(create_user_server_table)
+    cursor.execute(create_keyword_question_table)
+    cursor.execute(create_keyword_answer_table)
 except Error as err:
     print("Something went wrong: {}".format(err))
