@@ -26,8 +26,8 @@ def extract_keywords(question):
     """
     gpt3_response = query_gpt3(query)
     keywords = gpt3_response.split('\n')
-    parsed_keywords = list(filter(lambda x: x != '', [word.strip() for word in keywords]))
-    return parsed_keywords
+    parsed_keywords = list(filter(lambda x: x != '' and ' ' not in x and ':' not in x, [word.strip() for word in keywords]))
+    return parsed_keywords[0:11]
 
 example_q_1 = """
 Hi! I have been creating a contract for several days and have used the command 
@@ -39,4 +39,4 @@ and it also creates the Artifacts folder, but it never goes any further and the
 contract is not depolished... Any ideas how to solve this?
 """
 
-print(extract_keywords(example_q_1))
+#print(extract_keywords(example_q_1))
