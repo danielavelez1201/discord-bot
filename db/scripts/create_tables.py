@@ -126,5 +126,6 @@ try:
     print("created keyword-question table")
     cursor.execute(create_keyword_answer_table)
     print("created keyword-answer table")
+    
 except Error as err:
     print("Something went wrong: {}".format(err))
