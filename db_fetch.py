@@ -56,19 +56,19 @@ def get_top_contributors(count):
     return result
 
 def get_question_ids_with_keyword(keyword):
-    question_sql = f"SELECT question_id FROM keywords_questions WHERE word = '{keyword}'"
+    question_sql = f"SELECT question_id FROM keywords_questions WHERE word = \"{keyword}\""
     cursor.execute(question_sql)
     question_ids = cursor.fetchall()
     return question_ids
 
 def get_message_ids_with_keyword(keyword):
-    message_sql = f"SELECT message_id FROM keywords_messages WHERE word = '{keyword}'"
+    message_sql = f"SELECT message_id FROM keywords_messages WHERE word = \"{keyword}\""
     cursor.execute(message_sql)
     message_ids = cursor.fetchall()
     return message_ids
 
 def get_answer_ids_with_keyword(keyword):
-    answer_sql = f"SELECT answer_id FROM keywords_answers WHERE word = '{keyword}'"
+    answer_sql = f"SELECT answer_id FROM keywords_answers WHERE word = \"{keyword}\""
     cursor.execute(answer_sql)
     answer_ids = cursor.fetchall()
     return answer_ids
@@ -116,7 +116,7 @@ def get_message_with_id_with_question_format(id):
     result = cursor.fetchall()
     if len(result) == 0:
         return None
-    id, author_id, text, upvotes = cursor.fetchall()[0]
+    id, author_id, text, upvotes = result[0]
     return (id, author_id, "", text, upvotes, False)
 
 def get_question_or_message_with_id(id):
