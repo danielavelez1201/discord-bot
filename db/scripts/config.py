@@ -8,4 +8,6 @@ cnx = connect(
     database="athena",
 )
 
+delimiter = "&$,|"
+
 cursor = cnx.cursor()
