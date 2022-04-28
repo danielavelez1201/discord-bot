@@ -1,7 +1,6 @@
 from mysql.connector import Error
 from config import cursor, cnx
 
-
 def addServer(server_id, name, member_count):
     server_sql = (
         "INSERT IGNORE INTO servers (id, name, member_count) VALUES (%s, %s, %s)"
@@ -45,7 +44,7 @@ def addKeyword(word):
         print("Tried adding keyword: {}".format(word, err))
 
 
-def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, keyword):
+def addQuestionAndKeywords(author_id, server_id, title, body, bounty, upvotes, answered, keywords):
     question_sql = "INSERT IGNORE INTO questions (author_id, server_id, title, body, bounty, upvotes, answered) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     question_vals = [
         author_id,
@@ -61,13 +60,15 @@ def addQuestion(author_id, server_id, title, body, bounty, upvotes, answered, ke
         cnx.commit()
         print(cursor.rowcount, "record inserted into questions.")
         question_id = cursor.lastrowid
-        question_junction_sql = (
-            "INSERT IGNORE INTO keywords_questions (question_id, word) VALUES (%s, %s)"
-        )
-        question_junction_vals = [question_id, keyword]
-        cursor.execute(question_junction_sql, question_junction_vals)
-        cnx.commit()
-        print(cursor.rowcount, "record inserted into question keyword junction table.")
+        for keyword in keywords:
+            addKeyword(keyword)
+            question_junction_sql = (
+                "INSERT IGNORE INTO keywords_questions (question_id, word) VALUES (%s, %s)"
+            )
+            question_junction_vals = [question_id, keyword]
+            cursor.execute(question_junction_sql, question_junction_vals)
+            cnx.commit()
+            print(cursor.rowcount, "record inserted into question keyword junction table.")
         return question_id
     except Error as err:
         print("Tried adding question: {}".format(err))
