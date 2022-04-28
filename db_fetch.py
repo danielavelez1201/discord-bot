@@ -73,21 +73,23 @@ def get_answer_ids_with_keyword(keyword):
     answer_ids = cursor.fetchall()
     return answer_ids
 
+def get_question_ids_with_relevant_answers(keyword):
+    answer_ids = get_answer_ids_with_keyword(keyword)
+    return [get_question_id_from_answer_id(id[0]) for id in answer_ids]
+
 def get_similar_questions(keywords):
-    all_questions = set()
+    freqs = {}
     for word in keywords:
-        for question_id in get_question_ids_with_keyword(word):
-            all_questions.add(get_question_with_id(question_id[0]))
+        all_matching = get_question_ids_with_keyword(word) + get_message_ids_with_keyword(word) + get_question_ids_with_relevant_answers(word)
+        for id in all_matching:
+            freqs[id[0]] = freqs.get(id[0], 0) + 1
 
-        for message_id in get_message_ids_with_keyword(word):
-            all_questions.add(get_message_with_id_with_question_format(message_id[0]))
+    result_list = list(freqs.items())
+    result_list.sort(key=lambda x: x[1])
+    if len(result_list) > 5:
+        result_list = result_list[0:6]
 
-        for answer_id in get_answer_ids_with_keyword(word):
-            question_id = get_question_id_from_answer_id(answer_id[0])
-            all_questions.add(get_question_with_id(question_id[0]))
-            
-    return list(all_questions)
-
+    return [get_question_or_message_with_id(id_tup[0]) for id_tup in result_list]
 
 def create_link(server_id, author_id, message_id):
     return (
@@ -103,14 +105,24 @@ def create_link(server_id, author_id, message_id):
 def get_question_with_id(id):
     question_sql = f"SELECT id, author_id, title, body, upvotes, answered FROM questions WHERE id = {id}"
     cursor.execute(question_sql)
-    return cursor.fetchall()[0]
+    result = cursor.fetchall()
+    if len(result) == 0:
+        return None
+    return result[0]
 
 def get_message_with_id_with_question_format(id):
     message_sql = f"SELECT id, author_id, text, upvotes FROM messages WHERE id = {id}"
     cursor.execute(message_sql)
+    result = cursor.fetchall()
+    if len(result) == 0:
+        return None
     id, author_id, text, upvotes = cursor.fetchall()[0]
     return (id, author_id, "", text, upvotes, False)
 
+def get_question_or_message_with_id(id):
+    question_query = get_question_with_id(id)
+    message_query = get_message_with_id_with_question_format(id)
+    return question_query if question_query else message_query
 
 def get_answer_with_question_id(id):
     answer_sql = f"SELECT id, author_id, body, upvotes, accepted FROM answers WHERE question_id = {id}"

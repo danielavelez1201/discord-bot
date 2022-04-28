@@ -14,20 +14,20 @@ def format_answer_string(answer):
     if not answer:
         return ''
     result = f"""
-        \n
-        {answer['author']}: {answer['body']}\n
-        {answer['link']}\n
-        Upvotes: {answer['upvotes']}\n
-        Accepted: {answer['accepted']}
+    \n
+    {answer['author']}: {answer['body']}\n
+    {answer['link']}\n
+    Upvotes: {answer['upvotes']}\n
+    Accepted: {answer['accepted']}
     """
     return result
 
 def format_question_string(question):
     result = f"""{question['title'] if question['title'] != '' else ''}
-        {question['author'] + ':' if question['author'] != '' else ''} {question['body']}
-        {question['link']}
-        Upvotes: {question['upvotes']}\n
-        {format_answer_string(question['answer'])}"""
+{question['author'] + ':' if question['author'] != '' else ''} {question['body']}
+{question['link']}
+Upvotes: {question['upvotes']}\n
+{format_answer_string(question['answer'])}"""
     return result
 
 def similar_questions_formatted(questions):
@@ -59,6 +59,6 @@ def similar_questions_formatted(questions):
     return result_string   
 
 def askQuestionSuggestions(keywords):
-    message_intro = "You might want to check these out:"
+    message_intro = "You might want to check these out:\n\n"
     questions = get_similar_questions(keywords)
     return message_intro + similar_questions_formatted(questions)
