@@ -22,20 +22,18 @@ def generate_from_csv():
             header, *rows = table_data.readlines()
         col_names = [name.strip() for name in header.split(delimiter)]
         col_sql = "(" + ",".join(col_names) + ")"
-        rows_sql = []
+        value_slots = ", ".join(["%s" for i in range(len(col_names))])
         for row in rows:
             row_values = [value.strip() for value in row.split(delimiter)]
-            row_sql = "(" + ",".join(row_values) + ")"
-            rows_sql.append(row_sql)
-        insert_sql = "INSERT IGNORE INTO {} {} VALUES {}".format(
-            table, col_sql, ",".join(rows_sql)
-        )
-        try:
-            cursor.execute(insert_sql)
-            cnx.commit()
-            print(table, "DONE")
-        except Error as err:
-            print("Tried adding answer: {}".format(err))
+            insert_sql = "INSERT IGNORE INTO {} {} VALUES ({})".format(
+                table, col_sql, value_slots
+            )
+            try:
+                cursor.execute(insert_sql, row_values)
+                cnx.commit()
+                print(table, "DONE")
+            except Error as err:
+                print("Tried adding answer: {}".format(err))
     return
 
 
