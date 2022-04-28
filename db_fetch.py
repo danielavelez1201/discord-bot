@@ -12,32 +12,32 @@ def get_user_id_from_answer_id(answer_id):
     request_sql = "SELECT author_id FROM answers WHERE id = " + str(answer_id)
     cursor.execute(request_sql)
     result = cursor.fetchall()
-    return result
+    return result[0]
 
 
-def get_question_from_answer_id(answer_id):
+def get_user_id_from_answer_id(answer_id):
     result = get_question_id_from_answer_id(answer_id)
     if len(result) > 0:
         q_id = result[0][0]
         request_sql = "SELECT author_id FROM questions WHERE id = " + str(q_id)
         cursor.execute(request_sql)
         result = cursor.fetchall()
-        return result
-    return []
+        return result[0]
+    return None
 
 
 def get_question_id_from_answer_id(answer_id):
     request_sql = f"SELECT question_id FROM answers WHERE id = '{str(answer_id)}'"
     cursor.execute(request_sql)
     result = cursor.fetchall()
-    return result
+    return result[0]
 
 
-def get_author_from_message(message_id):
+def get_user_id_from_message_id(message_id):
     request_sql = "SELECT author_id FROM messages WHERE id = " + str(message_id)
     cursor.execute(request_sql)
     result = cursor.fetchall()
-    return result
+    return result[0]
 
 
 def get_score_from_author(user_id):
@@ -55,30 +55,36 @@ def get_top_contributors(count):
     result = cursor.fetchall()
     return result
 
+def get_question_ids_with_keyword(keyword):
+    question_sql = f"SELECT question_id FROM keywords_questions WHERE word = '{keyword}'"
+    cursor.execute(question_sql)
+    question_ids = cursor.fetchall()
+    return question_ids
+
+def get_message_ids_with_keyword(keyword):
+    message_sql = f"SELECT message_id FROM keywords_messages WHERE word = '{keyword}'"
+    cursor.execute(message_sql)
+    message_ids = cursor.fetchall()
+    return message_ids
+
+def get_answer_ids_with_keyword(keyword):
+    answer_sql = f"SELECT answer_id FROM keywords_answers WHERE word = '{keyword}'"
+    cursor.execute(answer_sql)
+    answer_ids = cursor.fetchall()
+    return answer_ids
 
 def get_similar_questions(keywords):
     all_questions = set()
     for word in keywords:
-        question_sql = f"SELECT question_id FROM keywords_questions WHERE word = '{word}'"
-        cursor.execute(question_sql)
-        question_result = cursor.fetchall()
-        if len(question_result) > 0:
-            all_questions.add(get_question_from_answer_id(question_result[0]))
+        for question_id in get_question_ids_with_keyword(word):
+            all_questions.add(get_question_with_id(question_id[0]))
 
-        message_sql = f"SELECT message_id FROM keywords_messages WHERE word = '{word}'"
-        cursor.execute(message_sql)
-        message_result = cursor.fetchall()
-        if len(message_result) > 0:
-            all_questions.add(get_message_with_id_with_question_format(message_result[0]))
+        for message_id in get_message_ids_with_keyword(word):
+            all_questions.add(get_message_with_id_with_question_format(message_id[0]))
 
-        answer_sql = f"SELECT answer_id FROM keywords_answers WHERE word = '{word}'"
-        cursor.execute(answer_sql)
-        possible_answer_ids = cursor.fetchall()
-        if len(possible_answer_ids) > 0:
-            answer_sql = f"SELECT question_id FROM answers WHERE id ='{possible_answer_ids[0]}'"
-            cursor.execute(answer_sql)
-            question_from_answer_result = cursor.fetchall()
-            all_questions.add(get_question_from_answer_id(question_from_answer_result[0]))
+        for answer_id in get_answer_ids_with_keyword(word):
+            question_id = get_question_id_from_answer_id(answer_id[0])
+            all_questions.add(get_question_with_id(question_id[0]))
             
     return list(all_questions)
 
@@ -112,9 +118,9 @@ def get_answer_with_question_id(id):
     return cursor.fetchall()[0]
 
 
-def get_author_with_id(id):
-    author_sql = f"SELECT name, nick FROM users WHERE id = {id}"
-    cursor.execute(author_sql)
+def get_user_with_id(id):
+    user_sql = f"SELECT name, nick FROM users WHERE id = {id}"
+    cursor.execute(user_sql)
     return cursor.fetchall()[0]    
 
 def messagesFormatted():

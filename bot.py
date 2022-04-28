@@ -96,22 +96,6 @@ async def on_raw_reaction_add(payload):
             msg_user_id,
         )
 
-
-# def similarQuestions(question_body, question_id):
-#    
-#     db_update.addKeywordsToDB(keywords)
-#     db_update.addQuestionIDtoKeywords(question_id)
-#     similar_question_ids = db_fetch.get_similar_question_ids(keywords)
-#     return similar_question_ids
-
-
-def askQuestionSuggestions(keywords):
-    message_intro = "You might want to check these out:"
-    questions = db_fetch.get_similar_questions(keywords)
-    print(questions)
-    return message_intro + format_question_string(questions)
-
-
 @slash.slash(
     name="ask_question",
     description="Ask a Question!",
@@ -148,11 +132,10 @@ async def ask_question(ctx, title, question_body, bounty=0):
     questionId = db_update.addQuestionAndKeywords(
         ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keywords
     )
-    # print(similarQuestions(question_body, questionId))
     await ctx.send(
-        "\n{}\n{}\nBounty of {}\n{} \nTo respond to this question, add #{}}".format(
-            title, question_body, bounty, askQuestionSuggestions(keywords), questionId
-        )
+        f"""\n{title}\n{question_body}\nBounty of {bounty}\n
+        {askQuestionSuggestions(keywords)} \n
+        To respond to this question, add #{questionId}"""
     )
 
 @slash.slash(
@@ -227,3 +210,5 @@ async def answer(ctx, question_id, answer_body):
 
 
 bot.run(secret)
+
+
