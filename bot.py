@@ -6,6 +6,7 @@ from gpt3 import *
 import db_fetch
 import db_update
 from helpers import *
+from similar_questions import ask_question_suggestions
 
 with open("answers.txt", "r") as secrets_file:
     secret = secrets_file.read()
@@ -134,7 +135,7 @@ async def ask_question(ctx, title, question_body, bounty=0):
     )
     await ctx.send(
         f"""\n{title}\n{question_body}\nBounty of {bounty}\n
-        {askQuestionSuggestions(keywords)} \n
+        {ask_question_suggestions(keywords)} \n
         To respond to this question, add #{questionId}"""
     )
 

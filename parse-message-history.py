@@ -1,5 +1,5 @@
-from gpt3 import extract_keywords
-from db_update import addKeywordsToDB, addMessage, addMessageIDToKeywords, addUser, addServer
+from utils.gpt3 import extract_keywords
+from db.functions.db_update import addKeywordsToDB, addMessage, addMessageIDToKeywords, addUser, addServer
 
 f = open("near-messages.txt", "r")
 
@@ -16,8 +16,6 @@ def parse_and_get_keywords():
     addServer(490367152054992913, "", -1)
     counter = 0
     for line in text: 
-        if counter == 10:
-            return
         lineArr = line.split(",")
         messageId = lineArr[0]
         timestamp = lineArr[-1]

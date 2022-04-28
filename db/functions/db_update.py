@@ -1,7 +1,6 @@
 from mysql.connector import Error
 from config import cursor, cnx
 
-
 def addServer(server_id, name, member_count):
     server_sql = (
         "INSERT IGNORE INTO servers (id, name, member_count) VALUES (%s, %s, %s)"

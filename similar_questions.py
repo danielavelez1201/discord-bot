@@ -1,36 +1,31 @@
-from db_fetch import *
+from db.functions.db_fetch import *
+from utils.helpers import *
+from utils.formatting import *
 
-def db_result_to_string(l):
-    result = ""
-    for row in l:
-        for item in row:
-            result += str(item)
-    return result
-
-def format_author_name(name, nick):
-    return name + (' (' + nick + ')' if nick else '')
-
-def format_answer_string(answer):
-    if not answer:
-        return ''
-    result = f"""
-    \n
-    {answer['author']}: {answer['body']}\n
-    {answer['link']}\n
-    Upvotes: {answer['upvotes']}\n
-    Accepted: {answer['accepted']}
+def get_similar_questions(keywords):
     """
-    return result
+    Input: List of keywords (e.g. ['blockchain', 'admin'])
+    Output: List of relevant question/message tuples (id, author_id, title, body, upvotes, answered)
+    """
+    freqs = {}
+    for word in keywords:
+        all_matching = get_question_ids_with_keyword(word) + get_message_ids_with_keyword(word) + get_question_ids_with_relevant_answers(word)
+        for id in all_matching:
+            freqs[id[0]] = freqs.get(id[0], 0) + 1
 
-def format_question_string(question):
-    result = f"""{question['title'] if question['title'] != '' else ''}
-{question['author'] + ':' if question['author'] != '' else ''} {question['body']}
-{question['link']}
-Upvotes: {question['upvotes']}\n
-{format_answer_string(question['answer'])}"""
-    return result
+    result_list = list(freqs.items())
+    result_list.sort(key=lambda x: x[1])
+    if len(result_list) > 5:
+        result_list = result_list[0:6]
+
+    return [get_question_or_message_with_id(id_tup[0]) for id_tup in result_list]
+
 
 def similar_questions_formatted(questions):
+    """
+    Input: List of question/message tuples (id, author_id, title, body, upvotes, answered)
+    Output: Formatted string of questions
+    """
     result_string = ""
     for id, author_id, title, body, upvotes, answered in questions:
         server_id = 490367152054992913
@@ -58,7 +53,11 @@ def similar_questions_formatted(questions):
         result_string += format_question_string(question_dict)
     return result_string   
 
-def askQuestionSuggestions(keywords):
+def ask_question_suggestions(keywords):
+    """
+    Input: List of keywords (e.g. ['blockchain', 'admin'])
+    Output: String to send in channel with relevant questions
+    """
     message_intro = "You might want to check these out:\n\n"
     questions = get_similar_questions(keywords)
     return message_intro + similar_questions_formatted(questions)
