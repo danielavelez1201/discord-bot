@@ -27,6 +27,7 @@ def extract_keywords(question):
     gpt3_response = query_gpt3(query)
     keywords = gpt3_response.split('\n')
     parsed_keywords = list(filter(lambda x: x != '' and ' ' not in x and ':' not in x, [word.strip() for word in keywords]))
+    print("keywords: ", parsed_keywords)
     return parsed_keywords[0:11]
 
 example_q_1 = """
