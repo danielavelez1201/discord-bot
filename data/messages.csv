@@ -1,34 +1,781 @@
 id&$,|author_id&$,|server_id&$,|text&$,|upvotes&$,|created_at&$,|updated_at
-968226188751413248&$,|574364010636378132&$,|490367152054992913&$,|For testing purposes certain variables need to be set differently&$,|&$,|2022-04-27 17:48:03&$,|2022-04-27 17:48:03
-968226312965722173&$,|574364010636378132&$,|490367152054992913&$,|In testnet I need a variable set to a short time but in mainnet it is set longer.&$,|&$,|2022-04-27 17:47:49&$,|2022-04-27 17:47:49
-968226374684909608&$,|574364010636378132&$,|490367152054992913&$,|Basically my testing shouldn't have to wait as long&$,|&$,|2022-04-27 17:47:46&$,|2022-04-27 17:47:46
-968226611059122188&$,|574364010636378132&$,|490367152054992913&$,|I thought about using different compile flags in rust but then that's an extra step.&$,|&$,|2022-04-27 17:47:37&$,|2022-04-27 17:47:37
+966337831314284574&$,|679936424971468859&$,|490367152054992913&$,|Thank you this was helpful. Is there a way to view smart contract logs on sandbox?  I'm logging in the following manner-
+
+```rs
+    #[payable]
+    pub fn swap(&mut self) {
+        log!("called swap");
+    }
+```
+
+Tried `--verbose` and `export NEAR_WORKSPACES_DEBUG=true` but it didn't help.&$,|&$,|2022-04-28 15:55:03&$,|2022-04-28 15:55:03
+966339306211913798&$,|348438333774495745&$,|490367152054992913&$,|Look in outcome execution from tx result&$,|&$,|2022-04-28 15:54:56&$,|2022-04-28 15:54:56
+966340032069779526&$,|737918062245707839&$,|490367152054992913&$,|Yes when using `workspaces-js` you can log during the testing runs by introducing `test.log()` wherever you want to log&$,|&$,|2022-04-28 15:54:43&$,|2022-04-28 15:54:43
+966340688042131536&$,|614078543906734090&$,|490367152054992913&$,|For wider adoption of near protocol I think tools similar to Remix hardhat is very essential to reduce the friction for new developers. Are somebody already building it?&$,|&$,|2022-04-28 15:54:33&$,|2022-04-28 15:54:33
+966344940936388618&$,|679936424971468859&$,|490367152054992913&$,|The TX result should give the function return value not on-chain logs right? I changed my function as follows to return a number 3 which can be printed on client side as `test.log('swap result' await alice.call(comet 'swap' {}))`. But is it possible to view the TX logs having the "called swap" message somewhat like https://explorer.mainnet.near.org/?&$,|&$,|2022-04-28 15:54:30&$,|2022-04-28 15:54:30
+966347773291139123&$,|697708435231342634&$,|490367152054992913&$,|I can swear that I came across a NEAR rest API on GitHub recently but I cannot seem to find it. Does anybody know where it is? NB It may not have been in the official NEAR repo.&$,|&$,|2022-04-28 15:54:26&$,|2022-04-28 15:54:26
+966348820524986368&$,|348438333774495745&$,|490367152054992913&$,|https://docs.near.org/docs/api/rpc/contracts&$,|&$,|2022-04-28 15:54:20&$,|2022-04-28 15:54:20
+966356895394844772&$,|697708435231342634&$,|490367152054992913&$,|Thanks&$,|&$,|2022-04-28 15:54:17&$,|2022-04-28 15:54:17
+966396884044357662&$,|665889549188333628&$,|490367152054992913&$,|Is there Office Hours today?&$,|&$,|2022-04-28 15:54:14&$,|2022-04-28 15:54:14
+966398413786742864&$,|585688526356480001&$,|490367152054992913&$,|Hey! So you are looking to make an rpc call that can pull a list of transactions?&$,|&$,|2022-04-28 15:54:11&$,|2022-04-28 15:54:11
+966399581267050557&$,|585688526356480001&$,|490367152054992913&$,|Yeah! Hop on in 🙂&$,|&$,|2022-04-28 15:54:09&$,|2022-04-28 15:54:09
+966400134659342346&$,|585688526356480001&$,|490367152054992913&$,|I think you would have to set up an indexer for that 
+
+this may be of help to you https://github.com/near/near-indexer-for-explorer&$,|&$,|2022-04-28 15:54:04&$,|2022-04-28 15:54:04
+966400483122085970&$,|585688526356480001&$,|490367152054992913&$,|I'm not too sure like I think there may be a few ways of doing that. 
+
+like do you want to send them a seedphrase or what were you envisioning?&$,|&$,|2022-04-28 15:53:59&$,|2022-04-28 15:53:59
+966400818905509948&$,|585688526356480001&$,|490367152054992913&$,|looking into this now. I haven't used hardhat&$,|&$,|2022-04-28 15:53:56&$,|2022-04-28 15:53:56
+966403575179804713&$,|585688526356480001&$,|490367152054992913&$,|So hardhat seems to be a testing environment am I correct? 
+
+We have a few similar resources you can use 
+
+Kurtosis is a way to quickly spin up a test environment on your local machine- https://near.org/case-studies/kurtosis/#:~:text=Kurtosis%20is%20a%20new%20platform%2Dof%2Dthe%2Dbox 
+
+Near-workspaces-rs is a way to essentially create a node on your local machine for testing  https://github.com/near/workspaces-rs&$,|&$,|2022-04-28 15:53:52&$,|2022-04-28 15:53:52
+966410703986642964&$,|485367898194575360&$,|490367152054992913&$,|Hi everyone. I've set up nearcore and I assume I can deploy contracts to my local environment now. Is there any docs about deploying contracts on local nearcore?&$,|&$,|2022-04-28 15:53:40&$,|2022-04-28 15:53:40
+966434821477892096&$,|411537626546438144&$,|490367152054992913&$,|Hi I ran into some issue when user interacting nft_approve method using 2FA they always get this gas error is there anything I missing?&$,|&$,|2022-04-28 15:53:36&$,|2022-04-28 15:53:36
+966437248579027024&$,|767740337439375390&$,|490367152054992913&$,|look for NearDrop in NEAR's github repo&$,|&$,|2022-04-28 15:53:31&$,|2022-04-28 15:53:31
+966455246241034250&$,|585688526356480001&$,|490367152054992913&$,|I am unsure if there docs on this actually. But looking into the nearcore repo now for examples and pinging someone&$,|&$,|2022-04-28 15:53:23&$,|2022-04-28 15:53:23
+966455812136517682&$,|585688526356480001&$,|490367152054992913&$,|I know some alternative ways to do so if you are doing this for testing. 
+
+What's your goal here?&$,|&$,|2022-04-28 15:53:16&$,|2022-04-28 15:53:16
+966504891226919012&$,|411537626546438144&$,|490367152054992913&$,|<@585688526356480001> Hi I have a question would like to ask&$,|&$,|2022-04-28 15:53:06&$,|2022-04-28 15:53:06
+966505387941564486&$,|411537626546438144&$,|490367152054992913&$,|```rust
+ pub fn get_nft_stake_by_account_chunk(
+        &self
+        account_id: AccountId
+        start: u128
+        limit: u64
+    ) -> Vec<NftStake> {
+        self.nft_stake
+            .iter()
+            .skip(start as usize)
+            .take(limit as usize)
+            .filter(|(_ v)| v.owner_id == account_id)
+            .map(|(_ v)| v)
+            .collect::<Vec<NftStake>>()
+    }
+```
+
+I have make a limit on reading chunk but this give me gas exceeded error when I put the start index around 400&$,|&$,|2022-04-28 15:53:04&$,|2022-04-28 15:53:04
+966558178118623242&$,|128702913022263296&$,|490367152054992913&$,|Hi <@585688526356480001> I'm Robert from Pawn Protocol. We have some problems regarding the batch transaction similar to Paras.id. 
+
+**Context**
+
+> Smart contract (NEAR Protocol) we have a smart contract named NFT Pawn
+> Frontend  we use Reactjs + near-api-js
+> When init loan order the borrower needs to do 3 actions to create a loan order:
+> - (Borrower view) Grant accessKey for change method 'deposit_storage' of NFTPawn with the current account near.
+> - (Borrower view) Call method 'deposit_storage' of NFTPawn contract
+> - (Borrower view) Call method 'nft_approve' of my NFT contract (account_id of my NFT contract is borrower’s)
+
+We want to do a batch transaction to redirect to NEAR Wallet website for 1-time only. (Similar to the UX of Paras.id)
+
+__This is our code__
+
+```javascript
+const accountId = window.nearAccount.getAccountId();
+const account: nearAPI.ConnectedWalletAccount = window.nearAccount.account();
+
+const gas = nearAPI.utils.format.parseNearAmount('0.0000000003');
+const attachedDeposit = nearAPI.utils.format.parseNearAmount('0.01');
+
+const transactions = [
+  nearAPI.transactions.addKey(
+    keyPair.getPublicKey()
+    nearAPI.transactions.functionCallAccessKey(
+      this.lendingProgram
+      ['storage_deposit']
+      attachedDeposit
+    )
+  )
+  account.functionCall({
+    contractId: this.lendingProgram
+    methodName: 'storage_deposit'
+    args: { account_id: accountId }
+    gas
+    attachedDeposit
+  })
+  account.functionCall({
+    contractId: assetContractAddress
+    methodName: 'nft_approve'
+    args: {
+      token_id: assetTokenId
+      account_id: this.lendingProgram
+      msg
+    }
+    gas
+    attachedDeposit
+  })
+];
+const res = await connection.requestSignTransactions({ transactions })
+
+```
+
+__Our questions are__
+
+1. How we can perform a batch transaction similar to Paras.id?
+2. Are there any documents libraries or sample codes for us to refer?&$,|&$,|2022-04-28 15:53:01&$,|2022-04-28 15:53:01
+966565119653986304&$,|710489777606098964&$,|490367152054992913&$,|Am i supposed to run a validator node to call vote method in voting contract? Getting error - **`Account is not a validator `**.&$,|&$,|2022-04-28 15:53:00&$,|2022-04-28 15:53:00
+966606299544571904&$,|566829067303780363&$,|490367152054992913&$,|```js
+import 'regenerator-runtime/runtime'
+
+import { initContract login logout } from './utils'
+```&$,|&$,|2022-04-28 15:52:51&$,|2022-04-28 15:52:51
+966606353965658122&$,|566829067303780363&$,|490367152054992913&$,|Can anyone tell me what the first import statment does?&$,|&$,|2022-04-28 15:52:42&$,|2022-04-28 15:52:42
+966609427174129744&$,|566829067303780363&$,|490367152054992913&$,|and how to create the sub-account in testnet?&$,|&$,|2022-04-28 15:52:37&$,|2022-04-28 15:52:37
+966619282580586516&$,|738665521511399435&$,|490367152054992913&$,|Hello team! Is it possible to remove contract with large state (receiving "DeleteAccountWithLargeState" error)? 
+Maybe I can remove data inside the contract or cleanup it somehow?&$,|&$,|2022-04-28 15:52:29&$,|2022-04-28 15:52:29
+966630818434928690&$,|687316047409446938&$,|490367152054992913&$,|Hello all I am totally new to Near and I am from solana ecosystem. I would like to know more about NFTs. 
+
+Is there any standard like common standard in NFTs in Near that everyone should follow? ( In Solana  there a is standard deployed by metaplex company where every nft project use their smart contract)&$,|&$,|2022-04-28 15:52:21&$,|2022-04-28 15:52:21
+966634822850207764&$,|916952704453058632&$,|490367152054992913&$,|Near has NEP-171 standard for non fungible tokens *(like ethereums ERC721)*
+https://docs.mintbase.io/dev/nep-171-token-standard
+here's a good tutorial for building  NFT contract: 
+https://docs.near.org/docs/tutorials/contracts/nfts/introduction#
+also a github example: 
+https://github.com/near-examples/NFT&$,|&$,|2022-04-28 15:52:19&$,|2022-04-28 15:52:19
+966635883006656522&$,|485367898194575360&$,|490367152054992913&$,|I just wanna be able to test contracts offline&$,|&$,|2022-04-28 15:52:13&$,|2022-04-28 15:52:13
+966651140538249257&$,|737918062245707839&$,|490367152054992913&$,|Yes we're working on DevConsole: https://console.pagoda.co/projects&$,|&$,|2022-04-28 15:52:08&$,|2022-04-28 15:52:08
+966651970200944660&$,|737918062245707839&$,|490367152054992913&$,|You'll have to point the NEAR CLI to your local env name: 
+```bash
+NEAR_ENV=betanet near deploy ...
+```
+You'll also need to be logged into your local net's account you wish to deploy to&$,|&$,|2022-04-28 15:52:02&$,|2022-04-28 15:52:02
+966654660071030844&$,|737918062245707839&$,|490367152054992913&$,|allows for support of `async` functions for older versions of Node : https://github.com/facebook/regenerator/tree/main/packages/runtime&$,|&$,|2022-04-28 15:51:59&$,|2022-04-28 15:51:59
+966654978653581312&$,|480326792482127887&$,|490367152054992913&$,|Hey Everybody 11 UTC Office Hours are live! Feel free to join for a chat or ask questions: https://discord.gg/krxHDacN&$,|&$,|2022-04-28 15:51:52&$,|2022-04-28 15:51:52
+966655306224500766&$,|737918062245707839&$,|490367152054992913&$,|Check this out: https://docs.near.org/docs/tools/near-cli#near-create-account&$,|&$,|2022-04-28 15:51:50&$,|2022-04-28 15:51:50
+966658201519022080&$,|679936424971468859&$,|490367152054992913&$,|I'm working on a smart contract that proxies a swap to ref exchange. I'm thinking of something like this-
+1. Call `ft_transfer_call` on the input token having `proxy.near` as the receiver.
+2. `proxy.near` decodes `msg` then calls `ft_transfer_call` on the token with `ref.near` as receiver.
+3. Ref does the swap and and makes the transfer callbacks.
+
+ Is there a better approach? In the current way the input token is transferred twice costing more gas.&$,|&$,|2022-04-28 15:51:46&$,|2022-04-28 15:51:46
+966658573398573126&$,|480326792482127887&$,|490367152054992913&$,|when this happens you need to run your own node in order to delete the contract. I honestly don't know if you can solve this by making a method to delete parts of the data but it would be worth it to try it&$,|&$,|2022-04-28 15:51:39&$,|2022-04-28 15:51:39
+966658948843323472&$,|480326792482127887&$,|490367152054992913&$,|which voting contract are you refering to?&$,|&$,|2022-04-28 15:51:28&$,|2022-04-28 15:51:28
+966659082243162202&$,|710489777606098964&$,|490367152054992913&$,|This - https://github.com/near/core-contracts/tree/master/voting&$,|&$,|2022-04-28 15:51:21&$,|2022-04-28 15:51:21
+966660436739104818&$,|480326792482127887&$,|490367152054992913&$,|I've never tried this but it looks like a valid approach&$,|&$,|2022-04-28 15:51:09&$,|2022-04-28 15:51:09
+966660868966350868&$,|480326792482127887&$,|490367152054992913&$,|yes it seems like it is only for validators: `The purpose of this contract is solely for validators to vote on whether to unlock token transfer`&$,|&$,|2022-04-28 15:51:05&$,|2022-04-28 15:51:05
+966661551094374450&$,|480326792482127887&$,|490367152054992913&$,|while I don't know the answer I can say that it might be helpful to contact the people of paras.id directly in their discord&$,|&$,|2022-04-28 15:50:54&$,|2022-04-28 15:50:54
+966662174997118997&$,|480326792482127887&$,|490367152054992913&$,|this question is better suited for <#855524499755499520>&$,|&$,|2022-04-28 15:50:45&$,|2022-04-28 15:50:45
+966662572650668042&$,|480326792482127887&$,|490367152054992913&$,|have you tried attaching more GAS to the method call?&$,|&$,|2022-04-28 15:50:43&$,|2022-04-28 15:50:43
+966664157036441630&$,|679936424971468859&$,|490367152054992913&$,|Does `ext_fungible_token::ft_transfer_call()` allow charging tokens directly on `env::signer_account_id()` or `env::predecessor()`? With the current approach I assumed that only the proxy contract i.e. `env::current_account_id()` can be charged necessitating two token transfers.&$,|&$,|2022-04-28 15:50:31&$,|2022-04-28 15:50:31
+966664751784534066&$,|480326792482127887&$,|490367152054992913&$,|you can see in the following  link that the sender is always the `predecessor`: https://github.com/near/near-sdk-rs/blob/c0219b80de590945d8a203be046150c23f296cf9/near-contract-standards/src/fungible_token/core_impl.rs#L175&$,|&$,|2022-04-28 15:50:20&$,|2022-04-28 15:50:20
+966671979727966228&$,|679936424971468859&$,|490367152054992913&$,|I see thanks!&$,|&$,|2022-04-28 15:50:10&$,|2022-04-28 15:50:10
+966673784432107540&$,|566829067303780363&$,|490367152054992913&$,|```js
+export function login() {
+  window.walletConnection.requestSignIn(nearConfig.contractName)
+}
+```
+I don't need to use this function if I am going to call only `view methods` from a contract?&$,|&$,|2022-04-28 15:50:08&$,|2022-04-28 15:50:08
+966676147599446076&$,|521134261978267658&$,|490367152054992913&$,|Is DevConnect being recorded and posted ??  If so please let me know where I can find it.  Thanks!&$,|&$,|2022-04-28 15:50:05&$,|2022-04-28 15:50:05
+966679559602847775&$,|965938426761338910&$,|490367152054992913&$,|Please avoid pasting your queries on different channel🙏&$,|&$,|2022-04-28 15:50:05&$,|2022-04-28 15:50:05
+966684926667808808&$,|665889549188333628&$,|490367152054992913&$,|In a batch transaction what's the right amount of xTgas fee should I fill in for each transaction as I keep getting the error of "Exceeded the prepaid gas."?&$,|&$,|2022-04-28 15:49:53&$,|2022-04-28 15:49:53
+966685291026997299&$,|923112126330064907&$,|490367152054992913&$,|Hello I am getting the issue with nft_approve with 2FA account.
+
+Can anyone help me out here.
+
+Thanks 🙂&$,|&$,|2022-04-28 15:49:52&$,|2022-04-28 15:49:52
+966685885615726603&$,|521134261978267658&$,|490367152054992913&$,|Will do but Benz from Near support suggest I post here.   So if you do know the answer please let me know.   Thnxs!!&$,|&$,|2022-04-28 15:49:48&$,|2022-04-28 15:49:48
+966686910682656848&$,|245127969368965120&$,|490367152054992913&$,|Hi what does `msg.sender` in solidity translate to NEAR protocol contracts?&$,|&$,|2022-04-28 15:49:44&$,|2022-04-28 15:49:44
+966689552045572157&$,|965938426761338910&$,|490367152054992913&$,|please report your issue to the <#765606694125436948>&$,|&$,|2022-04-28 15:49:37&$,|2022-04-28 15:49:37
+966689815376572527&$,|480326792482127887&$,|490367152054992913&$,|exactly you don't need to sign in to call view methods&$,|&$,|2022-04-28 15:49:32&$,|2022-04-28 15:49:32
+966690020406743080&$,|566829067303780363&$,|490367152054992913&$,|thanks for your guide 🙂&$,|&$,|2022-04-28 15:49:27&$,|2022-04-28 15:49:27
+966690222102413415&$,|480326792482127887&$,|490367152054992913&$,|the amount needed for each transaction plus a bit for the in between interactions... sadly enough this depends on the type of transaction. I would recommend you to start with the max (300Tgas) and go down.&$,|&$,|2022-04-28 15:49:24&$,|2022-04-28 15:49:24
+966690380382863430&$,|480326792482127887&$,|490367152054992913&$,|try attaching more gas to the transaction&$,|&$,|2022-04-28 15:49:13&$,|2022-04-28 15:49:13
+966690569931874334&$,|665889549188333628&$,|490367152054992913&$,|Right 60Tgas solved it. Thank you.&$,|&$,|2022-04-28 15:49:07&$,|2022-04-28 15:49:07
+966691024728653845&$,|480326792482127887&$,|490367152054992913&$,|in a given call: `predecessor` is the person that invoked the method in your contract `signer` is the person that stated the chain of transactions. See: https://medium.com/near-devs/5-things-i-wish-someone-had-told-me-while-learning-to-make-smart-contracts-1b02441ee162&$,|&$,|2022-04-28 15:49:02&$,|2022-04-28 15:49:02
+966691471082283038&$,|566829067303780363&$,|490367152054992913&$,|```Module not found: Error: Can't resolve 'buffer' in '/home/artemismars/coding/challenge_2/frontend/node_modules/safe-buffer'```&$,|&$,|2022-04-28 15:48:51&$,|2022-04-28 15:48:51
+966691532809838592&$,|566829067303780363&$,|490367152054992913&$,|when i do `npm start` this error occurs&$,|&$,|2022-04-28 15:48:45&$,|2022-04-28 15:48:45
+966692166938296341&$,|923112126330064907&$,|490367152054992913&$,|The issue is resolved now Thanks 🙂&$,|&$,|2022-04-28 15:48:35&$,|2022-04-28 15:48:35
+966692913692155944&$,|566829067303780363&$,|490367152054992913&$,|alright I solved this issue with this solution
+https://github.com/near/near-api-js/issues/757#issuecomment-1002754955&$,|&$,|2022-04-28 15:48:32&$,|2022-04-28 15:48:32
+966692982038339635&$,|566829067303780363&$,|490367152054992913&$,|seems like `near-api-js` has some issues with `buffer`&$,|&$,|2022-04-28 15:48:19&$,|2022-04-28 15:48:19
+966693259235692544&$,|422020302009139210&$,|490367152054992913&$,|already spinning like this for 1 day&$,|&$,|2022-04-28 15:48:08&$,|2022-04-28 15:48:08
+966701052063776818&$,|566829067303780363&$,|490367152054992913&$,|```
+Receipt: 
+        Failure [nearspring-hello.decentralworld.testnet]: Error: The account nearspring-hello.decentralworld.testnet wouldn't have enough balance to cover storage required to have 8480646138505475000000000 yoctoNEAR more
+An error occured
+```&$,|&$,|2022-04-28 15:47:55&$,|2022-04-28 15:47:55
+966701093855834233&$,|566829067303780363&$,|490367152054992913&$,|I am trying to deploy my contract to subAccount&$,|&$,|2022-04-28 15:47:49&$,|2022-04-28 15:47:49
+966701127313809438&$,|566829067303780363&$,|490367152054992913&$,|but this error occurs&$,|&$,|2022-04-28 15:47:44&$,|2022-04-28 15:47:44
+966701306632888381&$,|566829067303780363&$,|490367152054992913&$,|```near deploy --wasmFile target/wasm32-unknown-unknown/release/backend.wasm --accountId nearspring-hello.decentralworld.testnet```
+This is the command i wrote to deploy&$,|&$,|2022-04-28 15:47:41&$,|2022-04-28 15:47:41
+966702070033965066&$,|566829067303780363&$,|490367152054992913&$,|To solve this issue I sent 10 NEAR to the subAccount.
+Not sure if I made a right solution&$,|&$,|2022-04-28 15:47:39&$,|2022-04-28 15:47:39
+966707609266704434&$,|271734741261221890&$,|490367152054992913&$,|good morning everyone&$,|&$,|2022-04-28 15:47:36&$,|2022-04-28 15:47:36
+966707759812837446&$,|271734741261221890&$,|490367152054992913&$,|I was wondering how can one call to different smart contract within one react app using near-api-js?&$,|&$,|2022-04-28 15:47:34&$,|2022-04-28 15:47:34
+966708695901827122&$,|522434397882941483&$,|490367152054992913&$,|yes all accounts need to have balance to cover the storage. The same applies to sub-accounts if there's no balance then you can't store (deploy) a contract&$,|&$,|2022-04-28 15:47:30&$,|2022-04-28 15:47:30
+966709097154105415&$,|522434397882941483&$,|490367152054992913&$,|check this near-api-js reference: https://docs.near.org/docs/api/naj-quick-reference#call-contract&$,|&$,|2022-04-28 15:47:27&$,|2022-04-28 15:47:27
+966710864247918702&$,|930412215570423811&$,|490367152054992913&$,|hey team 
+I hope this is a good place to report an issue in near-api-js and immediately propose the solution 🙂 
+
+I've created this PR but it looks like nobody reviewing it 😦 https://github.com/near/near-api-js/pull/842 can you help me get this merged and release please?&$,|&$,|2022-04-28 15:47:16&$,|2022-04-28 15:47:16
+966718491157729311&$,|566829067303780363&$,|490367152054992913&$,|I deployed to an account then changed the contract code then deployed to the same account again.
+Would the contract code on the blockchain change?
+I am curious if it's replaced or not&$,|&$,|2022-04-28 15:47:12&$,|2022-04-28 15:47:12
+966723839339941899&$,|835853132066979880&$,|490367152054992913&$,|hi guys I wonder if Near uses a VRF to pick out the block creator or does the block creator get picked just based on his delegated amount thanks&$,|&$,|2022-04-28 15:47:05&$,|2022-04-28 15:47:05
+966728265291165757&$,|961831437261242451&$,|490367152054992913&$,|I login in mainnet with "near login"but failedwhat can I do?
+Retrying HTTP request for https://rpc.mainnet.near.org because of error: FetchError: request to https://rpc.mainnet.near.org/ failed reason: read ECONNRESET&$,|&$,|2022-04-28 15:47:02&$,|2022-04-28 15:47:02
+966729623398395934&$,|271734741261221890&$,|490367152054992913&$,|Thanks a lot!&$,|&$,|2022-04-28 15:47:00&$,|2022-04-28 15:47:00
+966734524656549898&$,|566829067303780363&$,|490367152054992913&$,|```js
+const contract = new nearApi.Contract(walletConnection.account() nearConfig.contractName {
+          viewMethods: ['getName']
+        })```
+I used `account()` method as the first argument of `Contract()` construct function.
+But since this is just calling `getName` method I thought I don't need any account information for Contract.
+Should I put it as the first argument still or It's okay to remove it from the first argument position?&$,|&$,|2022-04-28 15:46:56&$,|2022-04-28 15:46:56
+966737220394442882&$,|965938426761338910&$,|490367152054992913&$,|Please join Ref Finance server here and check the faq_and_guides channel for a possible fix/workaround: https://discord.gg/cCNQBVHb&$,|&$,|2022-04-28 15:46:51&$,|2022-04-28 15:46:51
+966745837956915220&$,|824362794161274920&$,|490367152054992913&$,|Hello have a problem with Ubuntu as subsystem of Windows 11 when deploy sc: “os error 30: read only file system”. Could you help with it?&$,|&$,|2022-04-28 15:46:39&$,|2022-04-28 15:46:39
+966756223347228844&$,|585688526356480001&$,|490367152054992913&$,|I only have limited experience with ubuntu and NEAR personally. I can ask around. Is this an issue with NEAR on Ubuntu?&$,|&$,|2022-04-28 15:46:35&$,|2022-04-28 15:46:35
+966756634963628082&$,|585688526356480001&$,|490367152054992913&$,|I will bring this up to our near-api-js dev. 
+
+Sorry the team working on this repo has been stretched thin with some other projects recently&$,|&$,|2022-04-28 15:46:32&$,|2022-04-28 15:46:32
+966757077055840287&$,|585688526356480001&$,|490367152054992913&$,|The logic of the contract code gets changed the state does not&$,|&$,|2022-04-28 15:46:20&$,|2022-04-28 15:46:20
+966757249546604564&$,|585688526356480001&$,|490367152054992913&$,|I can ask for you. but for my own edification what is a VRF?&$,|&$,|2022-04-28 15:46:11&$,|2022-04-28 15:46:11
+966759989320507402&$,|767740337439375390&$,|490367152054992913&$,|Are you using VPN software? application filtering?&$,|&$,|2022-04-28 15:46:07&$,|2022-04-28 15:46:07
+966760443119034408&$,|767740337439375390&$,|490367152054992913&$,|for state you would need to do migration right?&$,|&$,|2022-04-28 15:46:05&$,|2022-04-28 15:46:05
+966760543836844144&$,|585688526356480001&$,|490367152054992913&$,|I think you still need it? I would put it just based off this template https://docs.near.org/docs/api/naj-quick-reference#load-contract 
+
+but that's a good question I haven't actually looked into what happens if you are creating that and only calling view methods&$,|&$,|2022-04-28 15:46:02&$,|2022-04-28 15:46:02
+966760771142959134&$,|585688526356480001&$,|490367152054992913&$,|Yup this is correct. 
+
+Here's a resource on upgrading contracts https://www.near-sdk.io/upgrading/prototyping&$,|&$,|2022-04-28 15:46:01&$,|2022-04-28 15:46:01
+966761225096687666&$,|585688526356480001&$,|490367152054992913&$,|https://discord.gg/PsBpwh5r&$,|&$,|2022-04-28 15:45:58&$,|2022-04-28 15:45:58
+966761246630232064&$,|585688526356480001&$,|490367152054992913&$,|come hop into office hours!&$,|&$,|2022-04-28 15:45:46&$,|2022-04-28 15:45:46
+966765266363088896&$,|585688526356480001&$,|490367152054992913&$,|Hey everyone we are wondering what time for office hours works better for you?  (Timezones in North and South America)
+
+11 am PST (Respond with 👍 ) 12 pm PST (Respond with 🙏 ) Other (Respond with 😎 )
+
+you can choose more than one 🙂&$,|&$,|2022-04-28 15:45:42&$,|2022-04-28 15:45:42
+966782948751855626&$,|219622632893448192&$,|490367152054992913&$,|hey quick question. I am using `vue-near` plugin and I am able to  perform a view call to the smart contract method but only if I'm connected. Is it possible to call view methods on a smart contract without being connected to an account?&$,|&$,|2022-04-28 15:45:39&$,|2022-04-28 15:45:39
+966787968637485157&$,|847221227861180446&$,|490367152054992913&$,|Hi is it possible taking into account the new standard for nft payouts to do a "nft transfer payout call" i mean to do the same that nft_transfer_call does but also getting the payout object?&$,|&$,|2022-04-28 15:45:33&$,|2022-04-28 15:45:33
+966841302765428826&$,|820650234160873482&$,|490367152054992913&$,|I need test token. how do i send it to my wallet&$,|&$,|2022-04-28 15:45:30&$,|2022-04-28 15:45:30
+966853708270940200&$,|411537626546438144&$,|490367152054992913&$,|no problem I will ask in rust-support! Thanks its a view method I tried to call with 300Tgas attached but still no luck&$,|&$,|2022-04-28 15:45:24&$,|2022-04-28 15:45:24
+966881786443464764&$,|566829067303780363&$,|490367152054992913&$,|Can you give me some example? I didn't understand it.
+logic changes.. it means the code of the contract changed..
+and state doesn't change.. it means the value of variables don't change?&$,|&$,|2022-04-28 15:45:15&$,|2022-04-28 15:45:15
+966884649651552316&$,|961831437261242451&$,|490367152054992913&$,|hi ，I login in mainnet with "near login"but failedwhat can I do?
+Retrying HTTP request for https://rpc.mainnet.near.org/ because of error: FetchError: request to https://rpc.mainnet.near.org/ failed reason: read ECONNRESET&$,|&$,|2022-04-28 15:45:12&$,|2022-04-28 15:45:12
+966894488524054568&$,|566829067303780363&$,|490367152054992913&$,|I know that I have to use `axios` or `fetch` methods to send a network request in javascript.
+But this `near-api-js`..
+How does it send the network request to the NEAR rpc nodes?
+Is `fetch` method built inside `Connection` object?
+```js
+const near = await connect(config);
+```&$,|&$,|2022-04-28 15:45:08&$,|2022-04-28 15:45:08
+966933887450230784&$,|735321700681646094&$,|490367152054992913&$,|Hi I'm a web2 dev transiting into web3. Thinking of building on NEAR!&$,|&$,|2022-04-28 15:45:02&$,|2022-04-28 15:45:02
+966933940864704552&$,|735321700681646094&$,|490367152054992913&$,|Is this the official dev channel or is there a telegram etc?&$,|&$,|2022-04-28 15:45:00&$,|2022-04-28 15:45:00
+966934170712551434&$,|918509013027651585&$,|490367152054992913&$,|you should also check NEAR university discord.&$,|&$,|2022-04-28 15:44:56&$,|2022-04-28 15:44:56
+966934299322495057&$,|735321700681646094&$,|490367152054992913&$,|Could you point me the URL?&$,|&$,|2022-04-28 15:44:53&$,|2022-04-28 15:44:53
+966934366469128212&$,|735321700681646094&$,|490367152054992913&$,|And also how active is that discord?&$,|&$,|2022-04-28 15:44:51&$,|2022-04-28 15:44:51
+966936501621497947&$,|918509013027651585&$,|490367152054992913&$,|https://www.near.university/earn/fellowship&$,|&$,|2022-04-28 15:44:46&$,|2022-04-28 15:44:46
+966937016723963924&$,|735321700681646094&$,|490367152054992913&$,|Is this like a mentorship program ^ ?&$,|&$,|2022-04-28 15:44:41&$,|2022-04-28 15:44:41
+966937262879293460&$,|918509013027651585&$,|490367152054992913&$,|will help you build on NEAR and get access to other DEVS starting on NEAR.&$,|&$,|2022-04-28 15:44:37&$,|2022-04-28 15:44:37
+966937969988603914&$,|735321700681646094&$,|490367152054992913&$,|what do you mean "get access"?&$,|&$,|2022-04-28 15:44:31&$,|2022-04-28 15:44:31
+966938038141845514&$,|735321700681646094&$,|490367152054992913&$,|like able to ask them questions or get help from them when I'm stuck?&$,|&$,|2022-04-28 15:44:20&$,|2022-04-28 15:44:20
+966941243525439558&$,|918509013027651585&$,|490367152054992913&$,|Exactly get access to code review and more.&$,|&$,|2022-04-28 15:44:18&$,|2022-04-28 15:44:18
+966942372036505610&$,|735321700681646094&$,|490367152054992913&$,|Thanks a lot for the info!&$,|&$,|2022-04-28 15:44:07&$,|2022-04-28 15:44:07
+966952410062934057&$,|566829067303780363&$,|490367152054992913&$,|```js
+const contract = await new Contract()```
+I thought I can't use `await` to construct function call..&$,|&$,|2022-04-28 15:44:05&$,|2022-04-28 15:44:05
+966960775363182623&$,|561664160182566923&$,|490367152054992913&$,|Hi all! Wanted to know how can I transfer USDT or UST from one account to another through contract function call?&$,|&$,|2022-04-28 15:44:00&$,|2022-04-28 15:44:00
+966961764686241812&$,|441914242254241793&$,|490367152054992913&$,|hey team. Any way to send batch transactions to two contracts?&$,|&$,|2022-04-28 15:43:56&$,|2022-04-28 15:43:56
+966961803391287297&$,|441914242254241793&$,|490367152054992913&$,|const result = await account.signAndSendTransaction({
+        receiverId: CONTRACT_NAME
+        actions: [
+            transactions.deployContract(fs.readFileSync(WASM_PATH))
+            transactions.functionCall(
+                "new"
+                Buffer.from(JSON.stringify(newArgs))
+                10000000000000
+                "0"
+            )
+        ]
+    });&$,|&$,|2022-04-28 15:43:52&$,|2022-04-28 15:43:52
+966961849071464469&$,|441914242254241793&$,|490367152054992913&$,|like that but multiply receiverId?&$,|&$,|2022-04-28 15:43:49&$,|2022-04-28 15:43:49
+966972563307757639&$,|696308211346833449&$,|490367152054992913&$,|Hey folks! Is it required to become a validator in order to receive both completed and pending txns?&$,|&$,|2022-04-28 15:43:44&$,|2022-04-28 15:43:44
+966974672057008138&$,|794475311629598740&$,|490367152054992913&$,|hi. is ther any way to obtain some test USN in testnet&$,|&$,|2022-04-28 15:43:39&$,|2022-04-28 15:43:39
+966978191908560896&$,|128702913022263296&$,|490367152054992913&$,|This is the problem regarding the near wallet so I thought it would be better to ask people who has experience with Near Wallet&$,|&$,|2022-04-28 15:43:34&$,|2022-04-28 15:43:34
+966978253489336320&$,|128702913022263296&$,|490367152054992913&$,|I did post my question in Paras forum&$,|&$,|2022-04-28 15:43:32&$,|2022-04-28 15:43:32
+966978606528069642&$,|128702913022263296&$,|490367152054992913&$,|I'm using your js library and I thought any code example or simple explanation of how to make the batch transaction work would be a tremendous help for us&$,|&$,|2022-04-28 15:43:30&$,|2022-04-28 15:43:30
+967017198008827944&$,|233320194003435520&$,|490367152054992913&$,|Will there be office hours today?&$,|&$,|2022-04-28 15:43:24&$,|2022-04-28 15:43:24
+967017443350446130&$,|737918062245707839&$,|490367152054992913&$,|Hey Everybody 11 UTC Office Hours are live! Feel free to join for a chat or ask questions: https://discord.gg/XxdjA5ZX&$,|&$,|2022-04-28 15:43:21&$,|2022-04-28 15:43:21
+967023594611810304&$,|943245697229160528&$,|490367152054992913&$,|Hey Im having fun with testnet. On page https://testnet.trade.spin.fi/ I cannot get 1000 USDT. Wallet is connected. Error msg is requestAirdropFx: Cannot read properties of null (reading 'getPublicKey')&$,|&$,|2022-04-28 15:43:18&$,|2022-04-28 15:43:18
+967031801354784818&$,|835853132066979880&$,|490367152054992913&$,|VRF here means verifiable random function thanks&$,|&$,|2022-04-28 15:43:15&$,|2022-04-28 15:43:15
+967035390034837524&$,|863319472555163678&$,|490367152054992913&$,|Hello Excuse me <@737918062245707839> <@585688526356480001>  near.near-wallet-master I have a question here in the wallet code:
+recoverAccountSecretKey takes a parameter secretKey.
+
+I don't want to randomly generate a new secretKey
+Can I use the secretKey of the current wallet as a parameter?&$,|&$,|2022-04-28 15:43:03&$,|2022-04-28 15:43:03
+967068526672220194&$,|330677994442063873&$,|490367152054992913&$,|how contracts works here?
+is it like connect contract function to the account
+or..&$,|&$,|2022-04-28 15:42:59&$,|2022-04-28 15:42:59
+967068543520735252&$,|330677994442063873&$,|490367152054992913&$,|how xD&$,|&$,|2022-04-28 15:42:57&$,|2022-04-28 15:42:57
+967096797023567942&$,|739166201460162570&$,|490367152054992913&$,|Hi where can I find a good video/guide to connect a react frontend to an assembly script "factory" contract structure? For example how would I connect a react frontend to the Learn-NEAR sample "nearly-neighbors": https://github.com/Learn-NEAR/NCD.L1.sample--nearly-neighbors&$,|&$,|2022-04-28 15:42:53&$,|2022-04-28 15:42:53
+967103834088423484&$,|585688526356480001&$,|490367152054992913&$,|are you trying to recover your account?&$,|&$,|2022-04-28 15:42:45&$,|2022-04-28 15:42:45
+967104150959714386&$,|585688526356480001&$,|490367152054992913&$,|on NEAR?&$,|&$,|2022-04-28 15:42:40&$,|2022-04-28 15:42:40
+967104924557127730&$,|585688526356480001&$,|490367152054992913&$,|I'd be happy to answer just want to better understand your Q. So Accounts on NEAR are also smart contracts. It's a little weird but bear with me. Every account is created as an empty contract if you were to use `near-cli` and run the command `near state ` you would see this....&$,|&$,|2022-04-28 15:42:35&$,|2022-04-28 15:42:35
+967105727401439283&$,|585688526356480001&$,|490367152054992913&$,|The code hash here means that this account has some wasm file deployed onto it. If the code hash were all 1's then that would mean no contract was deployed onto this account. 
+
+You can interact with this contract code with near-api-js to make calls to the contract to change the state or pull information from the contract. 
+
+contracts on near are written in rust and assembly script for now and in the works is an sdk for javascript.&$,|&$,|2022-04-28 15:42:30&$,|2022-04-28 15:42:30
+967106310388723742&$,|585688526356480001&$,|490367152054992913&$,|I can continue but lmk if I'm giving you the info you are looking for haha&$,|&$,|2022-04-28 15:42:25&$,|2022-04-28 15:42:25
+967106764006903899&$,|585688526356480001&$,|490367152054992913&$,|I do have an example for a contract factory I made. It's extremely simple and written in rust but the principles are the same otherwise.
+
+Apart from that I can help guide you through it.&$,|&$,|2022-04-28 15:42:21&$,|2022-04-28 15:42:21
+967108484741079111&$,|330677994442063873&$,|490367152054992913&$,|hmm thats quite weird but understandable&$,|&$,|2022-04-28 15:42:18&$,|2022-04-28 15:42:18
+967108547206844436&$,|330677994442063873&$,|490367152054992913&$,|https://explorer.testnet.near.org/accounts/aviletoken.testnet&$,|&$,|2022-04-28 15:42:06&$,|2022-04-28 15:42:06
+967108596276035744&$,|330677994442063873&$,|490367152054992913&$,|so for example this is a token and normal account at once?&$,|&$,|2022-04-28 15:42:03&$,|2022-04-28 15:42:03
+967108715369099294&$,|585688526356480001&$,|490367152054992913&$,|ahhh that's right thank you for that. 
+
+So NEAR using a proof of stake consensus algo  to decide which validator gets chosen to produce the next block. 
+
+To a degree this is randomized but those with a larger stake generally have a  higher chance of being chosen.&$,|&$,|2022-04-28 15:41:59&$,|2022-04-28 15:41:59
+967109026787758130&$,|330677994442063873&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:41:56&$,|2022-04-28 15:41:56
+967109096497098873&$,|585688526356480001&$,|490367152054992913&$,|This is an account. A token is kept track by the contract code deployed on it. if that makes sense&$,|&$,|2022-04-28 15:41:44&$,|2022-04-28 15:41:44
+967109746735841300&$,|585688526356480001&$,|490367152054992913&$,|A smart contract at the end of the day is logic or code that performs an action based of a variety of inputs defined by the developer right? The state (or storage) of that contract code is found on the blockchain itself. Making it more transparent and decentralized. 
+
+I'm not sure of the details involved with this particular contract but you can probably assume that they have their own token that adheres to the NEP-141 standard which you can read more about here: https://nomicon.io/Standards/Tokens/FungibleToken/&$,|&$,|2022-04-28 15:41:39&$,|2022-04-28 15:41:39
+967111282010488842&$,|863319472555163678&$,|490367152054992913&$,|When I restore my wallet. I want to use my mnemonic generation key for registration not random ones. This way the user doesn't need to keep a lot of keys. Is this feasible?&$,|&$,|2022-04-28 15:41:37&$,|2022-04-28 15:41:37
+967112149258342440&$,|863319472555163678&$,|490367152054992913&$,|This is the method: "recoverAccountSecretKey" but the key I generated for the mnemonic not random.&$,|&$,|2022-04-28 15:41:35&$,|2022-04-28 15:41:35
+967113324158386267&$,|739166201460162570&$,|490367152054992913&$,|Hey Dorian! I am actually using your super useful Episode 10 "Polling App" to get up and running but am unsure how to call the factory contract. Do you have a link to your simple factory contract? Thanks again for all your support and you tube vids!&$,|&$,|2022-04-28 15:41:32&$,|2022-04-28 15:41:32
+967126324126822440&$,|585688526356480001&$,|490367152054992913&$,|https://discord.gg/PsBpwh5r  Hop into office hours people! They are live 🙂&$,|&$,|2022-04-28 15:41:28&$,|2022-04-28 15:41:28
+967126385871167538&$,|602866759233568778&$,|490367152054992913&$,|Where can I find out the pricing of sending smart contracts?
+
+I need to move 1xSC around on the blockchain two/three times and send a confirmation SC once the action is complete for compliance.
+
+Does the size of the SC matter too? Ours will hold a large(ish) amount of tokenized data.
+
+I have looked at the documentation and it simply states that gas is used well I know that but I can't find any realistic pricing.
+
+I also assume it doesn't matter that we are probably sharding NEAR to make a Private version?&$,|&$,|2022-04-28 15:41:18&$,|2022-04-28 15:41:18
+967126453193965648&$,|585688526356480001&$,|490367152054992913&$,|Here you go 🙂 
+
+https://github.com/near-examples/contract-that-deploys-contracts-rs&$,|&$,|2022-04-28 15:41:16&$,|2022-04-28 15:41:16
+967126908997337170&$,|585688526356480001&$,|490367152054992913&$,|are you able to hop into office hours?&$,|&$,|2022-04-28 15:41:13&$,|2022-04-28 15:41:13
+967127027679379490&$,|585688526356480001&$,|490367152054992913&$,|Thank you for the support! It means a lot ^_^&$,|&$,|2022-04-28 15:41:11&$,|2022-04-28 15:41:11
+967144698793844806&$,|613702690312159252&$,|490367152054992913&$,|<@585688526356480001>  is there a way to expire the transfer initiated on NEAR wallet. If a user doesn't approve the payment let's say in 10 mins i would like to cancel it. Is there a way to specify it when create a transfer request. Please point me to relevant person if required.&$,|&$,|2022-04-28 15:41:07&$,|2022-04-28 15:41:07
+967153500263964762&$,|799666452247871548&$,|490367152054992913&$,|helloeveryone. when i read [Fungible Token contract](https://github.com/near-examples/FT) code and call `ft_transfer` function.
+```
+near call $ID ft_transfer '{"receiver_id": "xxxxxx.testnet" "amount": "19"}' --accountId $ID --amount 0.000000000000000000000001
+```
+but get `Smart contract panicked: The account xxxxxx.testnet is not registered` error. `xxxxxx.testnet` is just an account registered on the testnet. does the `rereceiver_id` have to be a sub-account of the $ID?&$,|&$,|2022-04-28 15:41:02&$,|2022-04-28 15:41:02
+967157563105902602&$,|922853001335554058&$,|490367152054992913&$,|I don't believe it needs to be a sub account. Should be able to use the regular test net account provided it's a legitimate account.&$,|&$,|2022-04-28 15:40:54&$,|2022-04-28 15:40:54
+967175476093263882&$,|815211445406531586&$,|490367152054992913&$,|Hi i'm trying to call a contract that i deployed and i don't know what's going wrong&$,|&$,|2022-04-28 15:40:42&$,|2022-04-28 15:40:42
+967179967119101994&$,|219622632893448192&$,|490367152054992913&$,|in assemblyscript do you know how can I retrieve last element from PersistentUnorderedMap ?&$,|&$,|2022-04-28 15:40:37&$,|2022-04-28 15:40:37
+967189042066227220&$,|815098612140212234&$,|490367152054992913&$,|If i attach excess gas to the function call then is that refunded back again ?&$,|&$,|2022-04-28 15:40:35&$,|2022-04-28 15:40:35
+967211365838233612&$,|716387471394471937&$,|490367152054992913&$,|very stupid question: what is the difference between u128 & U128&$,|&$,|2022-04-28 15:40:27&$,|2022-04-28 15:40:27
+967215205123772436&$,|245127969368965120&$,|490367152054992913&$,|Hello What could be an obvious reason why I'm getting an error in my simulation test: `FunctionCallError(CompilationError(PrepareError(Instantiate)))`&$,|&$,|2022-04-28 15:40:25&$,|2022-04-28 15:40:25
+967245992917344287&$,|767740337439375390&$,|490367152054992913&$,|Hi! u128 (lowercase) is a Rust lang primitive while U128 is from the NEAR sdk (near_sdk::json_types::U128)
+check this: https://docs.near.org/docs/videos/collections-u128-etc#stackoverflow-question-on-near-collections-and-dealing-with-large-numbers
+-- BTW no question is stupid so please keep asking!&$,|&$,|2022-04-28 15:40:15&$,|2022-04-28 15:40:15
+967276940413247528&$,|585688526356480001&$,|490367152054992913&$,|Yeah i feel like that's something you can make with perhaps a node js script
+
+Or maybe you can use chroncat to accomplish this&$,|&$,|2022-04-28 15:40:13&$,|2022-04-28 15:40:13
+967283472148336720&$,|613702690312159252&$,|490367152054992913&$,|<@585688526356480001> perhaps i worded it improperly. I meant not the transaction but redirection that happens when so transaction hasn't happened yet i have redirected the browser to near wallet screen to approve payment and i would like that to expire if the person doesn't take action for certain period of time and gets a failure callback&$,|&$,|2022-04-28 15:40:10&$,|2022-04-28 15:40:10
+967311832098410536&$,|426731456996442127&$,|490367152054992913&$,|Hi. Is there aby ETA for stable near-sdk dust crate? Im writing a contract and i wonder if I should use version 4 already. Using it solves some dependency problems&$,|&$,|2022-04-28 15:40:07&$,|2022-04-28 15:40:07
+967319101204750397&$,|832642450249351230&$,|490367152054992913&$,|guys what can be wrong in the contract?
+I did initialized after deploying the contract but the error happens again.
+For the devnet it worked with no hindrance. 
+```
+
+Error
+Sorry an error has occurred. You may want to try again.
+View FAQ
+{"index":0"kind":{"ExecutionError":"Smart contract panicked: The contract is not initialized"}}
+```&$,|&$,|2022-04-28 15:40:04&$,|2022-04-28 15:40:04
+967341371725848596&$,|383276402050334721&$,|490367152054992913&$,|Guys can anyone help me please? My NEAR was transferred from my wallet to another wallet. I got hacked but I have no idea how it happened. Please help&$,|&$,|2022-04-28 15:39:53&$,|2022-04-28 15:39:53
+967341834462429256&$,|383276402050334721&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:39:48&$,|2022-04-28 15:39:48
+967343372098486302&$,|383276402050334721&$,|490367152054992913&$,|Please help&$,|&$,|2022-04-28 15:39:42&$,|2022-04-28 15:39:42
+967343411097120778&$,|383276402050334721&$,|490367152054992913&$,|Is it possible to recover?&$,|&$,|2022-04-28 15:39:30&$,|2022-04-28 15:39:30
+967353650592768000&$,|601434152025456641&$,|490367152054992913&$,|Hi
+Were you able to fix that?&$,|&$,|2022-04-28 15:39:23&$,|2022-04-28 15:39:23
+967360546070470676&$,|476050371685384212&$,|490367152054992913&$,|hi guys&$,|&$,|2022-04-28 15:39:20&$,|2022-04-28 15:39:20
+967360940590915594&$,|476050371685384212&$,|490367152054992913&$,|I'm still new here I tried to follow the docs provided by near but I'm having troubles like I can't see where I can change the price of the mint or where I change the metadata&$,|&$,|2022-04-28 15:39:17&$,|2022-04-28 15:39:17
+967361467521314866&$,|832642450249351230&$,|490367152054992913&$,|Can anybody help with that please?&$,|&$,|2022-04-28 15:39:13&$,|2022-04-28 15:39:13
+967366361015808060&$,|128702913022263296&$,|490367152054992913&$,|Hi Dorian I'm still stuck at this point. I need some support from you guys.&$,|&$,|2022-04-28 15:39:09&$,|2022-04-28 15:39:09
+967388936479576114&$,|407879596285886474&$,|490367152054992913&$,|hey does someone have any example for how to listen to event from NFT smart contract?&$,|&$,|2022-04-28 15:39:06&$,|2022-04-28 15:39:06
+967389127089745920&$,|407879596285886474&$,|490367152054992913&$,|I want to do some off-chain thinking after event for NFT minting by a particular contract is emitted.&$,|&$,|2022-04-28 15:38:58&$,|2022-04-28 15:38:58
+967393631864512542&$,|824362794161274920&$,|490367152054992913&$,|hello! I have error while compiling near-sdk-rs:
+error: failed to run custom build command for `librocksdb-sys v6.20.3`&$,|&$,|2022-04-28 15:38:51&$,|2022-04-28 15:38:51
+967419442202030194&$,|916952704453058632&$,|490367152054992913&$,|hi
+whats your working environment?&$,|&$,|2022-04-28 15:38:47&$,|2022-04-28 15:38:47
+967421555661496320&$,|824362794161274920&$,|490367152054992913&$,|Hi! VS code&$,|&$,|2022-04-28 15:38:41&$,|2022-04-28 15:38:41
+967436084445319168&$,|812234039259824149&$,|490367152054992913&$,|anyone in here can explain to me how to rerun the deploy commando of mars-minter ?
+
+*Users-Mac-Pro:mars-minter-main User$ ts-node src/mars-minter-cli.ts deploy_contract -e mainnet -cf example-mars-minter-config.json
+(node:5393) ExperimentalWarning: stream/web is an experimental feature. This feature could change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Contract is already deployed!!*&$,|&$,|2022-04-28 15:38:39&$,|2022-04-28 15:38:39
+967438597487730708&$,|916952704453058632&$,|490367152054992913&$,|I mean OS terminal and cargo version etc.&$,|&$,|2022-04-28 15:38:26&$,|2022-04-28 15:38:26
+967438949754765443&$,|916952704453058632&$,|490367152054992913&$,|how did you initialize it? 
+can you provide the init method declaration?&$,|&$,|2022-04-28 15:38:15&$,|2022-04-28 15:38:15
+967440015204429954&$,|812582302974607371&$,|490367152054992913&$,|What is The near  rpc&$,|&$,|2022-04-28 15:38:10&$,|2022-04-28 15:38:10
+967440055188729878&$,|812582302974607371&$,|490367152054992913&$,|The test and the main&$,|&$,|2022-04-28 15:38:05&$,|2022-04-28 15:38:05
+967440100990541944&$,|812582302974607371&$,|490367152054992913&$,|The doc is error&$,|&$,|2022-04-28 15:38:01&$,|2022-04-28 15:38:01
+967448368756437002&$,|574733254167625768&$,|490367152054992913&$,|can we locked near into contract using assemblyscript&$,|&$,|2022-04-28 15:37:49&$,|2022-04-28 15:37:49
+967476475395735612&$,|345260118587211776&$,|490367152054992913&$,|Need help with wallet signing&$,|&$,|2022-04-28 15:37:44&$,|2022-04-28 15:37:44
+967476594039992330&$,|345260118587211776&$,|490367152054992913&$,|const keyPair = KeyPair.fromString(pk); --> what should we pass here as parameter?&$,|&$,|2022-04-28 15:37:31&$,|2022-04-28 15:37:31
+967476887943258192&$,|345260118587211776&$,|490367152054992913&$,|ed25519:5QW5AiMDcZNbTvXVh2N5adGQnTPoUT55445X2WU9qvWn - I've tried passing this first then also  with ed25519 stripped&$,|&$,|2022-04-28 15:37:25&$,|2022-04-28 15:37:25
+967477615852138497&$,|345260118587211776&$,|490367152054992913&$,|Both are causing bad secret key size error. Any idea about this?&$,|&$,|2022-04-28 15:37:24&$,|2022-04-28 15:37:24
+967481975709528074&$,|576378131347406848&$,|490367152054992913&$,|If I wanted to retrieve historical data about NEAR price in USD$ on certain dates is there an api call that I can use for that?&$,|&$,|2022-04-28 15:37:22&$,|2022-04-28 15:37:22
+967488115960852590&$,|838839400988409857&$,|490367152054992913&$,|Facing global object related issue using near-js in node environment. 
+
+Are there any plans to fix this or separate the browser library from pure js version? There are few assumptions built in to use the near browser wallet.
+
+I'm currently using a polyfilled I created based on the tests 
+
+https://github.com/near/near-api-js/issues/824#issuecomment-1107541811&$,|&$,|2022-04-28 15:37:20&$,|2022-04-28 15:37:20
+967502917282172958&$,|164037326006124544&$,|490367152054992913&$,|im calling a cross contract call that returns a value how do i get the return value instead of a Promise?&$,|&$,|2022-04-28 15:37:16&$,|2022-04-28 15:37:16
+967518840042958858&$,|561664160182566923&$,|490367152054992913&$,|Hi! Hope everyone is doing well. Can anyone please guide me if there is a way to transfer USDT/UST from my smart contract account to another NEAR account? Actually we are supposed to transfer some USDT tokens to the user while they claim their staking reward tokens. Any help will be appreciated. Thanks!&$,|&$,|2022-04-28 15:37:13&$,|2022-04-28 15:37:13
+967520695204577350&$,|433675989055438860&$,|490367152054992913&$,|Hello
+
+Just getting started with NEAR development. Is there an equivalent to (https://web3js.readthedocs.io/en/v1.2.11/web3-eth-subscribe.html#) in NEAR? i.e. subscribe to events from smart contracts (presumably via a websocket).  or subscribe to new blocks in general.&$,|&$,|2022-04-28 15:37:03&$,|2022-04-28 15:37:03
+967556723265122304&$,|386688405859467274&$,|490367152054992913&$,|I assume that engiNEARing was on purpose&$,|&$,|2022-04-28 15:36:59&$,|2022-04-28 15:36:59
+967556727765598258&$,|386688405859467274&$,|490367152054992913&$,|lol&$,|&$,|2022-04-28 15:36:57&$,|2022-04-28 15:36:57
+967564385423855616&$,|433675989055438860&$,|490367152054992913&$,|So far after reading the docs it seems that I have to run https://docs.near.org/docs/tools/near-indexer-framework
+
+This seems a pretty heavy way of subscribing to blocks/events. Wondering if there is a better way.&$,|&$,|2022-04-28 15:36:54&$,|2022-04-28 15:36:54
+967572940654788628&$,|204451869144252417&$,|490367152054992913&$,|Hello
+ could someone explain from a tech perspective why Near requires a TX to connect a light client to a dapp? (as in comemctong to meta pool app)&$,|&$,|2022-04-28 15:36:53&$,|2022-04-28 15:36:53
+967574668598988840&$,|910681245275553833&$,|490367152054992913&$,|Can someone tell me exactly how long it would take a professional developer here on here to install the app for minting nft s there's already a market place and there's already slots everything ready just installing the smart contract in the app can someone tell me how long that takes&$,|&$,|2022-04-28 15:36:50&$,|2022-04-28 15:36:50
+967575431530295387&$,|910681245275553833&$,|490367152054992913&$,|Has anyone heard of the Alpha that works for near asssiting with compliaint '&$,|&$,|2022-04-28 15:36:48&$,|2022-04-28 15:36:48
+967575462874337290&$,|910681245275553833&$,|490367152054992913&$,|that just contacted me&$,|&$,|2022-04-28 15:36:46&$,|2022-04-28 15:36:46
+967575829913677845&$,|910681245275553833&$,|490367152054992913&$,|This guy&$,|&$,|2022-04-28 15:36:40&$,|2022-04-28 15:36:40
+967575838553964605&$,|832642450249351230&$,|490367152054992913&$,|```near call $NFT_CONTRACT_ID new_default_meta '{"owner_id": "'$NFT_CONTRACT_ID'"}' --accountId $NFT_CONTRACT_ID```&$,|&$,|2022-04-28 15:36:38&$,|2022-04-28 15:36:38
+967593100899942481&$,|433675989055438860&$,|490367152054992913&$,|This tutorial is not compiling for me. 
+https://github.com/near-examples/indexer-tutorials&$,|&$,|2022-04-28 15:36:28&$,|2022-04-28 15:36:28
+967606495460073482&$,|794475311629598740&$,|490367152054992913&$,|hi team.is ther any example to getBalance of contract&$,|&$,|2022-04-28 15:36:22&$,|2022-04-28 15:36:22
+967606560241119282&$,|794475311629598740&$,|490367152054992913&$,|i develop in javascript&$,|&$,|2022-04-28 15:36:10&$,|2022-04-28 15:36:10
+967618766039052308&$,|832642450249351230&$,|490367152054992913&$,|the contract is initialized BUT when i try to mint from a browser - the error occurs&$,|&$,|2022-04-28 15:36:07&$,|2022-04-28 15:36:07
+967636210908528740&$,|479674456365727745&$,|490367152054992913&$,|Hi I just create the app via create-near-app and try to build the app but found this error.
+I tried rustup target add wasm32-unknown-unknown but it didn't help.&$,|&$,|2022-04-28 15:36:04&$,|2022-04-28 15:36:04
+967636622948573225&$,|967584723507494932&$,|490367152054992913&$,|What browser are you using?&$,|&$,|2022-04-28 15:35:59&$,|2022-04-28 15:35:59
+967637075191037962&$,|479674456365727745&$,|490367152054992913&$,|chrome&$,|&$,|2022-04-28 15:35:57&$,|2022-04-28 15:35:57
+967637242979950662&$,|479674456365727745&$,|490367152054992913&$,|But this should not be browser issue right? It happened on build time.&$,|&$,|2022-04-28 15:35:47&$,|2022-04-28 15:35:47
+967637309497409576&$,|967584723507494932&$,|490367152054992913&$,|Did u click on everything to clear cache ? the right way shift ctl delete ?&$,|&$,|2022-04-28 15:35:37&$,|2022-04-28 15:35:37
+967637489495969822&$,|967584723507494932&$,|490367152054992913&$,|You can’t say. Try clear your cache and try again&$,|&$,|2022-04-28 15:35:35&$,|2022-04-28 15:35:35
+967658837572214834&$,|186364485651398656&$,|490367152054992913&$,|Hi there how can I check a LookupMap is initialized or not?&$,|&$,|2022-04-28 15:35:22&$,|2022-04-28 15:35:22
+967684798783049769&$,|967682126302548028&$,|490367152054992913&$,|is there a way to upload 1k nfts at a time? kind of like solana candy machine.&$,|&$,|2022-04-28 15:35:05&$,|2022-04-28 15:35:05
+967712738983940117&$,|946367915085672458&$,|490367152054992913&$,|Retrying HTTP request for https://helper.testnet.near.org/account because of error: FetchError: request to https://helper.testnet.near.org/account failed reason: connect ETIMEDOUT 162.220.12.226:443&$,|&$,|2022-04-28 15:34:56&$,|2022-04-28 15:34:56
+967712769287782430&$,|946367915085672458&$,|490367152054992913&$,|这个问题有人遇到吗&$,|&$,|2022-04-28 15:34:52&$,|2022-04-28 15:34:52
+967712808470994954&$,|946367915085672458&$,|490367152054992913&$,|我无法部署测试的智能合约&$,|&$,|2022-04-28 15:34:40&$,|2022-04-28 15:34:40
+967713149857980436&$,|946367915085672458&$,|490367152054992913&$,|有人吗&$,|&$,|2022-04-28 15:34:33&$,|2022-04-28 15:34:33
+967713655984631848&$,|946367915085672458&$,|490367152054992913&$,|<@967584723507494932> 能帮忙看一下 吗&$,|&$,|2022-04-28 15:34:28&$,|2022-04-28 15:34:28
+967713711710154792&$,|946367915085672458&$,|490367152054992913&$,|卡一天了 终端挂代理也不行&$,|&$,|2022-04-28 15:34:17&$,|2022-04-28 15:34:17
+967727768815144990&$,|946367915085672458&$,|490367152054992913&$,|reason: Hostname/IP does not match certificate's altnames: Host&$,|&$,|2022-04-28 15:34:01&$,|2022-04-28 15:34:01
+967730325054685204&$,|679936424971468859&$,|490367152054992913&$,|Is there a way to chain promises to different smart contracts in Javascript similar to promise-then pattern in Rust? I saw the docs on batchin transactions (https://docs.near.org/docs/api/naj-cookbook#batch-transactions) but this only works for a single receiver right?
+
+For example my code looks like this in Rust I wonder if I can make the calls directly from Javascript.
+```rs
+ext_fungible_token::ft_transfer_call(
+    route.dex.clone()
+    amount
+    None
+    dex_msg
+    token_in
+    1
+    Gas(env::prepaid_gas().0 / 2)
+).then(ext_self::callback_consumed_tokens(
+    token_out
+    sender_id.clone()
+    env::current_account_id()
+    0
+    Gas(env::prepaid_gas().0 / 8)
+));
+```&$,|&$,|2022-04-28 15:33:55&$,|2022-04-28 15:33:55
+967741876151156818&$,|377727774435049473&$,|490367152054992913&$,|Hi I got a question which hopefully someone can answer: what are the requirements for running my own Smart Contracts on Near? For instance do I have to operate my own node when I want to run my own smart contracts on Near?&$,|&$,|2022-04-28 15:33:43&$,|2022-04-28 15:33:43
+967742563538829329&$,|377727774435049473&$,|490367152054992913&$,|meaning a validator node.&$,|&$,|2022-04-28 15:33:26&$,|2022-04-28 15:33:26
+967748494104342658&$,|345260118587211776&$,|490367152054992913&$,|https://docs.near.org/docs/api/naj-cookbook#verify-signature - Before verifying signature how to connect to the wallet to get keys?&$,|&$,|2022-04-28 15:32:42&$,|2022-04-28 15:32:42
+967748580876120094&$,|345260118587211776&$,|490367152054992913&$,|with requestSignIn(empty params)?&$,|&$,|2022-04-28 15:32:25&$,|2022-04-28 15:32:25
+967748617681121391&$,|345260118587211776&$,|490367152054992913&$,|or any sample contract as param&$,|&$,|2022-04-28 15:32:15&$,|2022-04-28 15:32:15
+967785289709928528&$,|566829067303780363&$,|490367152054992913&$,|```js
+import "regenerator-runtime/runtime";
+import React { useState useEffect } from "react";
+import PropTypes from "prop-types";
+import Big from "big.js";
+import Form from "./components/Form";
+
+const BOATLOAD_OF_GAS = Big(3).times(10 ** 13).toFixed();
+```&$,|&$,|2022-04-28 15:32:03&$,|2022-04-28 15:32:03
+967785330973503538&$,|566829067303780363&$,|490367152054992913&$,|What does `BOATLOAD_OF_GAS` do?&$,|&$,|2022-04-28 15:31:51&$,|2022-04-28 15:31:51
+967785444198719498&$,|566829067303780363&$,|490367152054992913&$,|this code is from someone's near spring nft code&$,|&$,|2022-04-28 15:31:46&$,|2022-04-28 15:31:46
+967793921113600050&$,|348927586354855939&$,|490367152054992913&$,|Not at all nor there is a network i've heard of that you have to run a node in order to have your smart contract running you might be coming to the idea from the "web2" experience. You can deploy your smart contract to any "account/address" that you have the privatekeys of.&$,|&$,|2022-04-28 15:31:42&$,|2022-04-28 15:31:42
+967795269674618890&$,|348927586354855939&$,|490367152054992913&$,|if you want to do that outside of your contract you can do that directly from javascript with async await which is syntax sugar on top of promise then in js... or so i think 😄&$,|&$,|2022-04-28 15:31:37&$,|2022-04-28 15:31:37
+967796784502034482&$,|348927586354855939&$,|490367152054992913&$,|literally what it says they define a super large number and then use it to pass as gas into some function that is expected to be hefty   from the nomicon ```Function calls are more complex and you can attach an explicit amount of gas to these transactions up to a maximum value of 3⨉10¹⁴ gas units``` https://docs.near.org/docs/concepts/gas&$,|&$,|2022-04-28 15:31:34&$,|2022-04-28 15:31:34
+967802112329277490&$,|566829067303780363&$,|490367152054992913&$,|oh thanks man1 🙂&$,|&$,|2022-04-28 15:31:22&$,|2022-04-28 15:31:22
+967804437026443284&$,|946272014241509386&$,|490367152054992913&$,|Hi! Are there any docs for full node/non validator monitoring with Grafana?&$,|&$,|2022-04-28 15:31:11&$,|2022-04-28 15:31:11
+967811023652388905&$,|348927586354855939&$,|490367152054992913&$,|what are the steps that you preform&$,|&$,|2022-04-28 15:31:00&$,|2022-04-28 15:31:00
+967826291048980571&$,|820988465541939265&$,|490367152054992913&$,|You are getting this error because you didn't initialise the contract with the `owner_id`
+
+Call this command `near call $YOUR_CONTRACT_ID new_default_meta '{"owner_id": "'$YOUR_ACCOUNT_ID'"}' --accountId $YOUR_ACCOUNT_ID` and you should be able to get rid of the error.&$,|&$,|2022-04-28 15:30:52&$,|2022-04-28 15:30:52
+967826421345026078&$,|451467360520372235&$,|490367152054992913&$,|Any progress on getting a csv of transactions from the near wallet? Also need for Koinly (tax)&$,|&$,|2022-04-28 15:30:42&$,|2022-04-28 15:30:42
+967845512902479913&$,|951761067455942677&$,|490367152054992913&$,|Hey im trying to see the function on a smart contract&$,|&$,|2022-04-28 15:30:39&$,|2022-04-28 15:30:39
+967845555206258710&$,|951761067455942677&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:30:32&$,|2022-04-28 15:30:32
+967845609371488257&$,|951761067455942677&$,|490367152054992913&$,|ive done all of it it works well&$,|&$,|2022-04-28 15:30:31&$,|2022-04-28 15:30:31
+967845678724317256&$,|951761067455942677&$,|490367152054992913&$,|but I want to find all functions on the explorer&$,|&$,|2022-04-28 15:30:28&$,|2022-04-28 15:30:28
+967845732281372742&$,|951761067455942677&$,|490367152054992913&$,|like to know why it was this function&$,|&$,|2022-04-28 15:30:21&$,|2022-04-28 15:30:21
+967846035948961882&$,|348927586354855939&$,|490367152054992913&$,|can you elaborate please i shall also warn you that currently later on the museum contract is hitting gas limit and near.academy will brake when you are required to get the list of all memes&$,|&$,|2022-04-28 15:30:09&$,|2022-04-28 15:30:09
+967846254572884078&$,|951761067455942677&$,|490367152054992913&$,|Yes for sure 🙂
+
+So im in the near testnet im doing the course on near.academy all is good&$,|&$,|2022-04-28 15:30:00&$,|2022-04-28 15:30:00
+967846326521970768&$,|951761067455942677&$,|490367152054992913&$,|but I want to know why did I needed to use the get meme count&$,|&$,|2022-04-28 15:29:54&$,|2022-04-28 15:29:54
+967846353554247721&$,|951761067455942677&$,|490367152054992913&$,|https://explorer.testnet.near.org/accounts/museum.testnet&$,|&$,|2022-04-28 15:29:52&$,|2022-04-28 15:29:52
+967846384092975146&$,|951761067455942677&$,|490367152054992913&$,|like with the explorer&$,|&$,|2022-04-28 15:29:50&$,|2022-04-28 15:29:50
+967846411611828334&$,|951761067455942677&$,|490367152054992913&$,|where can I find all the functions&$,|&$,|2022-04-28 15:29:42&$,|2022-04-28 15:29:42
+967846448249045052&$,|951761067455942677&$,|490367152054992913&$,|to know which one can I call and so on&$,|&$,|2022-04-28 15:29:41&$,|2022-04-28 15:29:41
+967846476569018408&$,|348927586354855939&$,|490367152054992913&$,|just so you are learning how to make view calls&$,|&$,|2022-04-28 15:29:29&$,|2022-04-28 15:29:29
+967846506226909215&$,|348927586354855939&$,|490367152054992913&$,|ok ok wait i got it&$,|&$,|2022-04-28 15:29:28&$,|2022-04-28 15:29:28
+967846543593963560&$,|951761067455942677&$,|490367152054992913&$,|yeah my call worked so its ok&$,|&$,|2022-04-28 15:29:24&$,|2022-04-28 15:29:24
+967847775901458464&$,|348927586354855939&$,|490367152054992913&$,|in near there are basically 2 types of calls "Call" and "view"  view methods are something like "get requests" they do not change contract state so they dont need signerId and attached deposit  call methods  change state so they have bit more requirments. The reason the academy is teaching you this is basically to give you an overview of whats happening how and why to use it. Normally as an end user you will "close to never" interact with contracts without a "frontend" (visual representation) of the contract. if developers want to interact with high level contracts they are normally documented somewhere. Since the deployed contracts are in compiled binaries we cant know the avaiable functions without special tools.&$,|&$,|2022-04-28 15:29:12&$,|2022-04-28 15:29:12
+967847931048771585&$,|348927586354855939&$,|490367152054992913&$,|I think Jacob and the guys from stats.gallery have made https://github.com/encody/near-contract-parser which can parse a contract and take out the existing functions&$,|&$,|2022-04-28 15:29:04&$,|2022-04-28 15:29:04
+967848020420988998&$,|951761067455942677&$,|490367152054992913&$,|mhhh&$,|&$,|2022-04-28 15:28:56&$,|2022-04-28 15:28:56
+967848098904817694&$,|951761067455942677&$,|490367152054992913&$,|but like I can put a contract on near mainnet without a dapp&$,|&$,|2022-04-28 15:28:51&$,|2022-04-28 15:28:51
+967848149081264219&$,|951761067455942677&$,|490367152054992913&$,|so nobody will see all of the functions on it?&$,|&$,|2022-04-28 15:28:49&$,|2022-04-28 15:28:49
+967848203967922186&$,|348927586354855939&$,|490367152054992913&$,|stats.gallery uses the parser like so&$,|&$,|2022-04-28 15:28:43&$,|2022-04-28 15:28:43
+967848207373721690&$,|348927586354855939&$,|490367152054992913&$,|https://stats.gallery/testnet/museum.testnet/contract?t=all&$,|&$,|2022-04-28 15:28:40&$,|2022-04-28 15:28:40
+967848228315856926&$,|951761067455942677&$,|490367152054992913&$,|or is there any view methods to put in cli&$,|&$,|2022-04-28 15:28:29&$,|2022-04-28 15:28:29
+967848327351763004&$,|951761067455942677&$,|490367152054992913&$,|ohh coooll&$,|&$,|2022-04-28 15:28:18&$,|2022-04-28 15:28:18
+967848403868479508&$,|348927586354855939&$,|490367152054992913&$,|no there are no functions currently in the cli to "list all contract functions"&$,|&$,|2022-04-28 15:28:15&$,|2022-04-28 15:28:15
+967848494910033971&$,|348927586354855939&$,|490367152054992913&$,|"dapp" is generally a contract and it may or may not include a frontend&$,|&$,|2022-04-28 15:28:05&$,|2022-04-28 15:28:05
+967848547078766612&$,|951761067455942677&$,|490367152054992913&$,|nor to see the sc?&$,|&$,|2022-04-28 15:28:00&$,|2022-04-28 15:28:00
+967848625872977990&$,|951761067455942677&$,|490367152054992913&$,|is it not bad for rugs?&$,|&$,|2022-04-28 15:27:53&$,|2022-04-28 15:27:53
+967848704105132123&$,|951761067455942677&$,|490367152054992913&$,|I mean I have been a degen a did a lot of defi on bsc eth and so on&$,|&$,|2022-04-28 15:27:51&$,|2022-04-28 15:27:51
+967848726234279956&$,|348927586354855939&$,|490367152054992913&$,|you can download the compiled binary but cant see the contract i believe&$,|&$,|2022-04-28 15:27:39&$,|2022-04-28 15:27:39
+967848746761195520&$,|951761067455942677&$,|490367152054992913&$,|and i could see if it was a rug based on the sc&$,|&$,|2022-04-28 15:27:27&$,|2022-04-28 15:27:27
+967848757565726841&$,|330981254633619467&$,|490367152054992913&$,|is there a way to remove a contract in near?&$,|&$,|2022-04-28 15:27:25&$,|2022-04-28 15:27:25
+967848828252323960&$,|951761067455942677&$,|490367152054992913&$,|mhhh okok&$,|&$,|2022-04-28 15:27:22&$,|2022-04-28 15:27:22
+967848935240658964&$,|348927586354855939&$,|490367152054992913&$,|there is no feature like  ether explorer to post your code to be verified against the binary at least not that im aware of&$,|&$,|2022-04-28 15:27:10&$,|2022-04-28 15:27:10
+967848950449201213&$,|348927586354855939&$,|490367152054992913&$,|yet*&$,|&$,|2022-04-28 15:26:57&$,|2022-04-28 15:26:57
+967849111694999602&$,|951761067455942677&$,|490367152054992913&$,|okok no problem it just an explorer feature in fact&$,|&$,|2022-04-28 15:26:48&$,|2022-04-28 15:26:48
+967849150169358446&$,|951761067455942677&$,|490367152054992913&$,|so not really a problem should be myb updated&$,|&$,|2022-04-28 15:26:45&$,|2022-04-28 15:26:45
+967849204955365418&$,|951761067455942677&$,|490367152054992913&$,|okok interesting thank you a lot for all of these answer&$,|&$,|2022-04-28 15:26:32&$,|2022-04-28 15:26:32
+967849292901519380&$,|951761067455942677&$,|490367152054992913&$,|so I can't finish the course haha?&$,|&$,|2022-04-28 15:26:29&$,|2022-04-28 15:26:29
+967849342608236554&$,|348927586354855939&$,|490367152054992913&$,|you can but you will have to skip the step&$,|&$,|2022-04-28 15:26:25&$,|2022-04-28 15:26:25
+967849400539963492&$,|951761067455942677&$,|490367152054992913&$,|Okay!&$,|&$,|2022-04-28 15:26:22&$,|2022-04-28 15:26:22
+967849990225526804&$,|348927586354855939&$,|490367152054992913&$,|with my limited knowledge i've been just deleting the accounts and recreating them&$,|&$,|2022-04-28 15:26:13&$,|2022-04-28 15:26:13
+967852212795605073&$,|330981254633619467&$,|490367152054992913&$,|no other way? rip&$,|&$,|2022-04-28 15:26:02&$,|2022-04-28 15:26:02
+967887555108421662&$,|815211445406531586&$,|490367152054992913&$,|I'm trying to execute a call in near cli. i'm using powershell what do I need to put around the variables I need to enter as a string?&$,|&$,|2022-04-28 15:25:53&$,|2022-04-28 15:25:53
+967889899715977246&$,|348927586354855939&$,|490367152054992913&$,|ive seen people have to  escape the double quotes  but generally in unix based looks like '{"account": "me.testnet" "mesage": "ugabuga"}' so i think in powershell shall be  '{\\"account\\": \\"me.testnet\\" \\"mesage\\": \\"ugabuga\\"}'&$,|&$,|2022-04-28 15:25:50&$,|2022-04-28 15:25:50
+967890112442691634&$,|815211445406531586&$,|490367152054992913&$,|thanks for your quick response I just managed to figure it out 🙂&$,|&$,|2022-04-28 15:25:45&$,|2022-04-28 15:25:45
+967903495883751444&$,|758241023440453634&$,|490367152054992913&$,|Hello everyone I have a question. 
+When I was trying to calling a function by using my testnet id I always get the same error. How can I solve this problem?
+
+I am using these commands in order:
+
+yarn build:release
+
+near dev-deploy ./build/release/simple.wasm
+
+export CONTRACT=<YOUR_DEV_ACCOUNT_HERE>
+
+near view $CONTRACT helloWorld
+
+This is where I get the github repo for learning: https://github.com/Learn-NEAR/starter--near-sdk-as&$,|&$,|2022-04-28 15:25:42&$,|2022-04-28 15:25:42
+967905196917264394&$,|348927586354855939&$,|490367152054992913&$,|can you `echo $contract` and see the output ? theethanthan.testnet has no contract deployed&$,|&$,|2022-04-28 15:25:39&$,|2022-04-28 15:25:39
+967905857650188328&$,|348927586354855939&$,|490367152054992913&$,|near dev-deploy (which you shouldnt need to call with sudo) will create a dev account like dev-131829738-123128381623 and deploy to it&$,|&$,|2022-04-28 15:25:34&$,|2022-04-28 15:25:34
+967906041851433000&$,|348927586354855939&$,|490367152054992913&$,|you shall put your dev-1878123-123123 account to the .env variable $CONTRACT (please use caps cuz semantics) and not your account that you have registered on testnet&$,|&$,|2022-04-28 15:25:22&$,|2022-04-28 15:25:22
+967906111887900672&$,|758241023440453634&$,|490367152054992913&$,|Okay I give it a try.&$,|&$,|2022-04-28 15:25:21&$,|2022-04-28 15:25:21
+967906214556082277&$,|348927586354855939&$,|490367152054992913&$,|if you check your neardev folder there should be dev-123123-123123 file use that like near view dev-123123-12312 helloworld&$,|&$,|2022-04-28 15:25:10&$,|2022-04-28 15:25:10
+967906683860959352&$,|758241023440453634&$,|490367152054992913&$,|It worked thanks for your help. 🙂&$,|&$,|2022-04-28 15:25:06&$,|2022-04-28 15:25:06
+967917223853293679&$,|235068808509915136&$,|490367152054992913&$,|No progress on that one. I still have a week to finish up tax declaration. I might just create some aggregate transactions manually to match my balances for the tax year (~roughly) and wait for NEAR integration to start tracking precisely.&$,|&$,|2022-04-28 15:24:57&$,|2022-04-28 15:24:57
+967917712019951706&$,|348927586354855939&$,|490367152054992913&$,|why havent koinly made that already? they pretend they support alot&$,|&$,|2022-04-28 15:24:55&$,|2022-04-28 15:24:55
+967929700729094154&$,|758580757412446228&$,|490367152054992913&$,|what's the current on chain price oracle solution for Near?&$,|&$,|2022-04-28 15:24:53&$,|2022-04-28 15:24:53
+967933306144448552&$,|940973995619135509&$,|490367152054992913&$,|Can anyone update on NEAR roadmap for supporting mobile apps? From what I can see the iOS library repo was updated in last 2 months and the Android (Unity!) was last touched 2 years ago. Thanks!&$,|&$,|2022-04-28 15:24:44&$,|2022-04-28 15:24:44
+967966165508972544&$,|832642450249351230&$,|490367152054992913&$,|i did that
+i even checked that one more time 
+```
+ExecutionError: 'Smart contract panicked: The contract has already been initialized'
+```
+and i am also able to see the default metadata 
+so weird...&$,|&$,|2022-04-28 15:24:41&$,|2022-04-28 15:24:41
+967968100353970247&$,|832642450249351230&$,|490367152054992913&$,|`` nft_mint `` function is working only for backend but for the front i got that error. ridiculous -_-&$,|&$,|2022-04-28 15:24:29&$,|2022-04-28 15:24:29
+967969503583559750&$,|755109290640932884&$,|490367152054992913&$,|I am founder of nft project with high quality premium 3D art.. 
+
+If there is any dev who wants to be a part of team to handle contract and minting part of project please do ping me up with your experience and details.. 
+
+Thank you&$,|&$,|2022-04-28 15:24:19&$,|2022-04-28 15:24:19
+967971342043463691&$,|398898564488495104&$,|490367152054992913&$,|hey I'm going through this: https://dacade.org/communities/near/courses/near-101/learning-modules/b52ba9f1-caac-4339-96ed-fad3b1ab6bbd#4-create-accounts&$,|&$,|2022-04-28 15:24:16&$,|2022-04-28 15:24:16
+967971493436866591&$,|398898564488495104&$,|490367152054992913&$,|and the near login fails even before I can authenticate through the website&$,|&$,|2022-04-28 15:24:14&$,|2022-04-28 15:24:14
+967979175006863450&$,|574733254167625768&$,|490367152054992913&$,|hello guys please add assemblyscript support i love assemblyscript why there is only rust-support but no assemblyscript-support is assemblyscript gonna be deprecated by near?&$,|&$,|2022-04-28 15:24:00&$,|2022-04-28 15:24:00
+967980703981658113&$,|574733254167625768&$,|490367152054992913&$,|please dont deprecate assemblyscript i love it&$,|&$,|2022-04-28 15:23:56&$,|2022-04-28 15:23:56
+968006024286072852&$,|931355568076099675&$,|490367152054992913&$,|hi all i have a question can i catch reject event when user click "cancel" on RequestSignTransaction screen if it possible can someone tell me how can i do it? many thanks.&$,|&$,|2022-04-28 15:23:52&$,|2022-04-28 15:23:52
+968024518645915668&$,|561794511005548545&$,|490367152054992913&$,|Hey wanted to ask if you have a wasm file you can deploy it both in testnet and mainnet?&$,|&$,|2022-04-28 15:23:45&$,|2022-04-28 15:23:45
+968027500221435914&$,|348927586354855939&$,|490367152054992913&$,|Yes there is no difference&$,|&$,|2022-04-28 15:23:36&$,|2022-04-28 15:23:36
+968056846973820958&$,|776804664117035048&$,|490367152054992913&$,|Hi i'll try again to see if there is someone who knows this.. how do I construct a cross-contract call in Near CLI to transfer FT Tokens through a multisig contract? My code which is not working below&$,|&$,|2022-04-28 15:23:26&$,|2022-04-28 15:23:26
+968057028008366150&$,|348927586354855939&$,|490367152054992913&$,|what do you mean ?&$,|&$,|2022-04-28 15:23:22&$,|2022-04-28 15:23:22
+968057064700145664&$,|776804664117035048&$,|490367152054992913&$,|near call multisig.testnet add_request '{"request":{"receiver_id":"token.testnet""actions":[{"type":"FunctionCall""method_name":"ft_transfer""args":{"receiver_id":"receiver.testnet""amount":"100000000"}"gas":"10000000000000""deposit":"0"}]}}' --accountId multisig.testnet&$,|&$,|2022-04-28 15:23:18&$,|2022-04-28 15:23:18
+968057378186608650&$,|128702913022263296&$,|490367152054992913&$,|hi devs. We are trying to implement USN on our product using Near testnet&$,|&$,|2022-04-28 15:23:14&$,|2022-04-28 15:23:14
+968057424948895824&$,|128702913022263296&$,|490367152054992913&$,|How can I receive some USN token to test?&$,|&$,|2022-04-28 15:23:11&$,|2022-04-28 15:23:11
+968057791765938216&$,|398898564488495104&$,|490367152054992913&$,|The tutorial or my error?&$,|&$,|2022-04-28 15:23:00&$,|2022-04-28 15:23:00
+968057826230538270&$,|348927586354855939&$,|490367152054992913&$,|your error&$,|&$,|2022-04-28 15:22:56&$,|2022-04-28 15:22:56
+968057856991584306&$,|398898564488495104&$,|490367152054992913&$,|Ohh&$,|&$,|2022-04-28 15:22:44&$,|2022-04-28 15:22:44
+968058170935214120&$,|398898564488495104&$,|490367152054992913&$,|so I run the `near login` command and it opens a new tab in my browser but it finishes as failed before I can even authenticate&$,|&$,|2022-04-28 15:22:40&$,|2022-04-28 15:22:40
+968058786478714890&$,|398898564488495104&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:22:32&$,|2022-04-28 15:22:32
+968059403435651122&$,|348927586354855939&$,|490367152054992913&$,|so when you click on the url on top (if you are on osx hold [cmd] and then click on the link) it doesnt let you authorise the cli?&$,|&$,|2022-04-28 15:22:29&$,|2022-04-28 15:22:29
+968059939031486515&$,|398898564488495104&$,|490367152054992913&$,|it redirects me the webpage i go through the steps of connecting but I'm hit with 127.0.0.1 refused to connect&$,|&$,|2022-04-28 15:22:25&$,|2022-04-28 15:22:25
+968060490972540948&$,|348927586354855939&$,|490367152054992913&$,|if you `ls ~/.near-credentials/testnet/` do you see any of your accounts ?&$,|&$,|2022-04-28 15:22:14&$,|2022-04-28 15:22:14
+968060639987769365&$,|398898564488495104&$,|490367152054992913&$,|nope&$,|&$,|2022-04-28 15:22:11&$,|2022-04-28 15:22:11
+968060720870719528&$,|398898564488495104&$,|490367152054992913&$,|how to init accounts?&$,|&$,|2022-04-28 15:21:59&$,|2022-04-28 15:21:59
+968061387525984256&$,|348927586354855939&$,|490367152054992913&$,|you can either create them via http://wallet.testnet.near.org your make use of the dev-deploy to generate some random dev account  keypair which actually would allow you to make calls from/to but whats strange is that 1. you are not automagically redirected to the browser and then back to che cli. 2. if the call back is to port localhost:5001 it is blocked or something.&$,|&$,|2022-04-28 15:21:48&$,|2022-04-28 15:21:48
+968061990184558632&$,|398898564488495104&$,|490367152054992913&$,|I have an account on test.near.org&$,|&$,|2022-04-28 15:21:44&$,|2022-04-28 15:21:44
+968062068207005777&$,|398898564488495104&$,|490367152054992913&$,|but it doesn't show up under `ls ~/.near-credentials/testnet/`&$,|&$,|2022-04-28 15:21:41&$,|2022-04-28 15:21:41
+968062110288453632&$,|398898564488495104&$,|490367152054992913&$,|missing account_id&$,|&$,|2022-04-28 15:21:29&$,|2022-04-28 15:21:29
+968062195323785217&$,|348927586354855939&$,|490367152054992913&$,|yes thats what near login is supposed to do add your keypairs to this folder so the cli can use it when needed&$,|&$,|2022-04-28 15:21:22&$,|2022-04-28 15:21:22
+968062258242543666&$,|398898564488495104&$,|490367152054992913&$,|I used the flag and passed in my account id but that doesn't work either&$,|&$,|2022-04-28 15:21:11&$,|2022-04-28 15:21:11
+968062263615451206&$,|398898564488495104&$,|490367152054992913&$,|ohh&$,|&$,|2022-04-28 15:21:05&$,|2022-04-28 15:21:05
+968062339763040296&$,|398898564488495104&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:20:52&$,|2022-04-28 15:20:52
+968062383018885150&$,|398898564488495104&$,|490367152054992913&$,|I see this in the browser&$,|&$,|2022-04-28 15:20:44&$,|2022-04-28 15:20:44
+968062442649317416&$,|398898564488495104&$,|490367152054992913&$,|how do I unblock the port 5001&$,|&$,|2022-04-28 15:20:39&$,|2022-04-28 15:20:39
+968062562501533746&$,|348927586354855939&$,|490367152054992913&$,|im unsure if thats the actual issue&$,|&$,|2022-04-28 15:20:36&$,|2022-04-28 15:20:36
+968063053553889300&$,|398898564488495104&$,|490367152054992913&$,|😐&$,|&$,|2022-04-28 15:20:32&$,|2022-04-28 15:20:32
+968065406638116884&$,|348927586354855939&$,|490367152054992913&$,|however i see it for first time for the past few months since i follow discord anyway if you want to continue on with the tasks in your course you can do `near dev deploy`  this will create a  eg. dev-12341234-12341234 account for you and use that as your "main" account until you find a solution to your problem. (bare ind mind thad near dev deploy will also create a  sub-folder(in the current working dir)  near-dev  which you probably want to delete&$,|&$,|2022-04-28 15:20:28&$,|2022-04-28 15:20:28
+968067981131255828&$,|382505961262153731&$,|490367152054992913&$,|How to I find near WBTC and ETH token addresses used by rainbow bridge?&$,|&$,|2022-04-28 15:20:19&$,|2022-04-28 15:20:19
+968070006871044137&$,|348927586354855939&$,|490367152054992913&$,|<@398898564488495104> there are some reported issues in github repo of the near-cli but i havent found solution being suggested so far&$,|&$,|2022-04-28 15:20:15&$,|2022-04-28 15:20:15
+968073683555975198&$,|348438333774495745&$,|490367152054992913&$,|Hello guys. Does this method https://github.com/near/near-api-js/blob/25e7e60203965aee062ca19f352ff765859896ef/src/signer.ts#L28 exist in some rust NEAR lib?&$,|&$,|2022-04-28 15:20:02&$,|2022-04-28 15:20:02
+968077795890692107&$,|498538362978828308&$,|490367152054992913&$,|Hello guys I'm using near-sdk-as for a project. I need to generate unique id for all my models. Is there any uuid util for ts?&$,|&$,|2022-04-28 15:19:54&$,|2022-04-28 15:19:54
+968080596234567720&$,|476555889508089867&$,|490367152054992913&$,|Hello  is it possible to mint a locked token ??&$,|&$,|2022-04-28 15:19:53&$,|2022-04-28 15:19:53
+968095756714115132&$,|483711691511693312&$,|490367152054992913&$,|Hey im building a NFT minting solution on NEAR  and was wondering if the users can use Metamask to purchase NFTs with NEAR or do they need to have a NEAR Wallet?&$,|&$,|2022-04-28 15:19:48&$,|2022-04-28 15:19:48
+968105752554250310&$,|348927586354855939&$,|490367152054992913&$,|they will have to use near wallet for the time being&$,|&$,|2022-04-28 15:19:35&$,|2022-04-28 15:19:35
+968106297746653234&$,|737918062245707839&$,|490367152054992913&$,|you can exchange your `testnet`  NEAR for USN on the wallet UI&$,|&$,|2022-04-28 15:19:29&$,|2022-04-28 15:19:29
+968106528882196500&$,|480326792482127887&$,|490367152054992913&$,|Hey Everybody 11 UTC Office Hours are live! Feel free to join for a chat or ask questions: https://discord.gg/XxdjA5ZX&$,|&$,|2022-04-28 15:19:17&$,|2022-04-28 15:19:17
+968106834097483826&$,|480326792482127887&$,|490367152054992913&$,|no that I know but it is better to set it manually so you are sure that they are different. They don't need to be long ids with using different letters it should suffice.&$,|&$,|2022-04-28 15:19:14&$,|2022-04-28 15:19:14
+968107285379432519&$,|480326792482127887&$,|490367152054992913&$,|take a look into the locked contract https://github.com/near/core-contracts/tree/master/lockup&$,|&$,|2022-04-28 15:19:13&$,|2022-04-28 15:19:13
+968107627466883092&$,|480326792482127887&$,|490367152054992913&$,|the short way is to ask in the Aurora discord. The long way is to interact with their contract and check the transactions. I would go with the first.&$,|&$,|2022-04-28 15:19:09&$,|2022-04-28 15:19:09
+968109687000137738&$,|480326792482127887&$,|490367152054992913&$,|`--accountId <account>` must be an account that you manage&$,|&$,|2022-04-28 15:19:04&$,|2022-04-28 15:19:04
+968109909298253864&$,|480326792482127887&$,|490367152054992913&$,|some nomenclature: through the `near cli` you create a call. A cross-contract call happens when a contract calls another contract.&$,|&$,|2022-04-28 15:18:59&$,|2022-04-28 15:18:59
+968111825872900136&$,|574733254167625768&$,|490367152054992913&$,|you can use sender wallet bro its the equivalent of metamask or you can use https://github.com/near/wallet-selector it can use ledger walletconnect etc.&$,|&$,|2022-04-28 15:18:47&$,|2022-04-28 15:18:47
+968111925730869278&$,|574733254167625768&$,|490367152054992913&$,|this is sender wallet https://chrome.google.com/webstore/detail/sender-wallet/epapihdplajcdnnkdeiahlgigofloibg&$,|&$,|2022-04-28 15:18:43&$,|2022-04-28 15:18:43
+968112112285143070&$,|479674456365727745&$,|490367152054992913&$,|I tried to build smart contract code but it failed&$,|&$,|2022-04-28 15:18:34&$,|2022-04-28 15:18:34
+968112143847264316&$,|574733254167625768&$,|490367152054992913&$,|this is some of the demo of sender wallet for my app https://www.youtube.com/watch?v=cbPfffklpBQ&$,|&$,|2022-04-28 15:18:32&$,|2022-04-28 15:18:32
+968112294787698758&$,|574733254167625768&$,|490367152054992913&$,|are you more of a javascript developer or rust?&$,|&$,|2022-04-28 15:18:26&$,|2022-04-28 15:18:26
+968112300177363024&$,|483711691511693312&$,|490367152054992913&$,|<@574733254167625768> Amazing. thank you mate.&$,|&$,|2022-04-28 15:18:25&$,|2022-04-28 15:18:25
+968112364903862272&$,|574733254167625768&$,|490367152054992913&$,|i recommend assemblyscript&$,|&$,|2022-04-28 15:18:23&$,|2022-04-28 15:18:23
+968113325483388929&$,|480326792482127887&$,|490367152054992913&$,|it will be deprecated once the javascript sdk is released&$,|&$,|2022-04-28 15:18:20&$,|2022-04-28 15:18:20
+968113610285019171&$,|480326792482127887&$,|490367152054992913&$,|this post is better suited for <#843972482485846056>&$,|&$,|2022-04-28 15:18:09&$,|2022-04-28 15:18:09
+968114438009946142&$,|574733254167625768&$,|490367152054992913&$,|what do you mean we gonna create smart contract using javascript?&$,|&$,|2022-04-28 15:18:04&$,|2022-04-28 15:18:04
+968114491948695572&$,|574733254167625768&$,|490367152054992913&$,|or the only way to create contract is rust?&$,|&$,|2022-04-28 15:18:00&$,|2022-04-28 15:18:00
+968114767002734622&$,|480326792482127887&$,|490367152054992913&$,|right now people can use Rust and Assemblyscript to write contracts  we expect to change that in the future to Rust and Javascript&$,|&$,|2022-04-28 15:17:53&$,|2022-04-28 15:17:53
+968114911861440553&$,|574733254167625768&$,|490367152054992913&$,|really we can create contract on near with javascript?? that is much better lol&$,|&$,|2022-04-28 15:17:49&$,|2022-04-28 15:17:49
+968115057319886898&$,|483711691511693312&$,|490367152054992913&$,|Any Python integration?&$,|&$,|2022-04-28 15:17:46&$,|2022-04-28 15:17:46
+968115058829824110&$,|480326792482127887&$,|490367152054992913&$,|if I remember correctly that is proyected for end of this year&$,|&$,|2022-04-28 15:17:42&$,|2022-04-28 15:17:42
+968115325012963408&$,|574733254167625768&$,|490367152054992913&$,|do you know the approximate release for javascript sdk?&$,|&$,|2022-04-28 15:17:30&$,|2022-04-28 15:17:30
+968115437151871026&$,|574733254167625768&$,|490367152054992913&$,|i can't wait lol i think thats what every contract developer in the world needed near gonna be to the moon in no time&$,|&$,|2022-04-28 15:17:26&$,|2022-04-28 15:17:26
+968116277103181894&$,|737918062245707839&$,|490367152054992913&$,|You mean as an interface for the RPC API? Or an SDK for making Smart Contracts?&$,|&$,|2022-04-28 15:17:23&$,|2022-04-28 15:17:23
+968116447010246736&$,|480326792482127887&$,|490367152054992913&$,|check https://github.com/Lastblock-Limited/near-staking maybe it can help. It was created to track stake earnings&$,|&$,|2022-04-28 15:17:20&$,|2022-04-28 15:17:20
+968117990748983348&$,|574733254167625768&$,|490367152054992913&$,|i think sdk because he seen me too excited for javascript sdk lol&$,|&$,|2022-04-28 15:17:11&$,|2022-04-28 15:17:11
+968118255971614840&$,|574733254167625768&$,|490367152054992913&$,|is the javascript sdk gonna have event as well because thats what assembly script lack right? we can't create events afaik&$,|&$,|2022-04-28 15:17:08&$,|2022-04-28 15:17:08
+968118481574842368&$,|737918062245707839&$,|490367152054992913&$,|Smart Contract SDK unsupported there is a repo on github that has seen 0 commits for more than 2 years now which was an initial step towards doing a Python SDK but because Python does not compile as efficiently to wasm as Rust does and other reasons Rust became the preferred choice for Smart Contract development in NEAR&$,|&$,|2022-04-28 15:17:04&$,|2022-04-28 15:17:04
+968118753944563732&$,|574733254167625768&$,|490367152054992913&$,|ah i see so javascript is the best choice for compile to wasm it has typescript also for typesafe and it just looks like assemblyscript make sense now&$,|&$,|2022-04-28 15:17:01&$,|2022-04-28 15:17:01
+968119130144272394&$,|574733254167625768&$,|490367152054992913&$,|i have so many ideas lol but i think competition gonna be tight as well coz how many javascript developer in the world now coz of the reputation of nodejs lmao&$,|&$,|2022-04-28 15:16:59&$,|2022-04-28 15:16:59
+968119430850707487&$,|483711691511693312&$,|490367152054992913&$,|SDK 🙂&$,|&$,|2022-04-28 15:16:56&$,|2022-04-28 15:16:56
+968119591958093884&$,|737918062245707839&$,|490367152054992913&$,|13 million I heard from someone last week 🤯&$,|&$,|2022-04-28 15:16:54&$,|2022-04-28 15:16:54
+968119722052825088&$,|574733254167625768&$,|490367152054992913&$,|it is gonna be crazy can't wait for the release&$,|&$,|2022-04-28 15:16:51&$,|2022-04-28 15:16:51
+968119902135275601&$,|574733254167625768&$,|490367152054992913&$,|im pretty sure if near adoption is going great solana and many other rust based smart contract will follow and multichain bridge integration will be crazily easy lol&$,|&$,|2022-04-28 15:16:49&$,|2022-04-28 15:16:49
+968121877618888774&$,|480326792482127887&$,|490367152054992913&$,|that would be an indexer: https://docs.near.org/docs/tutorials/near-indexer&$,|&$,|2022-04-28 15:16:47&$,|2022-04-28 15:16:47
+968122249716568074&$,|480326792482127887&$,|490367152054992913&$,|go to the contract folder and run `rustup target add wasm32-unknown-unknown`&$,|&$,|2022-04-28 15:16:44&$,|2022-04-28 15:16:44
+968122449902317648&$,|348927586354855939&$,|490367152054992913&$,|Poor lost souls 😢&$,|&$,|2022-04-28 15:16:43&$,|2022-04-28 15:16:43
+968123503322730556&$,|483711691511693312&$,|490367152054992913&$,|Is this possible? RPC API&$,|&$,|2022-04-28 15:16:36&$,|2022-04-28 15:16:36
+968123643160830033&$,|737918062245707839&$,|490367152054992913&$,|well yes of course a wrapper library like the ones on PyPI for DocuSign Twitter etc&$,|&$,|2022-04-28 15:16:31&$,|2022-04-28 15:16:31
+968123756524494868&$,|737918062245707839&$,|490367152054992913&$,|`near-api-js` is a wrapper library around the RPC it helps your program make structured calls to the RPC API&$,|&$,|2022-04-28 15:16:27&$,|2022-04-28 15:16:27
+968125262363521136&$,|574733254167625768&$,|490367152054992913&$,|want to ask so i try to use this to call smart contract and it doesn't return anything is there a way i can return transaction id?&$,|&$,|2022-04-28 15:16:24&$,|2022-04-28 15:16:24
+968126880861548614&$,|737918062245707839&$,|490367152054992913&$,|Check this out: https://near.github.io/near-api-js/interfaces/providers_provider.finalexecutionoutcome.html
+I know you can use `call_raw` in `workspaces-js` (the integration testing library for NEAR smart contracts) which apparently runs `@returns nearAPI.providers.FinalExecutionOutcome`&$,|&$,|2022-04-28 15:16:23&$,|2022-04-28 15:16:23
+968127334286774343&$,|574733254167625768&$,|490367152054992913&$,|ah i see so we need to use call raw instead of Contract class right?&$,|&$,|2022-04-28 15:16:14&$,|2022-04-28 15:16:14
+968127557264367666&$,|164037326006124544&$,|490367152054992913&$,|im calling a cross contract call that returns a value how do i get the return value instead of a Promise?&$,|&$,|2022-04-28 15:16:02&$,|2022-04-28 15:16:02
+968127578172952677&$,|737918062245707839&$,|490367152054992913&$,|in `workspaces-js` `call_raw` is a class method belonging to `NearAccount`&$,|&$,|2022-04-28 15:15:56&$,|2022-04-28 15:15:56
+968127739678838804&$,|574733254167625768&$,|490367152054992913&$,|in rust or assemblyscript? i can answer if its assembly&$,|&$,|2022-04-28 15:15:45&$,|2022-04-28 15:15:45
+968129055582982144&$,|574733254167625768&$,|490367152054992913&$,|want to ask again so i use cross contract call in assembly and basically i still doesn't understand how to calculate gas fee for now i use 2 Tgas for both cross call may i know how to know exact gas fee we need to put for cross contract call?&$,|&$,|2022-04-28 15:15:42&$,|2022-04-28 15:15:42
+968129256796348426&$,|574733254167625768&$,|490367152054992913&$,|this is my code example ```let promise = ContractPromise.create(
+    "dev-1650673472567-94467512871134" // contract account name
+    "nft_token" // contract method name
+    nftArgs // serialized contract method arguments encoded as Uint8Array
+    20e12
+  );``` as you can see i use 20e12 for Tgas but actually its random number i dont know how to calculate really&$,|&$,|2022-04-28 15:15:39&$,|2022-04-28 15:15:39
+968130670956277791&$,|737918062245707839&$,|490367152054992913&$,|There is no straightforward method to obtaining an estimate of your gas costs you could estimate your function gas costs by running some testing (https://docs.near.org/docs/concepts/gas#accurate-estimates-with-automated-tests)  or by also calling the `protocol_config` endpoint for an estimate (https://docs.near.org/docs/api/rpc/protocol#protocol-config)&$,|&$,|2022-04-28 15:15:30&$,|2022-04-28 15:15:30
+968140651113877567&$,|164037326006124544&$,|490367152054992913&$,|In rust&$,|&$,|2022-04-28 15:15:27&$,|2022-04-28 15:15:27
+968141492159934494&$,|574733254167625768&$,|490367152054992913&$,|ok i dont know <@737918062245707839> maybe can help&$,|&$,|2022-04-28 15:15:24&$,|2022-04-28 15:15:24
+968142883418959922&$,|566829067303780363&$,|490367152054992913&$,|```
+This allows people to approve other accounts to transfer NFTs on their behalf.
+```
+What does `other account` mean here?&$,|&$,|2022-04-28 15:15:14&$,|2022-04-28 15:15:14
+968142918793715753&$,|566829067303780363&$,|490367152054992913&$,|i am reading about `approval.rs`&$,|&$,|2022-04-28 15:15:01&$,|2022-04-28 15:15:01
+968145697943715840&$,|737918062245707839&$,|490367152054992913&$,|Hey try out <#855524499755499520>&$,|&$,|2022-04-28 15:14:58&$,|2022-04-28 15:14:58
+968151259842490368&$,|755109290640932884&$,|490367152054992913&$,|Thanks&$,|&$,|2022-04-28 15:14:46&$,|2022-04-28 15:14:46
+968152166642614312&$,|483711691511693312&$,|490367152054992913&$,|I believe it means marketplaces but i dont know how you get the `ID` of the marketplace to add to the approved accounts. I suppose it could actually mean any ID that you want to enable the ability to transfer NFTs&$,|&$,|2022-04-28 15:14:36&$,|2022-04-28 15:14:36
+968152706059481149&$,|479674456365727745&$,|490367152054992913&$,|Already did but still cannot build 😰&$,|&$,|2022-04-28 15:14:31&$,|2022-04-28 15:14:31
+968153242892664933&$,|483711691511693312&$,|490367152054992913&$,|I had to make sure i was using WSL within VSCode to get round that issue. I couldn't get it to work running on windows natively. What OS are you running on?&$,|&$,|2022-04-28 15:14:26&$,|2022-04-28 15:14:26
+968153394151829544&$,|479674456365727745&$,|490367152054992913&$,|macos&$,|&$,|2022-04-28 15:14:22&$,|2022-04-28 15:14:22
+968153933644173373&$,|483711691511693312&$,|490367152054992913&$,|hmmm&$,|&$,|2022-04-28 15:14:20&$,|2022-04-28 15:14:20
+968158692195307541&$,|916952704453058632&$,|490367152054992913&$,|how can I request access key allowance for my smart contract?
+ex:&$,|&$,|2022-04-28 15:14:19&$,|2022-04-28 15:14:19
+968159794609414144&$,|574733254167625768&$,|490367152054992913&$,|i think you can do that by using signIn function of near api js you can specify what contract you want to ask for key allowance&$,|&$,|2022-04-28 15:14:17&$,|2022-04-28 15:14:17
+968160760138186792&$,|916952704453058632&$,|490367152054992913&$,|thanks that does the trick but can I specify the amount of allowance or is it fixed on .25?&$,|&$,|2022-04-28 15:14:13&$,|2022-04-28 15:14:13
+968162377029791784&$,|739166201460162570&$,|490367152054992913&$,|Hi I using near-sdk-as for my app and I am trying to make some contract calls in the console. How do i attach tokens during the execution call? I have tried the method "contract.setAttached_Deposit" in the console but that doesn't work. The reason is my app checks context.attachedDeposit before initializing FYI. Any help would be great!&$,|&$,|2022-04-28 15:14:10&$,|2022-04-28 15:14:10
+968168746894127175&$,|483711691511693312&$,|490367152054992913&$,|This is probably a stupid question but if i wanted to build the frontend using Python/Django i could still use the `near-api-js` and use `RUST` for the contract? Is the right or do i need to use React?&$,|&$,|2022-04-28 15:13:59&$,|2022-04-28 15:13:59
+968170145795158026&$,|709295422707073025&$,|490367152054992913&$,|how do you get your test net accounts private key on near&$,|&$,|2022-04-28 15:13:55&$,|2022-04-28 15:13:55
+968171568117194782&$,|522434397882941483&$,|490367152054992913&$,|are you using near-cli?&$,|&$,|2022-04-28 15:13:46&$,|2022-04-28 15:13:46
+968175484041064459&$,|709295422707073025&$,|490367152054992913&$,|Hi I'm following this video https://www.youtube.com/watch?v=zy5VgigLy-Y&list=PL9tzQn_TEuFWvVnc_ThZTzMCx6H5ZRwZX&index=2&t=1313s and I keep having the same issue with this error.  I am running on a windows machine in WSL on VSCode.  I get the issue when I run yarn start.  Anyone know why that would happen?  In the folder that it points to "/home/npcomplete/.near-credentials" there is a folder called "testnet" and within that folder are the keypairs but it still wont work.&$,|&$,|2022-04-28 15:13:44&$,|2022-04-28 15:13:44
+968176474760839168&$,|561794511005548545&$,|490367152054992913&$,|Thanks!&$,|&$,|2022-04-28 15:13:41&$,|2022-04-28 15:13:41
+968176738888728586&$,|709295422707073025&$,|490367152054992913&$,|<@585688526356480001> if youre free would you be able to help with this?&$,|&$,|2022-04-28 15:13:28&$,|2022-04-28 15:13:28
+968177021215723557&$,|220963972097114112&$,|490367152054992913&$,|I might be being stupid but how can I turn an attached deposit value in yocto near into something like this?&$,|&$,|2022-04-28 15:13:16&$,|2022-04-28 15:13:16
+968177042380189747&$,|220963972097114112&$,|490367152054992913&$,|How do I figure out how many decimals an attached deposit has?&$,|&$,|2022-04-28 15:13:12&$,|2022-04-28 15:13:12
+968180587393347674&$,|404726216147468306&$,|490367152054992913&$,|Does anyone have experience with cost analysis of running an app on NEAR?&$,|&$,|2022-04-28 15:12:58&$,|2022-04-28 15:12:58
+968190744751923200&$,|585688526356480001&$,|490367152054992913&$,|Is the error contract method is not found?&$,|&$,|2022-04-28 15:12:54&$,|2022-04-28 15:12:54
+968190991087583242&$,|585688526356480001&$,|490367152054992913&$,|maybe instead of a decimal you can use yoctoNEAR?&$,|&$,|2022-04-28 15:12:43&$,|2022-04-28 15:12:43
+968191063976206336&$,|374387655397343253&$,|490367152054992913&$,|Hi ad How to get balance of USDC in my wallet with json rpc ?&$,|&$,|2022-04-28 15:12:38&$,|2022-04-28 15:12:38
+968191325029666867&$,|585688526356480001&$,|490367152054992913&$,|I don't know if we have anything that directly turns a balance of your near wallet into USD internally but you can use a combination of near-api-js and coin gekko's api to make the conversion&$,|&$,|2022-04-28 15:12:32&$,|2022-04-28 15:12:32
+968191366066753586&$,|585688526356480001&$,|490367152054992913&$,|Re <@374387655397343253>&$,|&$,|2022-04-28 15:12:21&$,|2022-04-28 15:12:21
+968194780188278786&$,|561794511005548545&$,|490367152054992913&$,|Is there a way to delete/remove a deployed contract?&$,|&$,|2022-04-28 15:12:19&$,|2022-04-28 15:12:19
+968195409631670312&$,|561794511005548545&$,|490367152054992913&$,|Or do you have to delete the sub account?&$,|&$,|2022-04-28 15:12:09&$,|2022-04-28 15:12:09
+968196293115641956&$,|181530969877118976&$,|490367152054992913&$,|Hey guys is there any way to send the new NEAR stablecoin $USN with either the NEAR js sdk or the NEAR CLI?&$,|&$,|2022-04-28 15:11:59&$,|2022-04-28 15:11:59
+968196808100700250&$,|374387655397343253&$,|490367152054992913&$,|It mean I want to call to USDC's Contract and get balanceof my account. Could you help me ?&$,|&$,|2022-04-28 15:11:57&$,|2022-04-28 15:11:57
+968197867296686100&$,|915462608130285598&$,|490367152054992913&$,|Hi I want to know whether we can use rand in the rust smart contract?
+when I use 
+use rand::Rnd;
+It's compilable at local  but it would fail when I call it after I deploy to the testnet&$,|&$,|2022-04-28 15:11:53&$,|2022-04-28 15:11:53
+968198451080876092&$,|585688526356480001&$,|490367152054992913&$,|oh sorry USDC's contract? can you give me a link to your repo? I'm not familiar with what specifically you are referring to&$,|&$,|2022-04-28 15:11:47&$,|2022-04-28 15:11:47
+968198821274325022&$,|585688526356480001&$,|490367152054992913&$,|I think you have to clear the state of the contract. 
+
+that could mean running this https://github.com/doriancrutcher/near-clear-state
+
+or deleting the account entirely. 
+
+lmk if you run into issues with that tool&$,|&$,|2022-04-28 15:11:43&$,|2022-04-28 15:11:43
+968198954724499486&$,|585688526356480001&$,|490367152054992913&$,|what error do you get when it gets called onto testnet?&$,|&$,|2022-04-28 15:11:35&$,|2022-04-28 15:11:35
+968199672130834492&$,|561794511005548545&$,|490367152054992913&$,|Thanks!&$,|&$,|2022-04-28 15:11:30&$,|2022-04-28 15:11:30
+968204315594461204&$,|709295422707073025&$,|490367152054992913&$,|not too sure if I understand what you mean&$,|&$,|2022-04-28 15:11:27&$,|2022-04-28 15:11:27
+968205342502711386&$,|915462608130285598&$,|490367152054992913&$,|Thanks it showed error or exception. Some one told me that I can't use the rand at smart contract.&$,|&$,|2022-04-28 15:11:24&$,|2022-04-28 15:11:24
+968207712888434719&$,|709295422707073025&$,|490367152054992913&$,|In the config even if I put this I still get this error even thought the account-id should be "npcomplete.testnet" no?&$,|&$,|2022-04-28 15:11:15&$,|2022-04-28 15:11:15
+968210883367014500&$,|585688526356480001&$,|490367152054992913&$,|perhaps you guys would like to hop into office hours and we can talk about it there?&$,|&$,|2022-04-28 15:11:08&$,|2022-04-28 15:11:08
+968210884826656808&$,|585688526356480001&$,|490367152054992913&$,|https://discord.gg/PsBpwh5r&$,|&$,|2022-04-28 15:10:42&$,|2022-04-28 15:10:42
+968213738429743164&$,|128702913022263296&$,|490367152054992913&$,|&$,|&$,|2022-04-28 15:10:32&$,|2022-04-28 15:10:32
+968213812803141642&$,|128702913022263296&$,|490367152054992913&$,|<@585688526356480001> just incase you don't see the the file&$,|&$,|2022-04-28 15:10:21&$,|2022-04-28 15:10:21
+968215851440427028&$,|128702913022263296&$,|490367152054992913&$,|Thanks for the help!!! Appreciate it <@585688526356480001>&$,|&$,|2022-04-28 15:10:09&$,|2022-04-28 15:10:09
+968216104814133330&$,|498538362978828308&$,|490367152054992913&$,|thank you one more question is there external libraries support at all with assembly script?&$,|&$,|2022-04-28 15:10:02&$,|2022-04-28 15:10:02
+968216985991254066&$,|585688526356480001&$,|490367152054992913&$,|<@128702913022263296>  Yeah! Of course 🙂&$,|&$,|2022-04-28 15:09:59&$,|2022-04-28 15:09:59
+968225152141766786&$,|574364010636378132&$,|490367152054992913&$,|Is there a way to determine which network your on from the contract?&$,|&$,|2022-04-28 15:09:46&$,|2022-04-28 15:09:46
+968225175046848602&$,|574364010636378132&$,|490367152054992913&$,|testnet mainnet&$,|&$,|2022-04-28 15:09:44&$,|2022-04-28 15:09:44
+968225287097692271&$,|574364010636378132&$,|490367152054992913&$,|For testing purposes certain variables need to be set differently&$,|&$,|2022-04-28 15:09:39&$,|2022-04-28 15:09:39
+968225843925102592&$,|585688526356480001&$,|490367152054992913&$,|<@574364010636378132> hmm  it depends on where you deploy your contract I think. Maybe you can better help me understand what you're trying to acheive?&$,|&$,|2022-04-28 15:09:27&$,|2022-04-28 15:09:27
+968226137983553626&$,|574364010636378132&$,|490367152054992913&$,|https://discord.com/channels/490367152054992913/542945453533036544/968225287097692271&$,|&$,|2022-04-28 15:09:15&$,|2022-04-28 15:09:15
+968226188751413248&$,|574364010636378132&$,|490367152054992913&$,|For testing purposes certain variables need to be set differently&$,|&$,|2022-04-28 15:09:09&$,|2022-04-28 15:09:09
+968226312965722173&$,|574364010636378132&$,|490367152054992913&$,|In testnet I need a variable set to a short time but in mainnet it is set longer.&$,|&$,|2022-04-28 15:08:58&$,|2022-04-28 15:08:58
+968226374684909608&$,|574364010636378132&$,|490367152054992913&$,|Basically my testing shouldn't have to wait as long&$,|&$,|2022-04-28 15:08:51&$,|2022-04-28 15:08:51
+968226611059122188&$,|574364010636378132&$,|490367152054992913&$,|I thought about using different compile flags in rust but then that's an extra step.&$,|&$,|2022-04-28 15:08:46&$,|2022-04-28 15:08:46
 968230416949596170&$,|820988465541939265&$,|490367152054992913&$,|Hey Everyone!
 
 I created a Testnet Faucet for NEAR Developers. 
 
 You can request 200 NEAR testnet tokens every 3 days. Please try it out share with others and let me know what you think 
-https://jelilat.github.io/near-faucet/&$,|&$,|2022-04-27 17:47:31&$,|2022-04-27 17:47:31
-968233638779060324&$,|348927586354855939&$,|490367152054992913&$,|awesome project looking forward to see how you implemented I'm making https://near-faucet.io/ as part of my ncd submission here is my wip  https://github.com/flmel/near-testnet-faucet have you shared your contract in github ?&$,|&$,|2022-04-27 17:47:28&$,|2022-04-27 17:47:28
-968233914554540032&$,|348927586354855939&$,|490367152054992913&$,|we can learn from our projects !&$,|&$,|2022-04-27 17:47:25&$,|2022-04-27 17:47:25
+https://jelilat.github.io/near-faucet/&$,|&$,|2022-04-28 15:08:38&$,|2022-04-28 15:08:38
+968233638779060324&$,|348927586354855939&$,|490367152054992913&$,|awesome project looking forward to see how you implemented I'm making https://near-faucet.io/ as part of my ncd submission here is my wip  https://github.com/flmel/near-testnet-faucet have you shared your contract in github ?&$,|&$,|2022-04-28 15:08:35&$,|2022-04-28 15:08:35
+968233914554540032&$,|348927586354855939&$,|490367152054992913&$,|we can learn from our projects !&$,|&$,|2022-04-28 15:08:31&$,|2022-04-28 15:08:31
 968237352747167836&$,|820988465541939265&$,|490367152054992913&$,|Thanks. I didn't write any contract. I used the Near API.
 
-The project is also public on Github&$,|&$,|2022-04-27 17:47:21&$,|2022-04-27 17:47:21
-968237645597638697&$,|348927586354855939&$,|490367152054992913&$,|sweet! since i have to comply with ncd submission criteria i have to have certain thingies did you imply the time rate limiter just so you dont spam the rpc/network or you have other concerns ?&$,|&$,|2022-04-27 17:47:19&$,|2022-04-27 17:47:19
-968241447822327818&$,|348927586354855939&$,|490367152054992913&$,|this approach that you took was my initial idea but at the time i was like "all testnet accoutns are actually subacounts of  testnet contract/address" so it has to call itself inorder to send initialBalance to 200  so i called it quits on how to actually create the dev account but in those 10 lines of code 37-47 i learn alot now thanks for sharing! so it gives 200 to any account that match the naming ?&$,|&$,|2022-04-27 17:47:13&$,|2022-04-27 17:47:13
-968938563813138532&$,|209125162493280256&$,|967824448365412462&$,|HI&$,|&$,|2022-04-27 14:15:55&$,|2022-04-27 14:15:55
-968938594075029544&$,|209125162493280256&$,|967824448365412462&$,|HI2&$,|&$,|2022-04-27 14:16:02&$,|2022-04-27 14:16:02
-968942129265147916&$,|209125162493280256&$,|967824448365412462&$,|HI&$,|&$,|2022-04-27 14:30:05&$,|2022-04-27 14:30:05
-968951759458402355&$,|209125162493280256&$,|967824448365412462&$,|hi&$,|&$,|2022-04-27 15:08:21&$,|2022-04-27 15:08:21
-968951899992764427&$,|209125162493280256&$,|967824448365412462&$,|apple&$,|&$,|2022-04-27 15:08:55&$,|2022-04-27 15:08:55
-968952079999705149&$,|209125162493280256&$,|967824448365412462&$,|test2&$,|&$,|2022-04-27 15:09:38&$,|2022-04-27 15:09:38
-968953084367757362&$,|209125162493280256&$,|967824448365412462&$,|test3&$,|&$,|2022-04-27 15:13:37&$,|2022-04-27 15:13:37
-968953340253851658&$,|209125162493280256&$,|967824448365412462&$,|te&$,|&$,|2022-04-27 15:14:38&$,|2022-04-27 15:14:38
-968953382939267092&$,|209125162493280256&$,|967824448365412462&$,|te&$,|&$,|2022-04-27 15:14:48&$,|2022-04-27 15:14:48
-968953488702844999&$,|209125162493280256&$,|967824448365412462&$,|et&$,|&$,|2022-04-27 15:15:17&$,|2022-04-27 15:15:17
-968953889086910474&$,|209125162493280256&$,|967824448365412462&$,|random&$,|&$,|2022-04-27 15:16:50&$,|2022-04-27 15:16:50
-968954040744550480&$,|209125162493280256&$,|967824448365412462&$,|rnadom2&$,|&$,|2022-04-27 15:17:25&$,|2022-04-27 15:17:25
-968954136710250597&$,|209125162493280256&$,|967824448365412462&$,|rand&$,|&$,|2022-04-27 15:17:48&$,|2022-04-27 15:17:48
-968954361113899059&$,|209125162493280256&$,|967824448365412462&$,|dnar&$,|&$,|2022-04-27 15:18:42&$,|2022-04-27 15:18:42
-968965912533270558&$,|209125162493280256&$,|967824448365412462&$,|Messgee&$,|&$,|2022-04-27 16:04:36&$,|2022-04-27 16:04:36
-968973786017828904&$,|209125162493280256&$,|967824448365412462&$,|hi&$,|&$,|2022-04-27 16:35:53&$,|2022-04-27 16:35:53
+The project is also public on Github&$,|&$,|2022-04-28 15:08:29&$,|2022-04-28 15:08:29
+968237645597638697&$,|348927586354855939&$,|490367152054992913&$,|sweet! since i have to comply with ncd submission criteria i have to have certain thingies did you imply the time rate limiter just so you dont spam the rpc/network or you have other concerns ?&$,|&$,|2022-04-28 15:08:26&$,|2022-04-28 15:08:26
+968241447822327818&$,|348927586354855939&$,|490367152054992913&$,|this approach that you took was my initial idea but at the time i was like "all testnet accoutns are actually subacounts of  testnet contract/address" so it has to call itself inorder to send initialBalance to 200  so i called it quits on how to actually create the dev account but in those 10 lines of code 37-47 i learn alot now thanks for sharing! so it gives 200 to any account that match the naming ?&$,|&$,|2022-04-28 15:08:16&$,|2022-04-28 15:08:16

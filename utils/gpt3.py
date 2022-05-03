@@ -1,6 +1,10 @@
 import openai
 import os
-openai.api_key = os.getenv("OPENAI_API_KEY")
+
+openai.api_key = (
+    "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"  # os.getenv("OPENAI_API_KEY")
+)
+
 
 print(os.getenv("OPENAI_API_KEY"))
 
@@ -13,8 +17,9 @@ def query_gpt3(prompt):
         top_p=1,
         frequency_penalty=0,
         presence_penalty=0,
-            )
+    )
     return gpt_response["choices"][0]["text"]
+
 
 def extract_keywords(question):
     """
@@ -27,10 +32,16 @@ def extract_keywords(question):
         web3
     """
     gpt3_response = query_gpt3(query)
-    keywords = gpt3_response.split('\n')
-    parsed_keywords = list(filter(lambda x: x != '' and ' ' not in x and ':' not in x, [word.strip() for word in keywords]))
+    keywords = gpt3_response.split("\n")
+    parsed_keywords = list(
+        filter(
+            lambda x: x != "" and " " not in x and ":" not in x,
+            [word.strip() for word in keywords],
+        )
+    )
     print("keywords: ", parsed_keywords)
     return parsed_keywords[0:11]
+
 
 example_q_1 = """
 Hi! I have been creating a contract for several days and have used the command 
@@ -42,4 +53,4 @@ and it also creates the Artifacts folder, but it never goes any further and the
 contract is not depolished... Any ideas how to solve this?
 """
 
-#print(extract_keywords(example_q_1))
+# print(extract_keywords(example_q_1))
