@@ -6,6 +6,8 @@ openai.api_key = (
 )
 
 
+print(os.getenv("OPENAI_API_KEY"))
+
 def query_gpt3(prompt):
     gpt_response = openai.Completion.create(
         engine="text-davinci-002",
