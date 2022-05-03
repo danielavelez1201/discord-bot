@@ -54,7 +54,7 @@ def get_question_id_from_answer_id(answer_id):
 
 # Question tuple from id
 def get_question_with_id(id):
-    question_sql = f"SELECT id, author_id, title, body, upvotes, answered FROM questions WHERE id = {id}"
+    question_sql = f"SELECT id, message_id, author_id, title, body, upvotes, answered FROM questions WHERE id = {id}"
     cursor.execute(question_sql)
     result = cursor.fetchall()
     if len(result) == 0:
@@ -70,7 +70,7 @@ def get_message_with_id_with_question_format(id, question_format=True):
         return None
     if question_format:
         id, author_id, text, upvotes = result[0]
-        return (id, author_id, "", text, upvotes, False)
+        return (0, id, author_id, "", text, upvotes, False)
     else:
         return result[0]
 
@@ -88,6 +88,25 @@ def get_answer_with_question_id(id):
     cursor.execute(answer_sql)
     return cursor.fetchall()[0]
 
+# Answer and question corresponding to answer id
+def get_answer_question_from_answer_id(answer_id):
+    request_sql = "SELECT author_id, question_id FROM answers WHERE id = " + str(
+        answer_id
+    )
+    cursor.execute(request_sql)
+    result = cursor.fetchone()
+    if result:
+        (answer_author_id, question_id) = result
+        request_sql = "SELECT author_id FROM questions WHERE id = " + str(question_id)
+        cursor.execute(request_sql)
+        result = cursor.fetchone()
+        if result:
+            (question_author_id,) = result
+            return (
+                {"id": answer_id, "author_id": answer_author_id},
+                {"id": question_id, "author_id": question_author_id},
+            )
+    return (None, None)
 
 """
 Retrieving relevant questions, messages, and answers.
@@ -139,7 +158,7 @@ def get_score_from_author(user_id):
 
 # Top contributors
 def get_top_contributors(count):
-    request_sql = "SELECT * FROM users ORDER BY contribution_score ASC LIMIT " + str(
+    request_sql = "SELECT * FROM users ORDER BY contribution_score DESC LIMIT " + str(
         count
     )
     cursor.execute(request_sql)

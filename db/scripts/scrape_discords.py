@@ -25,7 +25,7 @@ def retrieve_messages(server_info):
     limit = 100
 
     headers = {
-        'authorization': 'Bearer TOKEN'
+        'authorization': 'Bot 5bd249ab4edfc09ecbaf9e491de6db22c0b5b122039d440ebafde9567af8292b'
     }
 
     last_message_id = None

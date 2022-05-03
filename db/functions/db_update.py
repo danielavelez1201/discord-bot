@@ -43,8 +43,7 @@ def addKeyword(word):
     except Error as err:
         print("Tried adding keyword: {}".format(word, err))
 
-
-def addQuestionAndKeywords(author_id, server_id, title, body, bounty, upvotes, answered, keywords):
+def add_question(author_id, server_id, title, body, bounty, upvotes, answered):
     question_sql = "INSERT IGNORE INTO questions (author_id, server_id, title, body, bounty, upvotes, answered) VALUES (%s, %s, %s, %s, %s, %s, %s)"
     question_vals = [
         author_id,
@@ -60,6 +59,24 @@ def addQuestionAndKeywords(author_id, server_id, title, body, bounty, upvotes, a
         cnx.commit()
         print(cursor.rowcount, "record inserted into questions.")
         question_id = cursor.lastrowid
+        return question_id
+    except Error as err:
+        print("Tried adding question: {}".format(err))
+
+def update_question_message_id(question_id, message_id):
+    sql = "UPDATE questions SET message_id = %s WHERE id = %s"
+    vals = [message_id, question_id]
+    try:
+        cursor.execute(sql, vals)
+        cnx.commit()
+        print(cursor.rowcount, "question record updated.")
+        return
+    except Error as err:
+        print("Tried updating question: {}".format(err))
+
+
+def add_keywords(question_id, keywords):    
+    try:
         for keyword in keywords:
             addKeyword(keyword)
             question_junction_sql = (
@@ -71,7 +88,7 @@ def addQuestionAndKeywords(author_id, server_id, title, body, bounty, upvotes, a
             print(cursor.rowcount, "record inserted into question keyword junction table.")
         return question_id
     except Error as err:
-        print("Tried adding question: {}".format(err))
+        print("Tried adding keywords: {}".format(err))
 
 
 def addContribution(new_contribution_score, user_id):

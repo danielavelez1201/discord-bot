@@ -27,10 +27,10 @@ def similar_questions_formatted(questions):
     Output: Formatted string of questions
     """
     result_string = ""
-    for id, author_id, title, body, upvotes, answered in questions:
+    for id, message_id, author_id, title, body, upvotes, answered in questions:
         server_id = 490367152054992913
         question_dict = {}
-        question_dict['link'] = create_link(server_id, author_id, id)
+        question_dict['link'] = create_link(server_id, author_id, message_id)
 
         name, nick = get_user_with_id(author_id)
         question_dict['author'] = format_author_name(name, nick)
@@ -53,11 +53,16 @@ def similar_questions_formatted(questions):
         result_string += format_question_string(question_dict)
     return result_string   
 
-def ask_question_suggestions(keywords):
+
+def ask_question_suggestions(keywords, gpt3_on=True):
     """
     Input: List of keywords (e.g. ['blockchain', 'admin'])
     Output: String to send in channel with relevant questions
     """
     message_intro = "You might want to check these out:\n\n"
+    
+    if not gpt3_on:
+        return message_intro + "similar questions!"
+
     questions = get_similar_questions(keywords)
     return message_intro + similar_questions_formatted(questions)

@@ -67,6 +67,7 @@ create_question_table = """
         id BIGINT NOT NULL AUTO_INCREMENT,
         author_id BIGINT,
         server_id BIGINT,
+        message_id BIGINT,
         title VARCHAR(2000),
         body VARCHAR(2000),
         bounty BIGINT,

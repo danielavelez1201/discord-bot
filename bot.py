@@ -1,11 +1,12 @@
+from re import I
 import discord
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_option
-from gpt3 import *
-import db_fetch
-import db_update
-from helpers import *
+from utils.gpt3 import *
+from db.functions.db_fetch import *
+from db.functions.db_update import *
+from utils.helpers import *
 from similar_questions import ask_question_suggestions
 
 with open("answers.txt", "r") as secrets_file:
@@ -28,16 +29,16 @@ async def on_message(msg):
     server = msg.author.guild
     text = msg.content
 
-    db_update.addServer(server.id, server.name, server.member_count)
-    db_update.addUser(author.id, author.name, author.nick, server.id)
-    db_update.addMessage(id, author.id, server.id, text, 0)
+    addServer(server.id, server.name, server.member_count)
+    addUser(author.id, author.name, author.nick, server.id)
+    addMessage(id, author.id, server.id, text, 0)
 
 
 @slash.slash(
     name="summary", description="Ask a Question!", guild_ids=[966704306235519118]
 )
 async def summary(ctx):
-    result = db_fetch.messagesFormatted()
+    result = messagesFormatted()
     await ctx.send(result)
 
 
@@ -55,10 +56,14 @@ async def summary(ctx):
     ],
 )
 async def rankings(ctx, count):
-    contributors = db_fetch.get_top_contributors(count)
+    contributors = get_top_contributors(count)
     count = 0
     result = "Rankings:\n"
     for (id, name, nick, contribution_score) in contributors:
+        count += 1
+        if contribution_score == 0:
+            await ctx.send(result)
+            return
         nick = "(" + nick + ")" if nick != None else ""
         result += f"{count}) {name}{nick}: {str(contribution_score)}\n"
     await ctx.send(result)
@@ -66,15 +71,15 @@ async def rankings(ctx, count):
 
 @bot.event
 async def on_raw_reaction_add(payload):
-    db_update.addServer(
+    addServer(
         payload.guild_id, payload.member.guild.name, payload.member.guild.member_count
     )
-    db_update.addUser(
+    addUser(
         payload.user_id, payload.member.name, payload.member.nick, payload.guild_id
     )
     # Toggle accepted and answered if reacted to answer
     if payload.emoji.name == "✅":
-        (answer, question) = db_fetch.get_answer_question_from_answer_id(
+        (answer, question) = get_answer_question_from_answer_id(
             payload.message_id
         )
         current_user = payload.user_id
@@ -84,14 +89,15 @@ async def on_raw_reaction_add(payload):
             and current_user == question["author_id"]
             and current_user != answer["author_id"]
         ):
-            db_update.acceptAnswer(question["id"], answer["id"])
+            acceptAnswer(question["id"], answer["id"])
 
     # Increment contributor score
-    msg_user_id = db_fetch.get_author_from_message(payload.message_id)
+    msg_user_id = get_user_id_from_message_id(payload.message_id)
     if len(msg_user_id) > 0:
-        msg_user_id = msg_user_id[0][0]
-        current_contribution_score = db_fetch.get_score_from_author(msg_user_id)[0][0]
-        db_update.addContribution(
+        print(msg_user_id)
+        msg_user_id = msg_user_id[0]
+        current_contribution_score = get_score_from_author(msg_user_id)[0][0]
+        addContribution(
             (0 if current_contribution_score == None else current_contribution_score)
             + 1,
             msg_user_id,
@@ -122,21 +128,43 @@ async def on_raw_reaction_add(payload):
         ),
     ],
 )
-async def ask_question(ctx, title, question_body, bounty=0):
-    db_update.addServer(
+
+async def ask_question(ctx, title, question_body, bounty=0, include_bounty=False):    
+    addServer(
         ctx.guild_id, ctx.author.guild.name, ctx.author.guild.member_count
     )
-    db_update.addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
+    addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
 
-    keywords = extract_keywords(question_body)
-   
-    questionId = db_update.addQuestionAndKeywords(
-        ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0, keywords
+    question_suggestions = ''
+    keywords = []
+    question_id = '000'
+
+    db_recording_on = True
+    if db_recording_on:
+        question_id = add_question(ctx.author_id, ctx.guild_id, title, question_body, bounty, 0, 0)
+
+    bounty_str = f'Bounty of {bounty}\n' if include_bounty else ''
+    message = await ctx.send(
+        f"""\n**{title}**\n{question_body}\n{bounty_str}
+🔮 To respond to this question, add #{question_id}"""
     )
+    print(message)
+    if db_recording_on:
+        update_question_message_id(question_id, message.id)
+
+    gpt3_on = True
+    if gpt3_on:
+        keywords = extract_keywords(question_body)
+        question_suggestions = ask_question_suggestions(keywords, gpt3_on)
+        print('question suggestions:', question_suggestions)
+    
+    if db_recording_on:
+        add_keywords(question_id, keywords)
+
     await ctx.send(
-        f"""\n{title}\n{question_body}\nBounty of {bounty}\n
-        {ask_question_suggestions(keywords)} \n
-        To respond to this question, add #{questionId}"""
+        f"""
+        {question_suggestions} \n
+        """
     )
 
 @slash.slash(
@@ -159,16 +187,16 @@ async def ask_question(ctx, title, question_body, bounty=0):
     ],
 )
 async def answer(ctx, question_id, answer_body):
-    db_update.addServer(
+    addServer(
         ctx.guild_id, ctx.author.guild.name, ctx.author.guild.member_count
     )
-    db_update.addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
+    addUser(ctx.author_id, ctx.author.name, ctx.author.nick, ctx.guild_id)
     keyword = "apple"
-    db_update.addKeyword(keyword)
+    addKeyword(keyword)
     sent_message = await ctx.send(
         "Answering Question with Id{}\n{}".format(question_id, answer_body)
     )
-    db_update.addAnswer(
+    addAnswer(
         sent_message.id,
         ctx.author_id,
         question_id,
