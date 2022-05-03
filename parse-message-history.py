@@ -1,6 +1,6 @@
 from utils.gpt3 import extract_keywords
 from db.functions.db_update import addKeywordsToDB, addMessage, addMessageIDToKeywords, addUser, addServer
-
+from db.functions.db_fetch import get_message_with_id_with_question_format
 f = open("near-messages.txt", "r")
 
 text = f.read()
@@ -19,14 +19,15 @@ def parse_and_get_keywords():
         lineArr = line.split(",")
         messageId = lineArr[0]
         timestamp = lineArr[-1]
-        userId = lineArr[-2]
-        content = lineArr[1:-2]
-        content = "".join(content)
-        keywords = extract_keywords(content)
-        addUser(int(userId), "", "", 490367152054992913)
-        addKeywordsToDB(keywords)
-        addMessage(int(messageId), int(userId), 490367152054992913, content, 0)
-        addMessageIDToKeywords(int(messageId), keywords)
-        counter += 1
+        if not get_message_with_id_with_question_format(messageId):
+            userId = lineArr[-2]
+            content = lineArr[1:-2]
+            content = "".join(content)
+            keywords = extract_keywords(content)
+            addUser(int(userId), "", "", 490367152054992913)
+            addKeywordsToDB(keywords)
+            addMessage(int(messageId), int(userId), 490367152054992913, content, 0)
+            addMessageIDToKeywords(int(messageId), keywords)
+            counter += 1
 
 parse_and_get_keywords()
