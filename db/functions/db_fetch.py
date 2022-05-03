@@ -61,14 +61,8 @@ def get_question_with_id(id):
         return None
     return result[0]
 
-<<<<<<< HEAD
 # Message tuple from id, in question tuple format optionally
 def get_message_with_id_with_question_format(id, question_format=True):
-=======
-
-# Message tuple from id, in question tuple format
-def get_message_with_id_with_question_format(id):
->>>>>>> 2240ce2d64a0203cff9cbf2f776e9bc13f304c5b
     message_sql = f"SELECT id, author_id, text, upvotes FROM messages WHERE id = {id}"
     cursor.execute(message_sql)
     result = cursor.fetchall()
