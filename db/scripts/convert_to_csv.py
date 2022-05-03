@@ -15,16 +15,16 @@ def convert_to_csv(table_name):
 
 
 dbs = [
-    # "servers",
-    # "users",
-    # "users_servers",
-    # "keywords",
+    "servers",
+    "users",
+    "users_servers",
+    "keywords",
     "messages",
-    # "keywords_messages",
-    # "questions",
-    # "keywords_questions",
-    # "answers",
-    # "keywords_answers",
+    "keywords_messages",
+    "questions",
+    "keywords_questions",
+    "answers",
+    "keywords_answers",
 ]
 for db in dbs:
     convert_to_csv(db)

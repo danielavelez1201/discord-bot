@@ -37,8 +37,8 @@ def parse_and_get_keywords():
 
 
 def get_keywords():
-    count = 10
-    messages = getMessages()[0:5]
+    count = 5
+    messages = getMessages()[5:]
     for (
         message_id,
         author_id,
@@ -56,4 +56,4 @@ def get_keywords():
     return
 
 
-parse_and_get_keywords()
+get_keywords()
