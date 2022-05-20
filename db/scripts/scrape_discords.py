@@ -12,7 +12,7 @@ def get_server_ids():
             if row[6] != '' and row[6] != "#N/A":
                 result.append({
                     'name': row[0],
-                    'id': row[6]
+                    'id': row[6] # Server id 
                 })
     return result
      
@@ -25,7 +25,7 @@ def retrieve_messages(server_info):
     limit = 100
 
     headers = {
-        'authorization': 'Bot 5bd249ab4edfc09ecbaf9e491de6db22c0b5b122039d440ebafde9567af8292b'
+        'authorization': 'OTA5NzA1OTIzMDM4MTU0NzYz.GVER9Q.ITfwLz9M7S12n9p6j1xoDhCOjjQdevLTP8aSh8'
     }
 
     last_message_id = None
@@ -35,9 +35,11 @@ def retrieve_messages(server_info):
     if last_message_id is not None:
         query_parameters += f'&before={last_message_id}'
 
-    r = requests.get(
-        f'https://discord.com/api/v9/channels/{channel_id}/messages?{query_parameters}',headers=headers
-        )
+    request = f'https://discord.com/api/v9/channels/{channel_id}/messages?{query_parameters}'
+    print(request)
+    r = requests.get(request, headers=headers)
+
+    
     jsonn = json.loads(r.text)
     print(jsonn)
     for value in jsonn:

@@ -19,7 +19,7 @@ def generate_from_csv():
     ]
     for table in tables:
         try:
-            with open("../../data/" + table + ".csv", "r") as table_data:
+            with open("../../server_data/" + table + ".csv", "r") as table_data:
                 header, *rows = table_data.readlines()
             col_names = [name.strip() for name in header.split(delimiter)]
             col_sql = "(" + ",".join(col_names) + ")"
