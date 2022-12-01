@@ -1,3 +1,4 @@
+from ast import keyword
 from db.functions.db_fetch import *
 from utils.helpers import *
 from utils.formatting import *
@@ -16,9 +17,16 @@ def get_similar_questions(keywords):
     result_list = list(freqs.items())
     result_list.sort(key=lambda x: x[1])
     if len(result_list) > 5:
-        result_list = result_list[0:6]
+        result_list = result_list[0:4]
 
-    return [get_question_or_message_with_id(id_tup[0]) for id_tup in result_list]
+    result_questions = []
+    for id_tup in result_list:
+        message = get_question_or_message_with_id(id_tup[0])
+        text = message[4]
+        if (len(text) >= 50):
+            result_questions.append(message)
+
+    return result_questions
 
 
 def similar_questions_formatted(questions):
@@ -59,10 +67,16 @@ def ask_question_suggestions(keywords, gpt3_on=True):
     Input: List of keywords (e.g. ['blockchain', 'admin'])
     Output: String to send in channel with relevant questions
     """
-    message_intro = "You might want to check these out:\n\n"
-    
+    keyword_explanation = "Looks like your question might be related to keywords like " 
+    message_intro = "You might want to check these related messages out:\n\n"
+
+    keyword_string = ''
+    for i in range(len(keywords) - 1):
+        keyword_string += keywords[i] + ", "
+    keyword_string += 'or ' + keywords[len(keywords)-1] + '. '
+        
     if not gpt3_on:
         return message_intro + "similar questions!"
 
     questions = get_similar_questions(keywords)
-    return message_intro + similar_questions_formatted(questions)
+    return keyword_explanation + keyword_string + message_intro + similar_questions_formatted(questions)

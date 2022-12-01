@@ -20,7 +20,7 @@ def format_answer_string(answer, include_upvotes=False, include_accepted=False):
 def format_question_string(question, include_upvotes=False):
     upvotes_str = f"Upvotes: {question['upvotes']}\n"
 
-    result = f"""**{question['title'] if question['title'] != '' else ''}**
+    result = f"""{question['title'] if question['title'] != '' else ''}
     {question['author'] + ':' if question['author'] != '' else ''} {question['body']}
     [Go to question]({question['link']})
     {upvotes_str if include_upvotes else ''}
